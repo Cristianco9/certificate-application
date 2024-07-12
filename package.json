@@ -16,5 +16,8 @@
     "Mysql"
   ],
   "author": "Cristianco9 <cristian_cortes_ortiz@hotmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
