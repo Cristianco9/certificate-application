@@ -1,0 +1,20 @@
+{
+  "name": "fingerprint-auth-api",
+  "version": "0.0.1",
+  "description": "The API to authenticate the students",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Node.js",
+    "Express.js",
+    "sequelize",
+    "Mysql"
+  ],
+  "author": "Cristianco9 <cristian_cortes_ortiz@hotmail.com>",
+  "license": "MIT"
+}
