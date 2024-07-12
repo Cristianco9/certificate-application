@@ -14,7 +14,7 @@ import { theIPAddress, port } from './libraries/netConfig.js';
 // Environment variables configuration file
 import { config } from "../config/config.js";
 // Main router for the API
-import routerApi from './routes/indexRouter.js';
+import routerApi from './routes/index.js';
 // Custom error handling middlewares
 import {
     logError,
