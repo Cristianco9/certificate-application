@@ -25,6 +25,8 @@
 # Icon must end with two \r
 Icon
 
+# mysql data base Docker container
+db_data
 
 # Thumbnails
 ._*
