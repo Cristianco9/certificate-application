@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+
+  iensc-fingerprint-auth-db:
+    image: mysql:8.0
+    container_name: iensc-fingerprint-auth-db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD:
+      - MYSQL_DATABASE: iensc-fingerprint-auth-db
+      - MYSQL_USER: developer
+      - MYSQL_PASSWORD:
+      - MYSQL_PORT: 3306
+    ports:
+      -3306:3306
+    volumes:
+      - ./db_data:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/my.cnf
+    networks:
+      - iensc-fingerprint-auth-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - MYSQL_ROOT_PASSWORD:
+      - PMA_HOST: iensc-fingerprint-auth-db
+    ports:
+      - 8080:80
+    depends_on:
+      - iensc-fingerprint-auth-db
+    networks:
+      - iensc-fingerprint-auth-network
+
+volumes:
+  db_data:
+
+networks:
+  iensc-fingerprint-auth-network:
+    driver: bridge
