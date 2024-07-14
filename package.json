@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "dev-dep": "npm install && npm i nodemon morgan eslint eslint-config-prettier eslint-plugin-prettier prettier --save-dev -D",
+    "dev-dep": "npm install && npm install nodemon morgan eslint eslint-config-prettier eslint-plugin-prettier prettier --save-dev -D",
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrations:generate": "sequelize-cli migration:generate --name",
     "migrations:run": "sequelize-cli db:migrate",
@@ -34,5 +34,13 @@
     "passport-jwt": "^4.0.1",
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2"
+  },
+  "devDependencies": {
+    "eslint": "^9.7.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.4",
+    "prettier": "^3.3.3"
   }
 }
