@@ -27,7 +27,9 @@ export const Student = sequelize.define(STUDENT_TABLE, {
     // This field cannot be null
     allowNull: false,
     // This field does not need to be unique
-    unique: false
+    unique: false,
+    // translate te field name from camelCase to snake_case
+    field: 'first_name'
   },
 
   // Define the 'secondName' column
@@ -37,7 +39,9 @@ export const Student = sequelize.define(STUDENT_TABLE, {
     // This field can be null
     allowNull: true,
     // This field does not need to be unique
-    unique: false
+    unique: false,
+    // translate te field name from camelCase to snake_case
+    field: 'second_name'
   },
 
   // Define the 'firstLastName' column
@@ -47,7 +51,9 @@ export const Student = sequelize.define(STUDENT_TABLE, {
     // This field cannot be null
     allowNull: false,
     // This field does not need to be unique
-    unique: false
+    unique: false,
+    // translate te field name from camelCase to snake_case
+    field: 'first_last_name'
   },
 
   // Define the 'secondLastName' column
@@ -57,7 +63,9 @@ export const Student = sequelize.define(STUDENT_TABLE, {
     // This field can be null
     allowNull: true,
     // This field does not need to be unique
-    unique: false
+    unique: false,
+    // translate te field name from camelCase to snake_case
+    field: 'second_last_name'
   },
 }, {
   // Additional model options
