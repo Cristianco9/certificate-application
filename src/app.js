@@ -11,8 +11,6 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 // Import the IP address and port from the network configuration file
 import { theIPAddress, port } from './libraries/netConfig.js';
-// Environment variables configuration file
-import { config } from "../config/config.js";
 // Main router for the API
 import routerApi from './routes/index.js';
 // Custom error handling middlewares
