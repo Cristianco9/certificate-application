@@ -7,8 +7,6 @@ import morgan from 'morgan';
 import { testConnection } from './libraries/DBConnection.js';
 // Middleware to enable Cross-Origin Resource Sharing
 import cors from 'cors';
-// Middleware to parse cookies
-import cookieParser from 'cookie-parser';
 // Import the IP address and port from the network configuration file
 import { theIPAddress, port } from './libraries/netConfig.js';
 // Main router for the API
@@ -31,8 +29,6 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 // Middleware to parse JSON data
 app.use(express.json());
-// Middleware to parse cookies
-app.use(cookieParser());
 
 // Immediately Invoked Function Expression (IIFE) to run the server
 (async () => {

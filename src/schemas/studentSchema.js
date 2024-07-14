@@ -24,9 +24,8 @@ export const studentSchema = Joi.object({
   // Validate the second name of the student
   // The pattern ensures the second name contains only letters (both uppercase and lowercase)
   // and is between 2 to 10 characters long
-  secondName: Joi.string().pattern(studentSecondName).required().messages({
+  secondName: Joi.string().pattern(studentSecondName).optional().messages({
     'string.pattern.base': 'Second name must be between 2 and 10 letters only',
-    'any.required': 'Second name is required'
   }),
 
   // Validate the first last name of the student
@@ -40,9 +39,8 @@ export const studentSchema = Joi.object({
   // Validate the second last name of the student
   // The pattern ensures the second last name contains only letters (both uppercase and lowercase)
   // and is between 2 to 10 characters long
-  secondLastName: Joi.string().pattern(studentSecondLastName).required().messages({
-    'string.pattern.base': 'Second last name must be between 2 and 10 letters only',
-    'any.required': 'Second last name is required'
+  secondLastName: Joi.string().pattern(studentSecondLastName).optional().messages({
+    'string.pattern.base': 'Second last name must be between 2 and 10 letters only'
   }),
 
   // Validate the student ID
