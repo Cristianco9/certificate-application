@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "dev-dep": "npm install && npm i nodemon eslint eslint-config-prettier eslint-plugin-prettier prettier --save-d",
+    "dev-dep": "npm install && npm i nodemon eslint eslint-config-prettier eslint-plugin-prettier prettier --save-dev -D",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -19,6 +19,7 @@
   "author": "Cristianco9 <cristian_cortes_ortiz@hotmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
   }
 }
