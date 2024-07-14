@@ -1,7 +1,7 @@
 // Import the Router class from Express
 import { Router } from "express";
 // Import the middleware to verify tokens from the authentication app
-import { authAPPVerifyToken } from
+import { authAppVerifyToken } from
 '../middlewares/tokenHandlers/authAppTokenHandler.js';
 // Import the controller function to authenticate students
 import { authenticateStudent } from '../controllers/students/authenticate.js';
@@ -14,7 +14,7 @@ router.post(
   // Route path with a parameter for student fingerprint id as a token (jwt)
   '/auth/:jwt',
   // Middleware to verify the token before proceeding to the controller
-  authAPPVerifyToken,
+  authAppVerifyToken,
    // Controller function to authenticate the student
   authenticateStudent
 );
