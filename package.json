@@ -1,6 +1,6 @@
 {
   "name": "fingerprint-auth-api",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "description": "The API to authenticate the students",
   "main": "src/app.js",
   "type": "module",
