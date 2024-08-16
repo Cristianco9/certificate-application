@@ -90,6 +90,42 @@ module.exports = {
         field: 'second_last_name'
       }
     });
+
+    await queryInterface.createTable('readers', {
+
+      // Define the 'id' column as an integer
+      id: {
+        // Integer type with a length of 10
+        type: DataTypes.INTEGER(10),
+        // This field cannot be null
+        allowNull: false,
+        // This field is the primary key
+        primaryKey: true,
+        // This field must be unique across all records
+        unique: true
+      },
+
+      // Define the 'username' column
+      username: {
+        // Text type with a maximum length of 10 characters
+        type: DataTypes.TEXT(10),
+        // This field cannot be null
+        allowNull: false,
+        // This field does not need to be unique
+        unique: false,
+      },
+
+      // Define the 'password' column
+      password: {
+        // Text type with a maximum length of 30 characters
+        type: DataTypes.STRING(30),
+        // This field cannot be null
+        allowNull: false,
+        // This field does not need to be unique
+        unique: false,
+      }
+
+    });
   },
 
   /**
@@ -104,5 +140,6 @@ module.exports = {
   async down(queryInterface, Sequelize) {
 
     await queryInterface.dropTable('students');
+    await queryInterface.dropTable('readers');
   }
 };
