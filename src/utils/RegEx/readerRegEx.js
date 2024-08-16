@@ -7,7 +7,7 @@ export const readerUsername = /^[a-zA-Z]{3,10}$/;
 // The pattern ensures the password contains
 // letters (both uppercase and lowercase), numbers, and characters
 // and is between 5 to 30 characters long
-export const studentSecondName = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{5,30}$/;
+export const readerPassword = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{5,30}$/;
 
 // Regex pattern to validate the user id
 // The pattern ensures the unique identifier contains only umbers
