@@ -6,6 +6,8 @@ import {
   readerPassword
 } from '../utils/RegEx/readerRegEx.js';
 
+import { userAuthToken } from '../utils/RegEx/authRegEx.js';
+
 const joiUsername = Joi.string().pattern(readerUsername).messages({
   'string.pattern.base': 'Username must be between 2 and 10 letters only',
 });
@@ -15,6 +17,17 @@ const joiPassword = Joi.string().pattern(readerPassword).messages({
 });
 
 export const readerSchema = Joi.object({
+
+    /*
+    authentication: Joi.string().pattern(userAuthToken).message({
+      'string.pattern.base': 'token must be between 30 and 150 characters'
+    }),
+    */
+
+    authentication: Joi.string().pattern(userAuthToken).message({
+      'string.pattern.base': 'token must be between 30 and 160 characters'
+    }),
+
 
     // Validate the username of the reader user
     username: joiUsername,

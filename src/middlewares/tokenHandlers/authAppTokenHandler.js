@@ -39,15 +39,13 @@ export const authAppVerifyToken = (req, res, next) => {
     // Regenerate a new token for the user
     const newUserToken = signUserToken(userData, config.authAppJwtKey, '8h');
 
-    // Send the new token back to the client
-    res.status(202).json({
-      authentication: newUserToken
-    });
+    // Attach the new token to the response object for later use
+    res.locals.newUserToken = newUserToken;
 
     // Attach user data to the request object for later use
     req.user = decoded;
 
-    // Proceed to the next middleware
+    // Proceed to the next middleware or controller
     next();
   });
 };

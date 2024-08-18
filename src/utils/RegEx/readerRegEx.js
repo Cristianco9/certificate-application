@@ -1,7 +1,7 @@
 // The pattern ensures the username contains only letters
 // (both uppercase and lowercase)
 // and is between 3 to 10 characters long
-export const readerUsername = /^[a-zA-Z]{3,10}$/;
+export const readerUsername = /^[\p{L}]{3,10}$/u;
 
 // Regex pattern to validate the user password
 // The pattern ensures the password contains

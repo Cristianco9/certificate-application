@@ -40,6 +40,8 @@ readerRouter.post(
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
   checkApiKey,
+  // Middleware to verify the token before proceeding to the controller
+  authAppVerifyToken,
   // Controller function to create the reader
   createOneReader
 );
@@ -52,7 +54,9 @@ readerRouter.post(
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
   checkApiKey,
-   // Controller function to update the reader
+  // Middleware to verify the token before proceeding to the controller
+  authAppVerifyToken,
+  // Controller function to update the reader
   updateOneReader
 );
 
@@ -64,7 +68,9 @@ readerRouter.post(
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
   checkApiKey,
-   // Controller function to delete the reader
+  // Middleware to verify the token before proceeding to the controller
+  authAppVerifyToken,
+  // Controller function to delete the reader
   deleteOneReader
 );
 
@@ -76,16 +82,22 @@ readerRouter.post(
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
   checkApiKey,
-   // Controller function to list a reader
+  // Middleware to verify the token before proceeding to the controller
+  authAppVerifyToken,
+  // Controller function to list a reader
   listOneReader
 );
 
 readerRouter.get(
   // Route path to list all reader users
   '/listall',
+  // Middleware to validate the data type
+  validatorHandler(readerSchema, 'body'),
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
   checkApiKey,
-   // Controller function to list all readers
+  // Middleware to verify the token before proceeding to the controller
+  authAppVerifyToken,
+  // Controller function to list all readers
   listAllReader
 );
