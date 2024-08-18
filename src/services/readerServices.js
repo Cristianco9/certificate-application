@@ -377,6 +377,8 @@ export class ReaderServices {
         throw Boom.notFound('User not found');
       }
 
+      delete theUser.password;
+
       return theUser;
 
     } catch (error) {
@@ -398,7 +400,9 @@ export class ReaderServices {
         throw Boom.notFound('No users found');
       }
 
-      return allUsers;
+      const theUsers = allUsers.map( user => delete user.password );
+
+      return theUsers;
 
     } catch (error) {
       // return a Boom error if there's an exception finding all users

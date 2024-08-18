@@ -5,11 +5,11 @@
 // Import Passport for authentication
 import passport from 'passport';
 // Import the auth-app JWT authentication strategy for JWT authentication
-import { authAppJwtStrategy } from './authApp/strategies/jwt.strategy';
+import { authAppJwtStrategy } from './authApp/strategies/jwt.strategy.js';
 // Import the officials-app JWT authentication strategy for JWT authentication
-import { officialsAppJwtStrategy } from './officialsApp/strategies/jwt.strategy';
+import { officialsAppJwtStrategy } from './officialsApp/strategies/jwt.strategy.js';
 // Import the record-app JWT authentication strategy for JWT authentication
-import { recordAppJwtStrategy } from './recordApp/strategies/jwt.strategy';
+import { recordAppJwtStrategy } from './recordApp/strategies/jwt.strategy.js';
 /**
  * Configure Passport authentication strategies.
  * This module configures Passport to use authentication strategies:

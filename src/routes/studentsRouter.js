@@ -9,10 +9,10 @@ import { checkApiKey } from '../middlewares/apiAuthHandler.js';
 import { authenticateStudent } from '../controllers/students/authenticate.js';
 
 // Create a new Router instance
-const router = Router();
+export const studentsRouter = Router();
 
 // Define a POST route for student authentication
-router.post(
+studentsRouter.post(
   // Route path to authenticate a student fingerprint id
   '/auth',
   // Middleware to verify the API key sended by the client before
@@ -24,5 +24,3 @@ router.post(
   authenticateStudent
 );
 
-// Export the router instance for use in other parts of the application
-export default router;

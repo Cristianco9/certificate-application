@@ -1,7 +1,7 @@
 // Import the necessary modules from passport-jwt
 import { Strategy, ExtractJwt } from "passport-jwt";
 // Import the configuration settings
-import { config } from "../../../config/config.js";
+import { config } from "../../../../config/config.js";
 
 // Define options for the JWT strategy
 const options = {

@@ -1,5 +1,5 @@
-import { config } from '../config/config.js';
-import { signUserToken } from '../utils/auth/tokenSign.js';
+import { config } from '../../config/config.js';
+import { signUserToken } from '../../utils/auth/tokenSign.js';
 import jwt from 'jsonwebtoken';
 
 /**

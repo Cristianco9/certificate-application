@@ -9,12 +9,6 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-
-    // created a seed reader user in the data base
-    await queryInterface.bulkInsert('readers', [{
-      username: 'lector',
-      password: '',
-    }], {});
   },
 
   async down (queryInterface, Sequelize) {
@@ -24,6 +18,5 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.bulkDelete('readers', { username: 'lector' }, {});
   }
 };

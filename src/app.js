@@ -67,7 +67,7 @@ app.use(cors());
 
 // Import passport authentication setup
 // Dynamic import of authentication module
-const passport = import('./utils/auth/indexAuth.js');
+const passport = import('./utils/auth/index.js');
 
 // Use custom error handling middlewares
 // Middleware for logging errors

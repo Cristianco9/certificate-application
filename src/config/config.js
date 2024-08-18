@@ -9,11 +9,17 @@ export const config = {
   // Set the environment (default to 'dev' if not specified)
   env: process.env.NODE_ENV || 'dev',
 
+  // Database dialect
+  dialect: process.env.DIALECT,
+
   // Application port (default to 3030 if not specified)
   appPort: process.env.APP_PORT || 3030,
 
   // Database user name from environment variables
   dbUser: process.env.DB_USER,
+
+  // Database root user name from environment variables
+  dbRootUser: process.env.DB_ROOT_USER,
 
   // Database root password from environment variables
   dbRootPassword: process.env.DB_ROOT_PASSWORD,

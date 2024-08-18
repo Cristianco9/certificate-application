@@ -5,22 +5,75 @@ import { authAppVerifyToken } from
 '../middlewares/tokenHandlers/authAppTokenHandler.js';
 // Import the middleware to verify the API key from the client app
 import { checkApiKey } from '../middlewares/apiAuthHandler.js';
-// Import the controller function to authenticate login readers
+// Import the controllers functions to authenticate and manage readers
 import { loginReader } from '../controllers/readers/login.js';
+import { createOneReader } from '../controllers/readers/create.js';
+import { deleteOneReader } from '../controllers/readers/delete.js';
+import { updateOneReader } from '../controllers/readers/update.js';
+import { listOneReader } from '../controllers/readers/listOne.js';
+import { listAllReader } from '../controllers/readers/listAll.js';
 
 // Create a new Router instance
-const router = Router();
+export const readerRouter = Router();
 
 // Define a POST route for readers authentication
-router.post(
+
+readerRouter.post(
   // Route path to authenticate a reader users
-  '/auth',
+  '/login',
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
   checkApiKey,
-   // Controller function to login the reader
+   // Controller function to login a user
   loginReader
 );
 
-// Export the router instance for use in other parts of the application
-export default router;
+readerRouter.post(
+  // Route path to create a reader user
+  '/create',
+  // Middleware to verify the API key sended by the client before
+  // proceeding to the controller
+  checkApiKey,
+  // Controller function to create the reader
+  createOneReader
+);
+
+readerRouter.post(
+  // Route path to update a reader user
+  '/update',
+  // Middleware to verify the API key sended by the client before
+  // proceeding to the controller
+  checkApiKey,
+   // Controller function to update the reader
+  updateOneReader
+);
+
+readerRouter.post(
+  // Route path to delete a reader user
+  '/delete',
+  // Middleware to verify the API key sended by the client before
+  // proceeding to the controller
+  checkApiKey,
+   // Controller function to delete the reader
+  deleteOneReader
+);
+
+readerRouter.post(
+  // Route path to list a reader user
+  '/listone',
+  // Middleware to verify the API key sended by the client before
+  // proceeding to the controller
+  checkApiKey,
+   // Controller function to list a reader
+  listOneReader
+);
+
+readerRouter.get(
+  // Route path to list all reader users
+  '/listone',
+  // Middleware to verify the API key sended by the client before
+  // proceeding to the controller
+  checkApiKey,
+   // Controller function to list all readers
+  listAllReader
+);

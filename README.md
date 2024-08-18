@@ -66,7 +66,7 @@ Make sure you have the following installed on your machine:
 
 3. Create the database container and RDBMS:
     ```bash
-    docker compose up -D
+    docker compose up -d
     ```
 
 4. Insert the Environment Variables in the project:

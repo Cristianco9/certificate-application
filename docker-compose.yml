@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=0d6b9209fe3bff6cc19455c2699454c286333d67fd7fcf455b2402b97f6971cc
-      - MYSQL_DATABASE=ienc-fingerprint-auth-db
+      - MYSQL_DATABASE=iensc-fingerprint-auth-db
       - MYSQL_USER=developer
       - MYSQL_PASSWORD=002f2e8866a27a086dc8a9f744cd8e2b870373e8970b8ca313fdf2767423aef6
       - MYSQL_PORT=3306

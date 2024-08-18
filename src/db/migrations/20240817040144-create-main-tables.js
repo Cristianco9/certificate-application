@@ -92,7 +92,6 @@ module.exports = {
     });
 
     await queryInterface.createTable('readers', {
-
       // Define the 'id' column as an integer
       id: {
         // Integer type with a length of 10
@@ -111,21 +110,21 @@ module.exports = {
         type: DataTypes.TEXT(10),
         // This field cannot be null
         allowNull: false,
-        // This field does not need to be unique
-        unique: false,
+        // This field need to be unique
+        unique: true,
       },
 
       // Define the 'password' column
       password: {
-        // Text type with a maximum length of 30 characters
-        type: DataTypes.STRING(30),
+        // Text type with a maximum length of 10 characters
+        type: DataTypes.TEXT(30),
         // This field cannot be null
         allowNull: false,
         // This field does not need to be unique
         unique: false,
       }
-
     });
+
   },
 
   /**

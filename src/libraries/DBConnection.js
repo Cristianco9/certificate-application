@@ -1,10 +1,16 @@
 // Import the Sequelize constructor from the 'sequelize' library
 import { Sequelize } from 'sequelize';
-// Import the database URI from the configuration file
-import { URI } from '../db/config.js';
+// Import configuration settings
+import { config } from "../config/config.js";
 
 // Create a new instance of Sequelize with the provided URI and options
-export const sequelize = new Sequelize(URI, {
+export const sequelize = new Sequelize(
+  config.dbName,
+  config.dbRootUser,
+  config.dbRootPassword,
+  {
+  // Specify the data base host
+  host: config.dbHost,
   // Specify the dialect as MySQL
   dialect: 'mysql',
   // Enable logging of SQL queries to the console
