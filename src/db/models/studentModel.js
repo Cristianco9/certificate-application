@@ -11,7 +11,7 @@ export const Student = sequelize.define(STUDENT_TABLE, {
   // Define the 'id' column as an integer
   id: {
     // Integer type with a length of 10
-    type: DataTypes.INTEGER(10),
+    type: DataTypes.INTEGER(),
     // This field cannot be null
     allowNull: false,
     // This field is the primary key
@@ -23,7 +23,7 @@ export const Student = sequelize.define(STUDENT_TABLE, {
   // Define the 'firstName' column
   firstName: {
     // Text type with a maximum length of 10 characters
-    type: DataTypes.TEXT(10),
+    type: DataTypes.STRING(10),
     // This field cannot be null
     allowNull: false,
     // This field does not need to be unique
@@ -35,7 +35,7 @@ export const Student = sequelize.define(STUDENT_TABLE, {
   // Define the 'secondName' column
   secondName: {
     // Text type with a maximum length of 10 characters
-    type: DataTypes.TEXT(10),
+    type: DataTypes.STRING(10),
     // This field can be null
     allowNull: true,
     // This field does not need to be unique
@@ -47,7 +47,7 @@ export const Student = sequelize.define(STUDENT_TABLE, {
   // Define the 'firstLastName' column
   firstLastName: {
     // Text type with a maximum length of 10 characters
-    type: DataTypes.TEXT(10),
+    type: DataTypes.STRING(10),
     // This field cannot be null
     allowNull: false,
     // This field does not need to be unique
@@ -59,7 +59,7 @@ export const Student = sequelize.define(STUDENT_TABLE, {
   // Define the 'secondLastName' column
   secondLastName: {
     // Text type with a maximum length of 10 characters
-    type: DataTypes.TEXT(10),
+    type: DataTypes.STRING(10),
     // This field can be null
     allowNull: true,
     // This field does not need to be unique

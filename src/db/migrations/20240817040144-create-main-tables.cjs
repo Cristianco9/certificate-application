@@ -25,7 +25,7 @@ module.exports = {
        */
       id: {
         // Integer type with a length of 10
-        type: DataTypes.INTEGER(10),
+        type: DataTypes.INTEGER(),
         // This field cannot be null
         allowNull: false,
         // This field is the primary key
@@ -39,7 +39,7 @@ module.exports = {
        */
       firstName: {
         // Text type with a maximum length of 10 characters
-        type: DataTypes.TEXT(10),
+        type: DataTypes.STRING(10),
         // This field cannot be null
         allowNull: false,
         // This field does not need to be unique
@@ -53,7 +53,7 @@ module.exports = {
        */
       secondName: {
         // Text type with a maximum length of 10 characters
-        type: DataTypes.TEXT(10),
+        type: DataTypes.STRING(10),
         // This field can be null
         allowNull: true,
         // This field does not need to be unique
@@ -67,7 +67,7 @@ module.exports = {
        */
       firstLastName: {
         // Text type with a maximum length of 10 characters
-        type: DataTypes.TEXT(10),
+        type: DataTypes.STRING(10),
         // This field cannot be null
         allowNull: false,
         // This field does not need to be unique
@@ -81,7 +81,7 @@ module.exports = {
        */
       secondLastName: {
         // Text type with a maximum length of 10 characters
-        type: DataTypes.TEXT(10),
+        type: DataTypes.STRING(10),
         // This field can be null
         allowNull: true,
         // This field does not need to be unique
@@ -107,7 +107,7 @@ module.exports = {
       // Define the 'username' column
       username: {
         // Text type with a maximum length of 10 characters
-        type: DataTypes.TEXT(10),
+        type: DataTypes.STRING(10),
         // This field cannot be null
         allowNull: false,
         // This field need to be unique
@@ -117,7 +117,7 @@ module.exports = {
       // Define the 'password' column
       password: {
         // Text type with a maximum length of 10 characters
-        type: DataTypes.TEXT(30),
+        type: DataTypes.STRING(10),
         // This field cannot be null
         allowNull: false,
         // This field does not need to be unique

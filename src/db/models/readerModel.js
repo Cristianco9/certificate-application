@@ -11,7 +11,7 @@ export const Reader = sequelize.define(READER_TABLE, {
   // Define the 'id' column as an integer
   id: {
     // Integer type with a length of 10
-    type: DataTypes.INTEGER(10),
+    type: DataTypes.INTEGER(),
     // This field cannot be null
     allowNull: false,
     // This field is the primary key
@@ -23,7 +23,7 @@ export const Reader = sequelize.define(READER_TABLE, {
   // Define the 'username' column
   username: {
     // Text type with a maximum length of 10 characters
-    type: DataTypes.TEXT(10),
+    type: DataTypes.STRING(10),
     // This field cannot be null
     allowNull: false,
     // This field need to be unique
@@ -33,7 +33,7 @@ export const Reader = sequelize.define(READER_TABLE, {
   // Define the 'password' column
   password: {
     // Text type with a maximum length of 10 characters
-    type: DataTypes.TEXT(30),
+    type: DataTypes.STRING(30),
     // This field cannot be null
     allowNull: false,
     // This field does not need to be unique
