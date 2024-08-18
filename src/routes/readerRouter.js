@@ -5,6 +5,8 @@ import { authAppVerifyToken } from
 '../middlewares/tokenHandlers/authAppTokenHandler.js';
 // Import the middleware to verify the API key from the client app
 import { checkApiKey } from '../middlewares/apiAuthHandler.js';
+import { validatorHandler  } from '../middlewares/validatorHandler.js';
+import { readerSchema } from '../schemas/readerSchema.js';
 // Import the controllers functions to authenticate and manage readers
 import { loginReader } from '../controllers/readers/login.js';
 import { createOneReader } from '../controllers/readers/create.js';
@@ -21,6 +23,8 @@ export const readerRouter = Router();
 readerRouter.post(
   // Route path to authenticate a reader users
   '/login',
+  // Middleware to validate the data type
+  validatorHandler(readerSchema, 'body'),
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
   checkApiKey,
@@ -31,6 +35,8 @@ readerRouter.post(
 readerRouter.post(
   // Route path to create a reader user
   '/create',
+  // Middleware to validate the data type
+  validatorHandler(readerSchema, 'body'),
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
   checkApiKey,
@@ -41,6 +47,8 @@ readerRouter.post(
 readerRouter.post(
   // Route path to update a reader user
   '/update',
+  // Middleware to validate the data type
+  validatorHandler(readerSchema, 'body'),
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
   checkApiKey,
@@ -51,6 +59,8 @@ readerRouter.post(
 readerRouter.post(
   // Route path to delete a reader user
   '/delete',
+  // Middleware to validate the data type
+  validatorHandler(readerSchema, 'body'),
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
   checkApiKey,
@@ -61,6 +71,8 @@ readerRouter.post(
 readerRouter.post(
   // Route path to list a reader user
   '/listone',
+  // Middleware to validate the data type
+  validatorHandler(readerSchema, 'body'),
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
   checkApiKey,
@@ -70,7 +82,7 @@ readerRouter.post(
 
 readerRouter.get(
   // Route path to list all reader users
-  '/listone',
+  '/listall',
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
   checkApiKey,

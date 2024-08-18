@@ -3,13 +3,13 @@ import Boom from '@hapi/boom';
 
 export const updateOneReader = async (req, res, next) => {
 
-  const { userId, newUserData } = req.body;
+  const { id, newUserData } = req.body;
 
   const readerManager = new ReaderServices();
 
   try {
 
-    const response =  await readerManager.updateOne(userId, newUserData);
+    const response =  await readerManager.updateOne(id, newUserData);
 
     if (response.status === 'UPDATED SUCCESSFULLY') {
       return res.status(201).json({

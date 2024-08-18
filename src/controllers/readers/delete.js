@@ -3,13 +3,13 @@ import Boom from '@hapi/boom';
 
 export const deleteOneReader = async (req, res, next) => {
 
-  const { userId } = req.body;
+  const { id } = req.body;
 
   const readerManager = new ReaderServices();
 
   try {
 
-    const response =  await readerManager.deleteOne(userId);
+    const response =  await readerManager.deleteOne(id);
 
     if (response.status === 'DELETED SUCCESSFULLY') {
       return res.status(201).json({

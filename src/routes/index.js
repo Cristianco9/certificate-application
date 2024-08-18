@@ -12,13 +12,13 @@ const routerApi = (app) => {
   const router = Router();
 
   // Use the router instance for the '/api/v1' path
-  app.use('api/v1', router);
+  app.use('/api/v1', router);
 
   // Use the studentsRouter for handling '/students' routes under '/api/v1'
-  router.use('students', studentsRouter);
+  router.use('/students', studentsRouter);
 
   // Use the readersRouter for handling '/readers' routes under '/api/v1'
-  router.use('readers', readerRouter);
+  router.use('/readers', readerRouter);
 }
 
 // Export the routerApi function for use in other parts of the application

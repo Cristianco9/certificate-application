@@ -3,13 +3,13 @@ import Boom from '@hapi/boom';
 
 export const listOneReader = async (req, res, next) => {
 
-  const { userId } = req.body;
+  const { id } = req.body;
 
   const readerManager = new ReaderServices();
 
   try {
 
-    const record =  await readerManager.listOne(userId);
+    const record =  await readerManager.listOne(id);
 
     if (record) {
       return res.status(201).json({

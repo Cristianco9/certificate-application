@@ -43,7 +43,7 @@ export const config = {
   authAppJwtKey: process.env.AUTH_APP_JWT_SECRET_KEY,
 
   // JWT secret key for the officials application
-  officialsAppJwtKey: process.env.AUTH_APP_JWT_SECRET_KEY,
+  officialsAppJwtKey: process.env.OFFICIAL_APP_JWT_SECRET_KEY,
 
   // JWT secret key for the record application
   recordAppJwtKey: process.env.RECORD_APP_JWT_SECRET_KEY

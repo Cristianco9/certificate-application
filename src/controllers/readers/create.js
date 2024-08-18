@@ -26,6 +26,7 @@ export const createOneReader = async (req, res, next) => {
       'No es posible crear el usuario en la base de datos',
       error
     );
+    console.error(error);
     next(boomError);
   }
 };

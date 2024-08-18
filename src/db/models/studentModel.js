@@ -67,6 +67,30 @@ export const Student = sequelize.define(STUDENT_TABLE, {
     // translate te field name from camelCase to snake_case
     field: 'second_last_name'
   },
+
+  // Define the 'createdAt' column
+  createdAt: {
+    // Date type for the creation timestamp
+    type: DataTypes.DATE,
+    // Automatically set the current timestamp when the record is created
+    defaultValue: DataTypes.NOW,
+    // This field cannot be null
+    allowNull: false,
+    // Translate the field name from camelCase to snake_case
+    field: 'created_at',
+  },
+
+  // Define the 'updatedAt' column
+  updatedAt: {
+    // Date type for the last update timestamp
+    type: DataTypes.DATE,
+    // Automatically update the timestamp when the record is updated
+    defaultValue: DataTypes.NOW,
+    // This field cannot be null
+    allowNull: false,
+    // Translate the field name from camelCase to snake_case
+    field: 'updated_at',
+  }
 }, {
   // Additional model options
   // Pass the sequelize instance

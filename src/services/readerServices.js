@@ -243,7 +243,7 @@ export class ReaderServices {
 
       // if not found a user in the database
       if (!userRecord) {
-        throw Boom.notFound('User not found');
+        return { status: 'user not found'};
       }
 
       // Compare the provided password with the stored password hash
@@ -251,7 +251,7 @@ export class ReaderServices {
 
       // If the password is not valid, reject the promise
       if (!validPassword) {
-        throw Boom.unauthorized('Invalid password');
+        return { status: 'wrong password'};
       }
 
       // Generate JWT token with user data
@@ -262,7 +262,7 @@ export class ReaderServices {
       );
 
       // Resolves the promise with the JWT token
-      return { token: userToken };
+      return { status: 'logged', token: userToken };
 
     } catch (error) {
       // Return a Boom error if there's an exception
@@ -309,6 +309,8 @@ export class ReaderServices {
     try {
       // hash the new user password before saving it in the database
       const hash = await hashPassword(newUserData.password);
+
+      console.log("password length: ", hash.length);
 
       // update the record in the database
       const [updatedRows] = await Reader.update(
@@ -377,7 +379,7 @@ export class ReaderServices {
         throw Boom.notFound('User not found');
       }
 
-      delete theUser.password;
+      delete theUser.dataValues.password;
 
       return theUser;
 
@@ -390,17 +392,21 @@ export class ReaderServices {
   async listAll() {
     try {
       // save all records in the constant
-      const allUsers = await Reader.findAll({
+      let allUsers = await Reader.findAll({
         order: [['id', 'ASC']]
       });
 
       // if no records exist
       if (!allUsers.length) {
-        // return an error response
-        throw Boom.notFound('No users found');
+        allUsers = [];
+        return allUsers;
       }
 
-      const theUsers = allUsers.map( user => delete user.password );
+      const theUsers = allUsers.map(user => {
+        const userData = user.dataValues;
+        delete userData.password;
+        return userData;
+      });
 
       return theUsers;
 

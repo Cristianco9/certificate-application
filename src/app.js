@@ -1,6 +1,8 @@
 // Import necessary modules and dependencies
 // Express framework for creating the app
 import express from 'express';
+// Middleware to handle body request
+import bodyParser from 'body-parser';
 // Middleware for logging HTTP requests
 import morgan from 'morgan';
 // Function to test database connection
@@ -29,6 +31,9 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 // Middleware to parse JSON data
 app.use(express.json());
+// Middleware for parsing JSON bodies
+app.use(bodyParser.json());
+
 
 // Immediately Invoked Function Expression (IIFE) to run the server
 (async () => {
