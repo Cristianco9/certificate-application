@@ -24,6 +24,31 @@ import {
 // Create the app with Express
 const app = express();
 
+// Set up CORS options
+// List of allowed origins
+const whiteList = [
+  'http://localhost:3001',
+  'http://127.0.0.1:3001',
+  'http://192.168.101.2:3001'
+];
+
+const options = {
+  origin: (origin, callback) => {
+    if (whiteList.includes(origin) || !origin) {
+      // Allow request if origin is in the whitelist or if there is no origin
+      // (e.g., mobile apps)
+      callback(null, true);
+    } else {
+      // Block request if origin is not in the whitelist
+      callback(new Error('Not allowed'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'APIKey'],
+}
+// Enable CORS with the specified options
+app.use(cors(options));
+
 // Use middlewares
 // HTTP request logger middleware
 app.use(morgan('dev'));
@@ -40,7 +65,7 @@ app.use(bodyParser.json());
   // Await the app to start listening on the specified IP address and port
   const createApp = await app.listen(port, theIPAddress, (req, res) => {
     // Log the server start information to the console
-    console.log(`server on port https://${theIPAddress}:${port}`);
+    console.log(`server on port http://${theIPAddress}:${port}`);
   });
 })();
 
@@ -51,24 +76,6 @@ testConnection();
 // Initialize the main router
 // Set up API routes
 routerApi(app);
-
-// Set up CORS options
-// List of allowed origins
-const whiteList = ['http://127.0.0.1:3000'];
-const options = {
-  origin: (origin, callback) => {
-    if (whiteList.includes(origin) || !origin) {
-      // Allow request if origin is in the whitelist or if there is no origin
-      // (e.g., mobile apps)
-      callback(null, true);
-    } else {
-      // Block request if origin is not in the whitelist
-      callback(new Error('Not allowed'));
-    }
-  }
-}
-// Enable CORS with the specified options
-app.use(cors());
 
 // Import passport authentication setup
 // Dynamic import of authentication module
