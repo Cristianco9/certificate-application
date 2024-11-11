@@ -1,10 +1,6 @@
-# IENSC Fingerprint students authentication API
-
-The Fingerprint Auth API is designed to authenticate students using their fingerprints, which are converted to hashes and stored in a database. This API serves three different client applications:
-
-1. Student Authentication
-2. Student Management
-3. Student Reports
+# IENSC Certificates Web application
+This web application allow to academic secretaries generate automatically
+certificates from older students (before 2004).
 
 ## Table of Contents
 
@@ -19,9 +15,8 @@ The Fingerprint Auth API is designed to authenticate students using their finger
 
 ## Features
 
-- Authenticate students via fingerprint hash
-- Manage student records
-- Generate student reports
+- Generate certifications
+- Generate PDF document automatically
 
 ## Technologies Used
 
@@ -33,7 +28,9 @@ The Fingerprint Auth API is designed to authenticate students using their finger
 - **Mysql**
 - **phpMyAdmin**
 - **ORM sequelie**
-
+- **HTML**
+- **CSS**
+- **EJS**
 
 ## Getting Started
 
@@ -57,12 +54,14 @@ Make sure you have the following installed on your machine:
 1. Clone the repository:
 
    ```sh
-    git clone https://github.com/Cristianco9/fingerprint-auth-api.git
+    git clone https://github.com/Cristianco9/certificate-application.git
+   ```
 
 2. Navigate to the project directory:
 
    ```sh
-    cd fingerprint-auth-api
+    cd certificate-application
+   ```
 
 3. Create the database container and RDBMS:
     ```bash
@@ -78,6 +77,7 @@ Make sure you have the following installed on your machine:
 
    ```sh
     npm run dev-dep
+   ```
 
 6. Run the database migrations to create tables, relations, and data seeds:
     ```bash
@@ -88,6 +88,7 @@ Make sure you have the following installed on your machine:
 
    ```sh
     npm run dev
+   ```
 
 ### Usage
 
@@ -111,7 +112,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 LinkedIn - [cristianco9](https://www.linkedin.com/in/cristianco9/)
 
 Project Link: [Github]
-(https://github.com/Cristianco9/fingerprint-auth-api.git)
+(https://github.com/Cristianco9/certificate-application.git)
 
 ---
 

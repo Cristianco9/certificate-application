@@ -4,13 +4,13 @@ import { verifyToken } from '../tokenVerify.js';
 import { config } from '../../config/config.js';
 
 /**
- * Extracts the student fingerprint hash from a given JWT.
+ * Extracts the user information from a given JWT.
  *
  * @param {string} token - The JWT to be verified and decoded.
- * @returns {string|null} - The student fingerprint hash if the token is valid,
+ * @returns {string|null} - The user information if the token is valid,
  * otherwise null.
  */
-export const getStudentFingerprintHash = (token) => {
+export const getUserData = (token) => {
   if (!token) {
     // Return null if no token is provided
     return null;
@@ -20,7 +20,7 @@ export const getStudentFingerprintHash = (token) => {
     // Verify the token using the secret key from the config and decode it
     const decoded = verifyToken(token, config.authAppJwtKey);
     // Return the student fingerprint hash from the decoded token
-    return decoded.studentFingerprintHash;
+    return decoded.userData;
   } catch (err) {
     // Return null if token verification fails
     return null;

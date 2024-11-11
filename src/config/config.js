@@ -6,6 +6,7 @@ dotenv.config();
 
 // Export the configuration object containing various application settings
 export const config = {
+
   // Set the environment (default to 'dev' if not specified)
   env: process.env.NODE_ENV || 'dev',
 
@@ -42,9 +43,4 @@ export const config = {
   // JWT secret key for the authentication application
   authAppJwtKey: process.env.AUTH_APP_JWT_SECRET_KEY,
 
-  // JWT secret key for the officials application
-  officialsAppJwtKey: process.env.OFFICIAL_APP_JWT_SECRET_KEY,
-
-  // JWT secret key for the record application
-  recordAppJwtKey: process.env.RECORD_APP_JWT_SECRET_KEY
 };

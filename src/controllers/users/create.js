@@ -1,12 +1,12 @@
-// Import the ReaderServices class from the readerServices module
-import { ReaderServices } from '../../services/readerServices.js';
+// Import the UserServices class from the userServices module
+import { UserServices } from '../../services/userServices.js';
 // Import Boom for handling HTTP-friendly error objects
 import Boom from '@hapi/boom';
 
 /**
- * Controller function to create a new reader user.
+ * Controller function to create a new user.
  *
- * This function handles the request to create a new reader user by extracting
+ * This function handles the request to create a new user by extracting
  * the necessary data from the request body, invoking the appropriate service
  * method, and returning a response based on the operation's success or failure.
  *
@@ -16,20 +16,25 @@ import Boom from '@hapi/boom';
  *
  * @returns {Promise<void>} - Returns a JSON response with the operation result.
  */
-export const createOneReader = async (req, res, next) => {
+export const createOneUser = async (req, res, next) => {
 
   // Extract username and password from the request body
   const newUser = {
-    username: req.body.username,
-    password: req.body.password
+    username: req.body.newUserData.username,
+    password: req.body.newUserData.password,
+    email: req.body.newUserData.email,
+    firstName: req.body.newUserData.firstName,
+    middleName: req.body.newUserData.middleName,
+    firstLastName: req.body.newUserData.firstLastName,
+    secondLastName: req.body.newUserData.secondLastName,
   };
 
-  // Instantiate the ReaderServices class to manage the reader operations
-  const readerManager = new ReaderServices();
+  // Instantiate the UserServices class to manage the users operations
+  const userManager = new UserServices();
 
   try {
-    // Attempt to create a new reader user using the provided data
-    const response = await readerManager.createOne(newUser);
+    // Attempt to create a new user using the provided data
+    const response = await userManager.createOne(newUser);
 
     // If the user is created successfully, send a success response
     if (response.status === 'CREATED SUCCESSFULLY') {
@@ -47,8 +52,6 @@ export const createOneReader = async (req, res, next) => {
       'Unable to create the user in the database',
       error
     );
-    // Log the error for debugging purposes
-    console.error(error);
     // Pass the Boom error to the next middleware in the stack
     next(boomError);
   }

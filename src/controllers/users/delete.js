@@ -1,12 +1,12 @@
-// Import the ReaderServices class from the readerServices module
-import { ReaderServices } from '../../services/readerServices.js';
+// Import the UserServices class from the userServices module
+import { UserServices } from '../../services/userServices.js';
 // Import Boom for handling HTTP-friendly error objects
 import Boom from '@hapi/boom';
 
 /**
- * Controller function to delete a reader user.
+ * Controller function to delete a user.
  *
- * This function handles the request to delete an existing reader user by extracting
+ * This function handles the request to delete an existing user by extracting
  * the user ID from the request body, invoking the appropriate service method, and
  * returning a response based on the operation's success or failure.
  *
@@ -16,17 +16,17 @@ import Boom from '@hapi/boom';
  *
  * @returns {Promise<void>} - Returns a JSON response with the operation result.
  */
-export const deleteOneReader = async (req, res, next) => {
+export const deleteOneUser = async (req, res, next) => {
 
   // Extract the user ID from the request body
   const { id } = req.body;
 
-  // Instantiate the ReaderServices class to manage the reader operations
-  const readerManager = new ReaderServices();
+  // Instantiate the UserServices class to manage the user operations
+  const userManager = new UserServices();
 
   try {
-    // Attempt to delete the reader user by the provided ID
-    const response = await readerManager.deleteOne(id);
+    // Attempt to delete the user by the provided ID
+    const response = await userManager.deleteOne(id);
 
     // If the user is deleted successfully, send a success response
     if (response.status === 'DELETED SUCCESSFULLY') {

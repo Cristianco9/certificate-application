@@ -1,10 +1,10 @@
-// Import the ReaderServices class to handle reader-related operations
-import { ReaderServices } from '../../services/readerServices.js';
+// Import the UserServices class from the userServices module
+import { UserServices } from '../../services/userServices.js';
 // Import Boom to create HTTP-friendly error objects
 import Boom from '@hapi/boom';
 
 /**
- * Controller function to handle reader user login.
+ * Controller function to handle user login.
  *
  * This function processes login requests by validating the provided username and password
  * against the records in the database. Depending on the validation result, it returns an
@@ -17,17 +17,17 @@ import Boom from '@hapi/boom';
  *
  * @returns {Promise<void>} - Returns a JSON response with a success message and token, or an error.
  */
-export const loginReader = async (req, res, next) => {
+export const loginUser = async (req, res, next) => {
 
   // Extract username and password from the request body
-  const { username, password } = req.body;
+  const { username, password } = req.body.credentials;
 
-  // Instantiate the ReaderServices class to manage reader operations
-  const readerManager = new ReaderServices();
+  // Instantiate the UserServices class to manage user operations
+  const userManager = new UserServices();
 
   try {
     // Attempt to log in the user by validating the credentials
-    const response = await readerManager.login(username, password);
+    const response = await userManager.login(username, password);
 
     // Handle different outcomes of the login attempt
     switch (response.status) {

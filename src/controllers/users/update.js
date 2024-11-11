@@ -1,10 +1,10 @@
-// Import the ReaderServices class to handle reader-related operations
-import { ReaderServices } from '../../services/readerServices.js';
+// Import the UserServices class from the userServices module
+import { UserServices } from '../../services/userServices.js';
 // Import Boom to create HTTP-friendly error objects
 import Boom from '@hapi/boom';
 
 /**
- * Controller function to handle the update of a reader user.
+ * Controller function to handle the update of an user.
  *
  * This function processes requests to update a user's details in the database. It accepts
  * the user ID and the new user data from the request body. If the update is successful,
@@ -16,17 +16,17 @@ import Boom from '@hapi/boom';
  *
  * @returns {Promise<void>} - Returns a JSON response with a success message, or an error if the update fails.
  */
-export const updateOneReader = async (req, res, next) => {
+export const updateOneUser = async (req, res, next) => {
 
   // Extract user ID and new user data from the request body
   const { id, newUserData } = req.body;
 
-  // Instantiate the ReaderServices class to manage reader operations
-  const readerManager = new ReaderServices();
+  // Instantiate the UserServices class to manage user operations
+  const userManager = new UserServices();
 
   try {
     // Attempt to update the user details in the database
-    const response = await readerManager.updateOne(id, newUserData);
+    const response = await userManager.updateOne(id, newUserData);
 
     // If the update is successful, return a 201 response with a success message
     if (response.status === 'UPDATED SUCCESSFULLY') {

@@ -1,12 +1,12 @@
-// Import the ReaderServices class from the readerServices module
-import { ReaderServices } from '../../services/readerServices.js';
+// Import the UserServices class from the userServices module
+import { UserServices } from '../../services/userServices.js';
 // Import Boom for handling HTTP-friendly error objects
 import Boom from '@hapi/boom';
 
 /**
- * Controller function to retrieve a single reader user by ID.
+ * Controller function to retrieve a single user by ID.
  *
- * This function handles the request to find a specific reader user in the database
+ * This function handles the request to find a specific user in the database
  * based on the provided ID. It calls the appropriate service method and returns
  * the user data if found. If an error occurs or the user is not found, it is handled
  * appropriately using Boom.
@@ -17,17 +17,17 @@ import Boom from '@hapi/boom';
  *
  * @returns {Promise<void>} - Returns a JSON response with the user data or an error.
  */
-export const listOneReader = async (req, res, next) => {
+export const listOneUser = async (req, res, next) => {
 
   // Destructure the user ID from the request body
   const { id } = req.body;
 
-  // Instantiate the ReaderServices class to manage reader operations
-  const readerManager = new ReaderServices();
+  // Instantiate the UserServices class to manage user operations
+  const userManager = new UserServices();
 
   try {
-    // Attempt to find the reader user record by ID
-    const record = await readerManager.listOne(id);
+    // Attempt to find the user record by ID
+    const record = await userManager.listOne(id);
 
     // If the user record is found, send a success response with the user data
     if (record) {

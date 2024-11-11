@@ -4,100 +4,105 @@ import { Router } from "express";
 import { authAppVerifyToken } from
 '../middlewares/tokenHandlers/authAppTokenHandler.js';
 // Import the middleware to verify the API key from the client app
-import { checkApiKey } from '../middlewares/apiAuthHandler.js';
+//import { checkApiKey } from '../middlewares/apiAuthHandler.js';
 import { validatorHandler  } from '../middlewares/validatorHandler.js';
-import { readerSchema } from '../schemas/readerSchema.js';
-// Import the controllers functions to authenticate and manage readers
-import { loginReader } from '../controllers/readers/login.js';
-import { createOneReader } from '../controllers/readers/create.js';
-import { deleteOneReader } from '../controllers/readers/delete.js';
-import { updateOneReader } from '../controllers/readers/update.js';
-import { listOneReader } from '../controllers/readers/listOne.js';
-import { listAllReader } from '../controllers/readers/listAll.js';
+// Import the user data types schema
+import { userSchema } from '../schemas/userSchema.js';
+// Import the controllers functions to authenticate and manage users
+import { loginUser } from '../controllers/users/login.js';
+import { createOneUser } from '../controllers/users/create.js';
+import { deleteOneUser } from '../controllers/users/delete.js';
+import { updateOneUser } from '../controllers/users/update.js';
+import { listOneUser } from '../controllers/users/listOne.js';
+import { listAllUsers } from '../controllers/users/listAll.js';
 
 // Create a new Router instance
-export const readerRouter = Router();
+export const userRouter = Router();
 
-// Define a POST route for readers authentication
-
-readerRouter.post(
-  // Route path to authenticate a reader users
+// Define a POST route for users authentication
+userRouter.post(
+  // Route path to authenticate a users
   '/login',
   // Middleware to validate the data type
-  validatorHandler(readerSchema, 'body'),
+  validatorHandler(userSchema, 'body'),
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
-  checkApiKey,
+  //checkApiKey,
    // Controller function to login a user
-  loginReader
+  loginUser
 );
 
-readerRouter.post(
-  // Route path to create a reader user
+// Define a POST route for create an user
+userRouter.post(
+  // Route path to create a user
   '/create',
   // Middleware to validate the data type
-  validatorHandler(readerSchema, 'body'),
+  validatorHandler(userSchema, 'body'),
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
-  checkApiKey,
+  //checkApiKey,
   // Middleware to verify the token before proceeding to the controller
   authAppVerifyToken,
-  // Controller function to create the reader
-  createOneReader
+  // Controller function to create the user
+  createOneUser
 );
 
-readerRouter.post(
-  // Route path to update a reader user
+// Define a POST route to update an user
+userRouter.post(
+  // Route path to update a user
   '/update',
   // Middleware to validate the data type
-  validatorHandler(readerSchema, 'body'),
+  validatorHandler(userSchema, 'body'),
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
-  checkApiKey,
+  //checkApiKey,
   // Middleware to verify the token before proceeding to the controller
   authAppVerifyToken,
   // Controller function to update the reader
-  updateOneReader
+  updateOneUser
 );
 
-readerRouter.post(
-  // Route path to delete a reader user
+// Define a POST route to delete an user
+userRouter.post(
+  // Route path to delete a user
   '/delete',
   // Middleware to validate the data type
-  validatorHandler(readerSchema, 'body'),
+  validatorHandler(userSchema, 'body'),
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
-  checkApiKey,
+  //checkApiKey,
   // Middleware to verify the token before proceeding to the controller
   authAppVerifyToken,
-  // Controller function to delete the reader
-  deleteOneReader
+  // Controller function to delete the user
+  deleteOneUser
 );
 
-readerRouter.post(
-  // Route path to list a reader user
+// Define a POST route to list an user
+userRouter.post(
+  // Route path to list an user
   '/listone',
   // Middleware to validate the data type
-  validatorHandler(readerSchema, 'body'),
+  validatorHandler(userSchema, 'body'),
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
-  checkApiKey,
+  //checkApiKey,
   // Middleware to verify the token before proceeding to the controller
   authAppVerifyToken,
-  // Controller function to list a reader
-  listOneReader
+  // Controller function to list a user
+  listOneUser
 );
 
-readerRouter.get(
-  // Route path to list all reader users
+// Define a GET route to list all users
+userRouter.post(
+  // Route path to list all users
   '/listall',
   // Middleware to validate the data type
-  validatorHandler(readerSchema, 'body'),
+  validatorHandler(userSchema, 'body'),
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
-  checkApiKey,
+  //checkApiKey,
   // Middleware to verify the token before proceeding to the controller
   authAppVerifyToken,
-  // Controller function to list all readers
-  listAllReader
+  // Controller function to list all users
+  listAllUsers
 );

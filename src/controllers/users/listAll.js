@@ -1,12 +1,12 @@
-// Import the ReaderServices class from the readerServices module
-import { ReaderServices } from '../../services/readerServices.js';
+// Import the UserServices class from the userServices module
+import { UserServices } from '../../services/userServices.js';
 // Import Boom for handling HTTP-friendly error objects
 import Boom from '@hapi/boom';
 
 /**
- * Controller function to list all reader users.
+ * Controller function to list all users.
  *
- * This function handles the request to retrieve all reader users from the database,
+ * This function handles the request to retrieve all users from the database,
  * invoking the appropriate service method and returning a response with the list of users.
  * If an error occurs during the operation, it is handled gracefully using Boom.
  *
@@ -16,14 +16,14 @@ import Boom from '@hapi/boom';
  *
  * @returns {Promise<void>} - Returns a JSON response with the list of users.
  */
-export const listAllReader = async (req, res, next) => {
+export const listAllUsers = async (req, res, next) => {
 
-  // Instantiate the ReaderServices class to manage the reader operations
-  const readerManager = new ReaderServices();
+  // Instantiate the UserServices class to manage the users operations
+  const UserManager = new UserServices();
 
   try {
-    // Attempt to retrieve all reader user records from the database
-    const allRecords = await readerManager.listAll();
+    // Attempt to retrieve all user records from the database
+    const allRecords = await UserManager.listAll();
 
     // If records are found, send a success response with the user data
     if (allRecords) {

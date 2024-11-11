@@ -11,6 +11,8 @@ export const sequelize = new Sequelize(
   {
   // Specify the data base host
   host: config.dbHost,
+  // Specify the data base port
+  port: config.dbPort,
   // Specify the dialect as MySQL
   dialect: 'mysql',
   // Enable logging of SQL queries to the console
