@@ -6,7 +6,7 @@ export const firstName = /^[\p{L}]{3,20}$/u;
 // The pattern ensures the middle name contains only letters
 // (both uppercase and lowercase)
 // and is between 3 to 20 characters long
-export const middleName = /^[\p{L}]{3,20}$/u;
+export const middleName = /^([\p{L}]{3,20})?$/u;
 
 // The pattern ensures the first last name contains only letters
 // (both uppercase and lowercase)

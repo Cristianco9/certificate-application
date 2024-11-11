@@ -70,7 +70,7 @@ export const User = sequelize.define(USER_TABLE, {
     // Text type with a maximum length of 20 characters
     type: DataTypes.STRING(20),
     // This field cannot be null
-    allowNull: false,
+    allowNull: true,
     // This field does not need to be unique
     unique: false,
     // Translate the field name from camelCase to snake_case

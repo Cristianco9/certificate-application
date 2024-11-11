@@ -52,8 +52,8 @@ const joiFirstName = Joi.string().pattern(firstName).message({
 
 // Validate the middle name of the user
 // Define global middle name dataType
-const joiMiddleName = Joi.string().pattern(middleName).message({
-  'string.pattern.base': 'middleName contains only letters between 3 to 20 characters'
+const joiMiddleName = Joi.string().pattern(middleName).allow('').message({
+  'string.pattern.base': 'middleName must be empty or contains only letters between 3 to 20 characters'
 });
 
 // Validate the first last name of the user
