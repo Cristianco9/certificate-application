@@ -4,7 +4,8 @@ import { Router } from "express";
 import { authAppVerifyToken } from
 '../middlewares/tokenHandlers/authAppTokenHandler.js';
 // Import the middleware to verify the API key from the client app
-//import { checkApiKey } from '../middlewares/apiAuthHandler.js';
+import { checkApiKey } from '../middlewares/apiAuthHandler.js';
+// Import the middleware to verify the data types sended in the request
 import { validatorHandler  } from '../middlewares/validatorHandler.js';
 // Import the user data types schema
 import { userSchema } from '../schemas/userSchema.js';
