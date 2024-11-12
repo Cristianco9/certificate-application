@@ -1,5 +1,5 @@
 # IENSC Certificates Web application
-This web application allow to academic secretaries generate automatically
+This web application allows to academic secretaries generate automatically
 certificates from older students (before 2004).
 
 ## Table of Contents
@@ -16,7 +16,7 @@ certificates from older students (before 2004).
 ## Features
 
 - Generate certifications
-- Generate PDF document automatically
+- Generate PDF documents automatically
 
 ## Technologies Used
 
@@ -27,14 +27,14 @@ certificates from older students (before 2004).
 - **Docker**
 - **Mysql**
 - **phpMyAdmin**
-- **ORM sequelie**
+- **ORM sequelize**
 - **HTML**
 - **CSS**
 - **EJS**
 
 ## Getting Started
 
-To get a local copy of this project up and running, follow these simple steps.
+Follow these simple steps to get a local copy of this project up and running.
 
 ### Prerequisites
 
@@ -96,7 +96,7 @@ Insert the use case
 
 ## Contributing
 
-Contributions are what make the open-source community such an amazing place to
+Contributions make the open-source community an amazing place to
 learn, inspire, and create. Any contributions you make are greatly appreciated.
 
 1. Fork the Project
