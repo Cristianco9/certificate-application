@@ -11,13 +11,16 @@ import jwt from 'jsonwebtoken';
  * @param {Function} next - The next middleware function.
  */
 export const authAppVerifyToken = (req, res, next) => {
-  const authenticationToken = req.body.authentication;
+
+  const authenticationToken = req.cookies.authentication;
+
+  let message = "";
 
   // Check for the presence of the authentication token
   if (!authenticationToken) {
-    return res.status(403).json({
-      error: 'Access Denied: No authentication token provided.'
-    });
+    res.clearCookie('authentication');
+    message = "Acceso denegado. Para acceder a este recurso, por favor inicie sección.";
+    return res.status(403).render("authError", { message: message, type: "no-token" });
   }
 
   // Verify the token using the secret key
@@ -25,9 +28,13 @@ export const authAppVerifyToken = (req, res, next) => {
     if (err) {
       // Handle specific JWT errors
       if (err.name === 'TokenExpiredError') {
-        return res.status(401).json({ error: 'Token has expired.' });
+        res.clearCookie('authentication');
+        message = "La sesión se ha finalizado, por favor inicie sección e inténtelo de nuevo.";
+        return res.status(401).render("authError", { message: message, type: "token-exp" });
       } else {
-        return res.status(401).json({ error: 'Invalid token.' });
+        res.clearCookie('authentication');
+        message = "Acceso denegado. Los datos del usuario no son validos, por favor inicie sección e inténtelo de nuevo.";
+        return res.status(401).render("authError", { message: message, type: "token-inv" });
       }
     }
 
@@ -39,8 +46,8 @@ export const authAppVerifyToken = (req, res, next) => {
     // Regenerate a new token for the user
     const newUserToken = signUserToken(userData, config.authAppJwtKey, '1h');
 
-    // Attach the new token to the response object for later use
-    res.locals.newUserToken = newUserToken;
+    // Send the new token in a cookie to the client
+    res.cookie('authentication', newUserToken, { httpOnly: true });
 
     // Attach user data to the request object for later use
     req.user = decoded;

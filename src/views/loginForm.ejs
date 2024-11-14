@@ -4,12 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Inicio de sección">
-  <link rel="stylesheet" href="../public/styles/loginForm.css" type="text/css">
+  <link rel="stylesheet" href="/styles/loginForm.css" type="text/css">
   <meta name="robots" content="index,follow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@700&display=swap" rel="stylesheet">
   <title>Inicio de sección</title>
+  <script type="application/javascript" src="/js/validateFormLoginFields.js"></script>
+  <script type="application/javascript" src="/js/login.js"></script>
 </head>
 <body class="body-container">
   <section class="welcome-container">
@@ -21,23 +23,25 @@
   </section>
   <section class="login-form-container">
     <h2 class="login-title">Inicio de sección</h2>
-    <form class="login-form">
+    <form class="login-form" id="loginForm" onsubmit="return handleSubmit(event)">
       <input
         class="login-form-field"
-        name="userName"
-        id="userName"
+        name="username"
+        id="username"
         type="text"
         placeholder="Usuario"
+        required
       >
       <input
         class="login-form-field"
         name="password"
         id="password"
         type="password"
-        placeholder="password"
+        placeholder="Contraseña"
+        required
       >
-      <p class="forgot-password">olvide la contraseña</p>
-      <button class="login-form-button">Ingresar</button>
+      <p class="wrong-input" id="wrong-input"></p>
+      <button type="submit" class="login-form-button">Ingresar</button>
     </form>
     <section class="linksBox">
       <p class="link">Documentación</p>

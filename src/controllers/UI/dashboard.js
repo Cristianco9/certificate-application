@@ -2,10 +2,10 @@
 import Boom from '@hapi/boom';
 
 /**
- * Controller function to render a login form HTML template.
+ * Controller function to render a dashboard form HTML template.
  *
- * This function handles the request to display a login view to have access to
- * the application. Returning a response rendering a HTML template
+ * This function handles the request to display a dashboard view to choice a
+ * services in the application. Returning a response rendering a HTML template
  *
  * @param {Object} req - The request object containing the data sended in the request
  * @param {Object} res - The response rendering a HTML template a throw views template engine
@@ -13,12 +13,12 @@ import Boom from '@hapi/boom';
  *
  * @returns {html} - Return rendering a HTML template
  */
-export const loginForm = async (req, res, next) => {
+export const dashboard = async (req, res, next) => {
   try {
-    res.clearCookie('authentication').render('loginForm');
+    res.render('dashboard');
   } catch (err) {
     const boomError = Boom.notImplemented(
-      'No es posible renderizar la vista de formulario de inicio de sección',
+      'No es posible renderizar la vista de dashboard principal.',
       err);
     next(boomError);
   }

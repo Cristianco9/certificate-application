@@ -29,25 +29,23 @@ export const loginUser = async (req, res, next) => {
     // Attempt to log in the user by validating the credentials
     const response = await userManager.login(username, password);
 
+    let message = "";
+
     // Handle different outcomes of the login attempt
     switch (response.status) {
       case 'user not found':
-        // If the user is not found in the database, return a 404 error
-        return next(Boom.notFound(
-          'Usuario incorrecto. Por favor verifique e intente de nuevo'
-        ));
+        // If the user is not found in the database, return a 404 error view
+        message = "Usuario incorrecto. Por favor verifique e intente de nuevo.";
+        return res.status(404).render("authError", { message: message, type: "user" });
       case 'wrong password':
-        // If the password is incorrect, return a 401 unauthorized error
-        return next(Boom.unauthorized(
-          'Contraseña incorrecta. Por favor verifique e intente de nuevo'
-        ));
+        // If the password is incorrect, return a 401 error view
+        message = "Contraseña incorrecta. Por favor verifique e intente de nuevo.";
+        return res.status(401).render("authError", { message: message, type: "password" });
       case 'logged':
-        // If login is successful, return a 200 response with the JWT token
-        return res.status(200).json({
-          success: true,
-          message: 'Login successful',
-          token: response.token,
-        });
+        // If login is successful, return a 200, send a cookie with the token,
+        // and dashboard view
+        res.cookie('authentication', response.token, { httpOnly: true });
+        return res.status(200).render("dashboard");
       default:
         // Handle any unexpected cases with a 500 error
         return next(Boom.badImplementation('Servicio no disponible'));

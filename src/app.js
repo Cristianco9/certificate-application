@@ -7,12 +7,12 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 // Middleware to handle body request
 import bodyParser from 'body-parser';
+// Middleware to handle cookies
+import cookieParser from 'cookie-parser';
 // Middleware for logging HTTP requests
 import morgan from 'morgan';
 // Function to test database connection
 import { testConnection } from './libraries/DBConnection.js';
-// Middleware to enable Cross-Origin Resource Sharing
-import cors from 'cors';
 // Import the IP address and port from the network configuration file
 import { theIPAddress, port } from './libraries/netConfig.js';
 // Main router for the API
@@ -28,31 +28,6 @@ import {
 // Create the app with Express
 const app = express();
 
-// Set up CORS options
-// List of allowed origins
-const whiteList = [
-  'http://localhost:3001',
-  'http://127.0.0.1:3001',
-  'http://192.168.101.2:3001'
-];
-
-const options = {
-  origin: (origin, callback) => {
-    if (whiteList.includes(origin) || !origin) {
-      // Allow request if origin is in the whitelist or if there is no origin
-      // (e.g., mobile apps)
-      callback(null, true);
-    } else {
-      // Block request if origin is not in the whitelist
-      callback(new Error('Not allowed'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'APIKey'],
-}
-// Enable CORS with the specified options
-app.use(cors(options));
-
 // Use middlewares
 // HTTP request logger middleware
 app.use(morgan('dev'));
@@ -62,6 +37,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 // Middleware for parsing JSON bodies
 app.use(bodyParser.json());
+// Middleware for handle cookies
+app.use(cookieParser());
 
 // Static files path
 // Store in the constant the project dirname

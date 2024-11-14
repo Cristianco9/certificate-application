@@ -9,6 +9,7 @@ import { checkApiKey } from '../middlewares/apiAuthHandler.js';
 import { validatorHandler  } from '../middlewares/validatorHandler.js';
 // Import the controllers functions to manage user interfaces templates
 import { loginForm } from '../controllers/UI/loginForm.js';
+import { dashboard } from '../controllers/UI/dashboard.js';
 
 // Create a new Router instance
 export const UIRouter = Router();
@@ -24,4 +25,19 @@ UIRouter.get(
   //checkApiKey,
   // Controller function to render a login template
   loginForm
+);
+
+// Define a GET route for dashboard view
+UIRouter.get(
+  // Route path display the login view
+  '/dashboard',
+  // Middleware to validate the data type
+  //validatorHandler(userSchema, 'body'),
+  // Middleware to verify the API key sended by the client before
+  // proceeding to the controller
+  //checkApiKey,
+  // Middleware to verify the token before proceeding to the controller
+  authAppVerifyToken,
+  // Controller function to render a dashboard template
+  dashboard
 );

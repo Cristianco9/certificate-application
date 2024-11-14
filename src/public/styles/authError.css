@@ -1,0 +1,95 @@
+/* universal properties*/
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* setting rem measure */
+html {
+  font-size: 62.5%;
+  font-family: 'Readex Pro', sans-serif;
+}
+
+:root{
+  --dark-gray: #d7d7d7;
+  --gray: #464646;
+  --dark-green: #1d7938;
+  --green: #0ead3e;
+}
+
+.body-container {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom, var(--dark-gray), var(--gray));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-container {
+  width: 30rem;
+  height: 40rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 1rem;
+  background: linear-gradient(to top, var(--dark-green), var(--green));
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.6);
+}
+
+.error-container {
+  width: 20rem;
+  height: 35em;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.icon-container {
+  width: 10rem;
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-message {
+  font-size: 1.5rem;
+  color: var(--dark-green);
+  width: 16rem;
+  text-align: center;
+}
+
+span {
+  color: #0ead3d;
+  font-size: 6rem;
+}
+
+.button {
+  width: 13rem;
+  height: 4rem;
+  font-size: 1.5rem;
+  color: white;
+  background-color: var(--green);
+  border-radius: 1rem;
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.6);
+}
+
+.button:hover {
+  background-color: var(--dark-green);
+}
+
+@media (min-width: 350px) {
+  .body-container {
+    min-height: 50rem;
+  }
+}

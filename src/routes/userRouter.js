@@ -29,7 +29,7 @@ userRouter.post(
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
   //checkApiKey,
-   // Controller function to login a user
+  // Controller function to login a user
   loginUser
 );
 
@@ -94,11 +94,11 @@ userRouter.post(
 );
 
 // Define a GET route to list all users
-userRouter.post(
+userRouter.get(
   // Route path to list all users
   '/listall',
   // Middleware to validate the data type
-  validatorHandler(userSchema, 'body'),
+  //validatorHandler(userSchema, 'body'),
   // Middleware to verify the API key sended by the client before
   // proceeding to the controller
   //checkApiKey,
