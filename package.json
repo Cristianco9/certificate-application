@@ -1,6 +1,6 @@
 {
   "name": "certificate-application",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Web application to generate academic certification",
   "main": "src/app.js",
   "type": "module",
@@ -40,11 +40,11 @@
     "sequelize-cli": "^6.6.2"
   },
   "devDependencies": {
-    "eslint": "^9.14.0",
+    "eslint": "^9.20.1",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-prettier": "^5.2.3",
     "morgan": "^1.10.0",
-    "nodemon": "^3.1.7",
-    "prettier": "^3.3.3"
+    "nodemon": "^3.1.9",
+    "prettier": "^3.5.1"
   }
 }
