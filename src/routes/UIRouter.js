@@ -10,6 +10,7 @@ import { validatorHandler  } from '../middlewares/validatorHandler.js';
 // Import the controllers functions to manage user interfaces templates
 import { loginForm } from '../controllers/UI/loginForm.js';
 import { dashboard } from '../controllers/UI/dashboard.js';
+import { certificateAcademicForm } from '../controllers/UI/certificateAcademicForm.js';
 
 // Create a new Router instance
 export const UIRouter = Router();
@@ -29,7 +30,7 @@ UIRouter.get(
 
 // Define a GET route for dashboard view
 UIRouter.get(
-  // Route path display the login view
+  // Route path display the dashboard view
   '/dashboard',
   // Middleware to validate the data type
   //validatorHandler(userSchema, 'body'),
@@ -40,4 +41,19 @@ UIRouter.get(
   authAppVerifyToken,
   // Controller function to render a dashboard template
   dashboard
+);
+
+// Define a GET route for certificate academic form view
+UIRouter.get(
+  // Route path display the certificate academic form view
+  '/certificates/academic',
+  // Middleware to validate the data type
+  //validatorHandler(userSchema, 'body'),
+  // Middleware to verify the API key sended by the client before
+  // proceeding to the controller
+  //checkApiKey,
+  // Middleware to verify the token before proceeding to the controller
+  authAppVerifyToken,
+  // Controller function to render a dashboard template
+  certificateAcademicForm
 );
