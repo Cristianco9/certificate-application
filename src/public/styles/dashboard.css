@@ -54,8 +54,8 @@ body {
 }
 
 .card-tittle {
-  font-size: 5rem;
-  font-weight: 700;
+  font-size: 3rem;
+  text-align: center;
 }
 
 .slider-container {
