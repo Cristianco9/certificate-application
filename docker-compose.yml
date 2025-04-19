@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=d47ac305ae7593831b5fea899e6037907161a5c29d1ed4710a0219ba229f9a95
-      - MYSQL_DATABASE=iensc-certification-application-db
+      - MYSQL_DATABASE=iensc_certification_application_db
       - MYSQL_USER=developer
       - MYSQL_PASSWORD=aa24d32b8b1cfe04a74f668fd58acddbccbe86a9a17a0eff52bb5830e3d1d652
       - MYSQL_PORT=3306
