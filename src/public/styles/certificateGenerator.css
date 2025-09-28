@@ -1,0 +1,175 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.body-container {
+    font-size: 62.5%;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    color: #000000;
+    width: 21.6cm;
+    height: 35.6cm;
+    padding: 4rem;
+    margin: auto;
+    border: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.print-btn {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 999;
+    width: 8rem;
+}
+
+.print-btn:hover {
+    background: #0056b3;
+}
+
+.header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 3rem;
+}
+
+.logo-box {
+    width: 3.5rem;
+    height: auto
+}
+
+.logo {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.ie-data,
+.headquarters-data {
+    font-size: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.certificate-data {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.certificate-number {
+    font-size: 1rem;
+}
+
+.certificate-law {
+    width: 42rem;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+.certificate-subtitle {
+    font-size: 0.8rem;
+}
+
+.certificate-info {
+    text-align: justify;
+    font-size: 0.8rem;
+}
+
+.main-container {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.degree-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;;
+}
+
+.degree-info-student, .degree-info-year {
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+.qualifications-table {
+    margin-top: 1rem;
+    width: 42.5rem;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+
+.qualifications-table th,
+.qualifications-table td {
+    border: 1px solid black;
+    padding: 0.1rem;
+}
+
+.t-body-column-ih, .t-body-column-def {
+    text-align: center;
+}
+
+.t-body-column-v, .t-body-column-n {
+    text-align: center;
+}
+
+.note-1, .note-2, .details, .details-value, .details-date {
+    margin-top: 1rem;
+    width: 42rem;
+    font-size: 0.8rem;
+    text-align: justify;
+}
+
+.certificate-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.signatures {
+    width: 42rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+.sign {
+    font-size: 0.8rem;
+}
+
+@media print {
+    body {
+        border: none;
+        margin: 0;
+    }
+
+    .print-btn {
+        display: none;
+    }
+}
+
+@page {
+    size: 21.6cm 35.6cm; /* Oficio */
+    margin: 2cm; /* Ajusta márgenes si lo necesitas */
+}

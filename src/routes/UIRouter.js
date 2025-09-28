@@ -11,6 +11,7 @@ import { validatorHandler  } from '../middlewares/validatorHandler.js';
 import { loginForm } from '../controllers/UI/loginForm.js';
 import { dashboard } from '../controllers/UI/dashboard.js';
 import { certificateAcademicForm } from '../controllers/UI/certificateAcademicForm.js';
+import { certificateGenerator } from '../controllers/UI/certificateGenerator.js';
 
 // Create a new Router instance
 export const UIRouter = Router();
@@ -56,4 +57,20 @@ UIRouter.get(
   authAppVerifyToken,
   // Controller function to render a dashboard template
   certificateAcademicForm
+);
+
+
+// Define a GET route for certificate academic PDF generator
+UIRouter.get(
+  // Route path display the certificate academic form view
+  '/certificates/generatorpdf',
+  // Middleware to validate the data type
+  //validatorHandler(userSchema, 'body'),
+  // Middleware to verify the API key sended by the client before
+  // proceeding to the controller
+  //checkApiKey,
+  // Middleware to verify the token before proceeding to the controller
+  authAppVerifyToken,
+  // Controller function to render a dashboard template
+  certificateGenerator
 );

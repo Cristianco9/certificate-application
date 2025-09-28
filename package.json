@@ -40,11 +40,11 @@
     "sequelize-cli": "^6.6.2"
   },
   "devDependencies": {
-    "eslint": "^9.25.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.6",
-    "morgan": "^1.10.0",
-    "nodemon": "^3.1.9",
-    "prettier": "^3.5.3"
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^9.1.2",
+    "eslint-plugin-prettier": "^5.5.4",
+    "morgan": "^1.10.1",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2"
   }
 }

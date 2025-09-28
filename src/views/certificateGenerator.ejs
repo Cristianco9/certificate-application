@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Certificado académico">
+    <link rel="stylesheet" href="/styles/certificateGenerator.css" type="text/css">
+    <meta name="robots" content="index,follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificado Académico</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body class="body-container">
+
+    <button id="printBtn" class="print-btn">Generar PDF</button>
+
+    <header class="header-container">
+        <picture class="logo-box">
+            <img class="logo" src="/images/escudo.jpg" alt="IENSCH escudo">
+        </picture>
+        <div class="ie-data">
+            <p>Institución educativa</p>
+            <p>Nuestra Señora de Chiquinquirá</p>
+            <p>Reconocimiento por Resolución 4999 del 21 de noviembre de 2014</p>
+            <p>NIT: 891900837-2 DANE 176622000076</p>
+            <p>Roldanillo - Valle del Cauca</p>
+        </div>
+        <div class="headquarters-data">
+            <p>SEDE Principal</p>
+            <p>Dirección: Calle 4 # 5 - 38 Roldanillo</p>
+            <p>pagina web: www.iensch.edu.co</p>
+            <p>email: nuestraroldanillo@secvalledelcauca.gov.co</p>
+            <p>Fax: 2490075 - Tel 2298849</p>
+        </div>
+    </header>
+
+    <section class="certificate-data">
+        <h2 class="certificate-number">CERTIFICADO</h2>
+        <p class="certificate-law">
+            Institución Educativa Nuestra Señora de Chiquinquirá Roldanillo
+            Valle Reconocimiento por Resolución 4999 del 21 de noviembre de 2014
+            NIT: 891900837-2 DANE 176622000076
+        </p>
+        <h3 class="certificate-subtitle">CERTIFICAN</h3>
+        <p class="certificate-info">
+        </p>
+    </section>
+
+    <main class="main-container">
+
+    </main>
+
+    <footer class="certificate-footer">
+        <p class="details">
+            Este documento no necesita autenticación en Notaria (Decreto
+            1024 de 1982), ni ser visado por el Delegado del Ministerio
+            de Educación Nacional (Decreto 1789 de 1988).
+        </p>
+        <p class="details-value">
+            Se anulan estampillas por valor de $34.200
+        </p>
+        <p class="details-date">
+        </p>
+        <div class="signatures">
+            <div class="sign">
+                <p>__________________________________</p>
+                <p><strong>Hna. Gloria Marcela Belgado Parada</strong></p>
+                <p>c.c 28148719 de Girón - Santander</p>
+                <p>Rectora</p>
+            </div>
+            <div class="sign">
+                <p>__________________________________</p>
+                <p><strong>Otoniel Millán García</strong></p>
+                <p>c.c 16548347 de Roldanillo - Valle</p>
+                <p>Secretario</p>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/certificateGenerator.js"></script>
+</body>
+
+</html>
