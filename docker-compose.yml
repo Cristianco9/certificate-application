@@ -1,7 +1,7 @@
 services:
-  iensc-certification-application-db:
+  iensch-certification-application-db:
     image: mysql:8.0
-    container_name: iensc-certification-application-db
+    container_name: iensch-certification-application-db
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=d47ac305ae7593831b5fea899e6037907161a5c29d1ed4710a0219ba229f9a95
@@ -15,23 +15,23 @@ services:
       - ./db_data:/var/lib/mysql
       - ./my.cnf:/etc/mysql/my.cnf
     networks:
-      - iensc-certification-application-network
+      - iensch-certification-application-network
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: iensc-certification-application-rdbms
+    container_name: iensch-certification-application-rdbms
     environment:
-      - PMA_HOST=iensc-certification-application-db
+      - PMA_HOST=iensch-certification-application-db
     ports:
       - "8080:80"
     depends_on:
-      - iensc-certification-application-db
+      - iensch-certification-application-db
     networks:
-      - iensc-certification-application-network
+      - iensch-certification-application-network
 
 volumes:
   db_data:
 
 networks:
-  iensc-certification-application-network:
+  iensch-certification-application-network:
     driver: bridge
