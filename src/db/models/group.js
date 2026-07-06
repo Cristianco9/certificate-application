@@ -25,10 +25,13 @@ export const Group = sequelize.define(GROUP_TABLE, {
     allowNull: false,
     field: 'nombre_grupo',
   },
-  // Academic year of the group. MySQL's YEAR type has no native Sequelize
-  // DataType, so it is mapped through DataTypes.DATEONLY's raw SQL escape hatch.
+  // Academic year of the group. MySQL's native YEAR type has no supported
+  // Sequelize DataType (a raw type string is rejected by the query generator),
+  // so it is mapped as INTEGER instead. This is portable across dialects but
+  // does not enforce MySQL's YEAR range (1901-2155) at the DB level; add a
+  // Joi range validation (min 1901, max 2155) at the schema layer if needed.
   year: {
-    type: 'YEAR',
+    type: DataTypes.INTEGER,
     allowNull: false,
     field: 'anio_grupo',
   },
