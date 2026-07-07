@@ -24,6 +24,8 @@ import {
     boomErrorHandler,
     ORMErrorHandler
 } from "./middlewares/errorHandler.js";
+// Import the setup of the database entities associations
+import { setupAssociations } from './db/models/index.js';
 
 // Create the app with Express
 const app = express();
@@ -60,6 +62,9 @@ app.set('view engine', 'ejs');
     console.log(`server on port http://${theIPAddress}:${port}`);
   });
 })();
+// Set up all Sequelize model associations before any database query is made
+// This is a memory-only operation and does not require an active DB connection
+setupAssociations();
 
 // Test database connection
 // Call the function to ensure the database connection is working
