@@ -32,36 +32,6 @@ export const Country = sequelize.define(COUNTRY_TABLE, {
     allowNull: true,
     field: 'codigo_iso2',
   },
-  // Extra reserved varchar field 1 for future use
-  extraVarchar1: {
-    type: DataTypes.STRING(255),
-    allowNull: true,
-    field: 'extra_varchar_1',
-  },
-  // Extra reserved varchar field 2 for future use
-  extraVarchar2: {
-    type: DataTypes.STRING(255),
-    allowNull: true,
-    field: 'extra_varchar_2',
-  },
-  // Extra reserved varchar field 3 for future use
-  extraVarchar3: {
-    type: DataTypes.STRING(255),
-    allowNull: true,
-    field: 'extra_varchar_3',
-  },
-  // Extra reserved integer field 1 for future use
-  extraInt1: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    field: 'extra_int_1',
-  },
-  // Extra reserved integer field 2 for future use
-  extraInt2: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    field: 'extra_int_2',
-  },
   // Creation date
   createdAt: {
     type: DataTypes.DATE,
