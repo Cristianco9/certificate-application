@@ -31,37 +31,7 @@ module.exports = {
         type: Sequelize.STRING(2),
         allowNull: true,
       },
-
-      // Extra reserved varchar field 1 for future use
-      extra_varchar_1: {
-        type: Sequelize.STRING(255),
-        allowNull: true,
-      },
-
-      // Extra reserved varchar field 2 for future use
-      extra_varchar_2: {
-        type: Sequelize.STRING(255),
-        allowNull: true,
-      },
-
-      // Extra reserved varchar field 3 for future use
-      extra_varchar_3: {
-        type: Sequelize.STRING(255),
-        allowNull: true,
-      },
-
-      // Extra reserved integer field 1 for future use
-      extra_int_1: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
-
-      // Extra reserved integer field 2 for future use
-      extra_int_2: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
-
+      
       // Creation timestamp
       fecha_creacion: {
         type: Sequelize.DATE,
