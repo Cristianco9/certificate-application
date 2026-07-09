@@ -18,16 +18,16 @@ module.exports = {
         autoIncrement: true,
       },
 
-      // Academic level name (e.g. 'Preescolar', 'Básica Primaria', 'Básica Secundaria', 'Media')
+      // Academic level (e.g 'Técnico', 'Tecnológo', 'Licenciado', 'Especialsita', 'Maestría', 'Doctorado', 'Post-Doctorado'),
       nombre_nivel_academico: {
-        type: Sequelize.STRING(50),
+        type: DataTypes.ENUM('Técnico', 'Tecnológo', 'Licenciado', 'Especialsita', 'Maestría', 'Doctorado', 'Post-Doctorado'),
         allowNull: false,
         unique: true,
       },
 
-      // Academic level abbreviation (e.g. 'PRE', 'PRIM', 'SEC', 'MED')
+      // Academic level abbreviation (e.g. 'Téc', 'Tec', 'Lic', 'Esp', 'Mgs', 'Ph.D')
       abreviatura_nivel_academico: {
-        type: Sequelize.STRING(10),
+        type: DataTypes.ENUM('Téc', 'Tec', 'Lic', 'Esp', 'Mgs', 'Ph.D'),
         allowNull: false,
         unique: true,
       },
