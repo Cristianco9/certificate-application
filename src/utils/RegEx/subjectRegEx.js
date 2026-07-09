@@ -15,10 +15,11 @@ export const subjectName = /^[\p{L} ]{3,20}$/u;
 // VARCHAR(50) column size defined in asignatura.descripcion_asignatura
 export const subjectDescription = /^[\p{L}\d .,-]{3,50}$/u;
 
-// The pattern ensures the weekly hourly intensity contains only numbers,
-// between 1 and 2 digits long (1 to 40 hours per week), matching the
-// SMALLINT column defined in asignatura.intensidad_horaria
-export const subjectHourlyIntensity = /^\d{1,2}$/;
+// The pattern ensures the weekly hourly intensity contains only a
+// single digit from 1 to 9 (no leading zeros, no values outside this
+// range), matching the SMALLINT column defined in
+// asignatura.intensidad_horaria
+export const subjectHourlyIntensity = /^[1-9]$/;
 
 // The pattern ensures the subject id contains only numbers
 // and is between 1 to 10 digits long, matching the INTEGER primary key
