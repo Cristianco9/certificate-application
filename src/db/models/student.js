@@ -131,10 +131,10 @@ export const Student = sequelize.define(STUDENT_TABLE, {
     {
       unique: true,
       fields: [
-        'nombre1_estudiante',
-        'nombre2_estudiante',
-        'apellidos1_estudiante',
-        'apellidos2_estudiante',
+        'primer_nombre_estudiante',
+        'segundo_nombre_estudiante',
+        'primer_apellido_estudiante',
+        'segundo_apellido_estudiante',
         'fecha_nacimiento_estudiante',
       ],
     },
