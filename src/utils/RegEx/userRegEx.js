@@ -36,8 +36,8 @@ export const userEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]{3,}\.[a-zA-Z]{2,}$/;
 // not the original value this pattern checks).
 // The pattern ensures the password contains at least one letter
 // (both uppercase and lowercase) and at least one digit,
-// and is between 8 to 30 characters long
-export const userPassword = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,30}$/;
+// and is between 8 to 80 characters long
+export const userPassword = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,80}$/;
 
 // The pattern ensures the user id contains only numbers
 // and is between 1 to 10 digits long, matching the INTEGER primary key
