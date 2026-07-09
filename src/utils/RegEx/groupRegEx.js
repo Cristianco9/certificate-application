@@ -7,10 +7,12 @@
 export const groupName = /^[\p{L}\d-]{1,50}$/u;
 
 // The pattern ensures the academic year contains exactly 4 digits,
+// restricted to the range 1900-2099 (matching '19xx' or '20xx'),
 // matching the YEAR column defined in grupo.anio_grupo
 // (application-level model maps this as INTEGER; this pattern still
-// restricts the value to a realistic 4-digit calendar year)
-export const groupYear = /^\d{4}$/;
+// restricts the value to a realistic 4-digit calendar year within the
+// institution's historical and operational range)
+export const groupYear = /^(19\d{2}|20\d{2})$/;
 
 // The pattern ensures the group id contains only numbers
 // and is between 1 to 10 digits long, matching the INTEGER primary key
