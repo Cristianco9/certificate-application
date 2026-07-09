@@ -35,7 +35,7 @@ export const institutionEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]{3,}\.[a-zA-Z]{
 // of 9 to 10 digits, followed by a hyphen and a single check digit
 // (e.g. '900123456-7'), matching the
 // VARCHAR(20) column size defined in institucion.nit_institucion
-export const institutionTaxId = /^\d{9,10}-\d{1}$/;
+export const institutionNitId = /^\d{9,10}-\d{1}$/;
 
 // The pattern ensures the institution id contains only numbers
 // and is between 1 to 10 digits long, matching the INTEGER primary key
