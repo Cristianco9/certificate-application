@@ -18,9 +18,9 @@ module.exports = {
         autoIncrement: true,
       },
 
-      // Role name (e.g. 'Administrador', 'Rector', 'Secretario Académico')
+      // Role name (e.g. 'Máster', 'Auxiliar', 'Administrador', 'Funcionario', 'Rector')
       nombre_rol: {
-        type: Sequelize.STRING(50),
+        type: DataTypes.ENUM('Máster', 'Auxiliar', 'Administrador', 'Funcionario', 'Rector'),
         allowNull: false,
         unique: true,
       },

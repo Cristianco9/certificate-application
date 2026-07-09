@@ -20,28 +20,28 @@ export const Student = sequelize.define(STUDENT_TABLE, {
     field: 'id_estudiante',
   },
   // Student first name
-  firstName1: {
+  firstName: {
     type: DataTypes.STRING(50),
     allowNull: false,
-    field: 'nombre1_estudiante',
+    field: 'primer_nombre_estudiante',
   },
   // Student second name
-  firstName2: {
+  middleName: {
     type: DataTypes.STRING(50),
-    allowNull: false,
-    field: 'nombre2_estudiante',
+    allowNull: true,
+    field: 'segundo_nombre_estudiante',
   },
   // Student first last name
-  lastName1: {
+  firstLastName: {
     type: DataTypes.STRING(50),
     allowNull: false,
-    field: 'apellidos1_estudiante',
+    field: 'primer_apellido_estudiante',
   },
   // Student second last name
-  lastName2: {
+  secondLastName: {
     type: DataTypes.STRING(50),
-    allowNull: false,
-    field: 'apellidos2_estudiante',
+    allowNull: true,
+    field: 'segundo_apellido_estudiante',
   },
   // Document number (nullable, since historical students may lack a registered ID)
   documentNumber: {
@@ -131,10 +131,10 @@ export const Student = sequelize.define(STUDENT_TABLE, {
     {
       unique: true,
       fields: [
-        'nombre1_estudiante',
-        'nombre2_estudiante',
-        'apellidos1_estudiante',
-        'apellidos2_estudiante',
+        'primer_nombre_estudiante',
+        'segundo_nombre_estudiante',
+        'primer_apellido_estudiante',
+        'segundo_apellido_estudiante',
         'fecha_nacimiento_estudiante',
       ],
     },

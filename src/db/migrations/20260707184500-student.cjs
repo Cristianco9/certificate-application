@@ -19,27 +19,27 @@ module.exports = {
       },
 
       // Student first name
-      nombre1_estudiante: {
+      primer_nombre_estudiante: {
         type: Sequelize.STRING(50),
         allowNull: false,
       },
 
       // Student second name
-      nombre2_estudiante: {
+      segundo_nombre_estudiante: {
         type: Sequelize.STRING(50),
         allowNull: false,
       },
 
       // Student first last name
-      apellidos1_estudiante: {
+      primer_apellido_estudiante: {
         type: Sequelize.STRING(50),
         allowNull: false,
       },
 
       // Student second last name
-      apellidos2_estudiante: {
+      segundo_apellido_estudiante: {
         type: Sequelize.STRING(50),
-        allowNull: false,
+        allowNull: true,
       },
 
       // Document number (nullable, since historical students may lack a registered ID)
@@ -51,7 +51,7 @@ module.exports = {
       // Birth date
       fecha_nacimiento_estudiante: {
         type: Sequelize.DATEONLY,
-        allowNull: false,
+        allowNull: true,
       },
 
       // Foreign key to municipio — RESTRICT on delete
@@ -123,10 +123,10 @@ module.exports = {
     await queryInterface.addIndex('estudiante', {
       unique: true,
       fields: [
-        'nombre1_estudiante',
-        'nombre2_estudiante',
-        'apellidos1_estudiante',
-        'apellidos2_estudiante',
+        'primer_nombre_estudiante',
+        'segundo_nombre_estudiante',
+        'primer_apellido_estudiante',
+        'segundo_apellido_estudiante',
         'fecha_nacimiento_estudiante',
       ],
       name: 'estudiante_nombre_apellidos_fecha_nacimiento_unique',
