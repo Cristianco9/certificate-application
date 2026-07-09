@@ -18,9 +18,9 @@ module.exports = {
         autoIncrement: true,
       },
 
-      // Gender name
+      // Gender name (g.s 'Masculino', 'Femenino', 'No binario', 'Otro', 'Prefiero no decirlo')
       nombre_genero: {
-        type: Sequelize.STRING(20),
+        type: DataTypes.ENUM('Masculino', 'Femenino', 'No binario', 'Otro', 'Prefiero no decirlo'),
         allowNull: false,
         unique: true,
       },
