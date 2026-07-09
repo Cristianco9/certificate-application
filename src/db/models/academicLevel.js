@@ -19,14 +19,14 @@ export const AcademicLevel = sequelize.define(ACADEMIC_LEVEL_TABLE, {
     // Database column name
     field: 'id_nivel_academico',
   },
-  // Academic level name (e.g. 'Preescolar', 'Básica Primaria', 'Básica Secundaria', 'Media')
+  // Academic level name (e.g. 'Técnico', 'Tecnológo', 'Licenciado', 'Especialsita', 'Maestría', 'Doctorado', 'Post-Doctorado')
   name: {
     type: DataTypes.STRING(50),
     allowNull: false,
     unique: true,
     field: 'nombre_nivel_academico',
   },
-  // Academic level abbreviation (e.g. 'PRE', 'PRIM', 'SEC', 'MED')
+  // Academic level abbreviation (e.g. 'Téc', 'Tec', 'Lic', 'Esp', 'Mgs', 'Ph.D')
   abbreviation: {
     type: DataTypes.STRING(10),
     allowNull: false,
