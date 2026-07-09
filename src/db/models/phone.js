@@ -16,6 +16,8 @@ export const Phone = sequelize.define(PHONE_TABLE, {
     primaryKey: true,
     // Must be unique
     unique: true,
+    // Auto increment value
+    autoIncrement: true,
     // Database column name
     field: 'id_telefono',
   },
@@ -23,6 +25,7 @@ export const Phone = sequelize.define(PHONE_TABLE, {
   number: {
     type: DataTypes.STRING(20),
     allowNull: false,
+    unique: true,
     field: 'numero_telefono',
   },
   // Creation date

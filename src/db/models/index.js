@@ -17,7 +17,9 @@ import { Role }                  from './role.js';
 
 import { User }                  from './user.js';
 import { Phone }                 from './phone.js';
-import { PhoneEntity }           from './phoneEntity.js';
+import { UserPhone }             from './userPhone.js';
+import { StudentPhone }          from './studentPhone.js';
+import { InstitutionPhone }      from './institutionPhone.js';
 
 import { Student }               from './student.js';
 import { Grade }                 from './grade.js';
@@ -453,82 +455,137 @@ export function setupAssociations() {
   });
 
   // ============================================================
-  // PHONE ENTITY (polymorphic bridge)
-  // FK: phoneId (allowNull: false) -> Phone
-  // FK: userId (allowNull: true) -> User
-  // FK: studentId (allowNull: true) -> Student
-  // FK: certificateRecipientId (allowNull: true) -> CertificateRecipient
-  // FK: institutionId (allowNull: true) -> Institution
+  // PHONES (many-to-many via dedicated bridge tables)
+  // Business rule: each actor (User, Student, Institution) can have
+  // multiple phones, but a given phone belongs to exactly one actor.
+  // This ownership rule is NOT expressed by the many-to-many shape
+  // itself (which would technically allow the same phone to be shared),
+  // but is enforced procedurally at the service layer: a Phone row must
+  // only ever be linked through ONE of the three bridge tables below,
+  // never more than one, for a given phone id.
   // ============================================================
 
-  // A phone can be linked to many phone-entity rows
-  Phone.hasMany(PhoneEntity, {
-    foreignKey: 'phoneId',
-    sourceKey: 'id',
-    as: 'phoneEntities',
+  // A user has many phones (through the junction table)
+  User.belongsToMany(Phone, {
+    through: UserPhone,
+    foreignKey: 'userId',
+    otherKey: 'phoneId',
+    as: 'phones',
   });
 
-  // A phone-entity link belongs to one phone
-  PhoneEntity.belongsTo(Phone, {
+  // A phone can belong to many users (through the junction table).
+  // In practice, per the ownership rule above, a phone is only ever
+  // linked to a single user record.
+  Phone.belongsToMany(User, {
+    through: UserPhone,
     foreignKey: 'phoneId',
-    targetKey: 'id',
-    as: 'phone',
+    otherKey: 'userId',
+    as: 'users',
   });
 
-  // A user can have many phone-entity links
-  User.hasMany(PhoneEntity, {
+  // Direct associations to the junction table (for eager loading details)
+  User.hasMany(UserPhone, {
     foreignKey: 'userId',
     sourceKey: 'id',
-    as: 'phoneEntities',
+    as: 'userPhones',
   });
-
-  // A phone-entity link belongs to one user (when the owner is a user)
-  PhoneEntity.belongsTo(User, {
+  UserPhone.belongsTo(User, {
     foreignKey: 'userId',
     targetKey: 'id',
     as: 'user',
   });
 
-  // A student can have many phone-entity links
-  Student.hasMany(PhoneEntity, {
-    foreignKey: 'studentId',
+  Phone.hasMany(UserPhone, {
+    foreignKey: 'phoneId',
     sourceKey: 'id',
-    as: 'phoneEntities',
+    as: 'userPhones',
+  });
+  UserPhone.belongsTo(Phone, {
+    foreignKey: 'phoneId',
+    targetKey: 'id',
+    as: 'phone',
   });
 
-  // A phone-entity link belongs to one student (when the owner is a student)
-  PhoneEntity.belongsTo(Student, {
+  // A student has many phones (through the junction table)
+  Student.belongsToMany(Phone, {
+    through: StudentPhone,
+    foreignKey: 'studentId',
+    otherKey: 'phoneId',
+    as: 'phones',
+  });
+
+  // A phone can belong to many students (through the junction table).
+  // In practice, per the ownership rule above, a phone is only ever
+  // linked to a single student record.
+  Phone.belongsToMany(Student, {
+    through: StudentPhone,
+    foreignKey: 'phoneId',
+    otherKey: 'studentId',
+    as: 'students',
+  });
+
+  // Direct associations to the junction table
+  Student.hasMany(StudentPhone, {
+    foreignKey: 'studentId',
+    sourceKey: 'id',
+    as: 'studentPhones',
+  });
+  StudentPhone.belongsTo(Student, {
     foreignKey: 'studentId',
     targetKey: 'id',
     as: 'student',
   });
 
-  // A certificate recipient can have many phone-entity links
-  CertificateRecipient.hasMany(PhoneEntity, {
-    foreignKey: 'certificateRecipientId',
+  Phone.hasMany(StudentPhone, {
+    foreignKey: 'phoneId',
     sourceKey: 'id',
-    as: 'phoneEntities',
+    as: 'studentPhones',
   });
-
-  // A phone-entity link belongs to one certificate recipient (when the owner is a recipient)
-  PhoneEntity.belongsTo(CertificateRecipient, {
-    foreignKey: 'certificateRecipientId',
+  StudentPhone.belongsTo(Phone, {
+    foreignKey: 'phoneId',
     targetKey: 'id',
-    as: 'certificateRecipient',
+    as: 'phone',
   });
 
-  // An institution can have many phone-entity links
-  Institution.hasMany(PhoneEntity, {
+  // An institution has many phones (through the junction table)
+  Institution.belongsToMany(Phone, {
+    through: InstitutionPhone,
+    foreignKey: 'institutionId',
+    otherKey: 'phoneId',
+    as: 'phones',
+  });
+
+  // A phone can belong to many institutions (through the junction table).
+  // In practice, per the ownership rule above, a phone is only ever
+  // linked to a single institution record.
+  Phone.belongsToMany(Institution, {
+    through: InstitutionPhone,
+    foreignKey: 'phoneId',
+    otherKey: 'institutionId',
+    as: 'institutions',
+  });
+
+  // Direct associations to the junction table
+  Institution.hasMany(InstitutionPhone, {
     foreignKey: 'institutionId',
     sourceKey: 'id',
-    as: 'phoneEntities',
+    as: 'institutionPhones',
   });
-
-  // A phone-entity link belongs to one institution (when the owner is an institution)
-  PhoneEntity.belongsTo(Institution, {
+  InstitutionPhone.belongsTo(Institution, {
     foreignKey: 'institutionId',
     targetKey: 'id',
     as: 'institution',
+  });
+
+  Phone.hasMany(InstitutionPhone, {
+    foreignKey: 'phoneId',
+    sourceKey: 'id',
+    as: 'institutionPhones',
+  });
+  InstitutionPhone.belongsTo(Phone, {
+    foreignKey: 'phoneId',
+    targetKey: 'id',
+    as: 'phone',
   });
 
 }
