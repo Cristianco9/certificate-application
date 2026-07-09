@@ -59,7 +59,7 @@ export const Institution = sequelize.define(INSTITUTION_TABLE, {
     },
   },
   // Tax identification number (NIT)
-  taxId: {
+  nitId: {
     type: DataTypes.STRING(20),
     allowNull: false,
     unique: true,
