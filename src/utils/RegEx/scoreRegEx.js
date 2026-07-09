@@ -8,14 +8,14 @@
 // recorded and must never be modified, matching the
 // VARCHAR(20) column size defined in
 // calificacion.nota_original_calificacion
-export const scoreOriginalValue = /^([0-5]\.\d|Insuficiente|Aceptable|Sobresaliente|Excelente)$/;
+export const scoreOriginalValue = /^([0-5]\.\d|Deficiente|Insuficiente|Aceptable|Sobresaliente|Excelente)$/;
 
 // The pattern ensures the remedial/make-up score ('nota de
 // habilitación') follows the same numeric grade format as the original
 // score, from 0.0 to 5.0 with exactly one decimal digit,
 // matching the VARCHAR(20) column size defined in
 // calificacion.nota_habilitacion
-export const scoreRemedialValue = /^[0-5]\.\d$/;
+export const scoreRemedialValue = /^([0-5]\.\d|Deficiente|Insuficiente|Aceptable|Sobresaliente|Excelente)$/;
 
 // The pattern ensures the score id contains only numbers
 // and is between 1 to 10 digits long, matching the INTEGER primary key
