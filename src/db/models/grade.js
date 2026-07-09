@@ -21,7 +21,7 @@ export const Grade = sequelize.define(GRADE_TABLE, {
   },
   // Grade name (e.g. 'Primero', 'Segundo', 'Once')
   name: {
-    type: DataTypes.STRING(50),
+    type: DataTypes.ENUM('Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto', 'Séptimo', 'Octavo', 'Noveno', 'Décimo', 'Undécimo'),
     allowNull: false,
     unique: true,
     field: 'nombre_grado',
