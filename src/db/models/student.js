@@ -28,7 +28,7 @@ export const Student = sequelize.define(STUDENT_TABLE, {
   // Student second name
   middleName: {
     type: DataTypes.STRING(50),
-    allowNull: false,
+    allowNull: true,
     field: 'segundo_nombre_estudiante',
   },
   // Student first last name
@@ -40,7 +40,7 @@ export const Student = sequelize.define(STUDENT_TABLE, {
   // Student second last name
   secondLastName: {
     type: DataTypes.STRING(50),
-    allowNull: false,
+    allowNull: true,
     field: 'segundo_apellido_estudiante',
   },
   // Document number (nullable, since historical students may lack a registered ID)
