@@ -39,7 +39,7 @@ module.exports = {
       // Student second last name
       segundo_apellido_estudiante: {
         type: Sequelize.STRING(50),
-        allowNull: false,
+        allowNull: true,
       },
 
       // Document number (nullable, since historical students may lack a registered ID)
@@ -51,7 +51,7 @@ module.exports = {
       // Birth date
       fecha_nacimiento_estudiante: {
         type: Sequelize.DATEONLY,
-        allowNull: false,
+        allowNull: true,
       },
 
       // Foreign key to municipio — RESTRICT on delete
