@@ -19,9 +19,9 @@ export const Role = sequelize.define(ROLE_TABLE, {
     // Database column name
     field: 'id_rol',
   },
-  // Role name (e.g. 'Administrador', 'Rector', 'Secretario Académico')
+  // Role name (e.g. 'Máster', 'Auxiliar', 'Administrador', 'Funcionario', 'Rector')
   name: {
-    type: DataTypes.STRING(50),
+    type: DataTypes.ENUM('Máster', 'Auxiliar', 'Administrador', 'Funcionario', 'Rector'),
     allowNull: false,
     unique: true,
     field: 'nombre_rol',
