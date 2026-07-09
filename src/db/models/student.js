@@ -38,7 +38,7 @@ export const Student = sequelize.define(STUDENT_TABLE, {
     field: 'primer_apellido_estudiante',
   },
   // Student second last name
-  secondlastName: {
+  secondLastName: {
     type: DataTypes.STRING(50),
     allowNull: false,
     field: 'segundo_apellido_estudiante',
