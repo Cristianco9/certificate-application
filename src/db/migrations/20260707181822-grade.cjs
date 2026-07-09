@@ -20,7 +20,7 @@ module.exports = {
 
       // Grade name (e.g. 'Primero', 'Segundo', 'Once')
       nombre_grado: {
-        type: Sequelize.STRING(50),
+        type: DataTypes.ENUM('Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto', 'Séptimo', 'Octavo', 'Noveno', 'Décimo', 'Undécimo'),
         allowNull: false,
         unique: true,
       },
