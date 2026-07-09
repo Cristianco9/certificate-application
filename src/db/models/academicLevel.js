@@ -21,14 +21,14 @@ export const AcademicLevel = sequelize.define(ACADEMIC_LEVEL_TABLE, {
   },
   // Academic level name (e.g. 'Técnico', 'Tecnológo', 'Licenciado', 'Especialsita', 'Maestría', 'Doctorado', 'Post-Doctorado')
   name: {
-    type: DataTypes.STRING(50),
+    type: DataTypes.ENUM('Técnico', 'Tecnológo', 'Licenciado', 'Especialsita', 'Maestría', 'Doctorado', 'Post-Doctorado'),
     allowNull: false,
     unique: true,
     field: 'nombre_nivel_academico',
   },
   // Academic level abbreviation (e.g. 'Téc', 'Tec', 'Lic', 'Esp', 'Mgs', 'Ph.D')
   abbreviation: {
-    type: DataTypes.STRING(10),
+   type: DataTypes.ENUM('Téc', 'Tec', 'Lic', 'Esp', 'Mgs', 'Ph.D'),
     allowNull: false,
     unique: true,
     field: 'abreviatura_nivel_academico',
