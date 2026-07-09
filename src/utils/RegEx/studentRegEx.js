@@ -3,32 +3,36 @@
 // and 'ñ', via the Unicode letter category \p{L}),
 // with no spaces (a single given name),
 // and is between 3 to 50 characters long, matching the
-// VARCHAR(50) column size defined in estudiante.nombre1_estudiante
-export const studentFirstName1 = /^[\p{L}]{3,50}$/u;
+// VARCHAR(50) column size defined in estudiante.primer_nombre_estudiante
+export const studentFirstName = /^[\p{L}]{3,50}$/u;
 
-// The pattern ensures the student's second first name contains only
-// letters (both uppercase and lowercase, including Spanish accented
-// characters and 'ñ', via the Unicode letter category \p{L}),
-// with no spaces (a single given name),
-// and is between 3 to 50 characters long, matching the
-// VARCHAR(50) column size defined in estudiante.nombre2_estudiante
-export const studentFirstName2 = /^[\p{L}]{3,50}$/u;
+// The pattern ensures the student's second first name, when provided,
+// contains only letters (both uppercase and lowercase, including
+// Spanish accented characters and 'ñ', via the Unicode letter
+// category \p{L}), with no spaces (a single given name), and is
+// between 3 to 50 characters long. This field is OPTIONAL: an empty
+// string is also accepted, since not every student has a second given
+// name, matching the VARCHAR(50) column size defined in
+// estudiante.segundo_nombre_estudiante
+export const studentMiddleName = /^([\p{L}]{3,50})?$/u;
 
 // The pattern ensures the student's first last name contains only
 // letters (both uppercase and lowercase, including Spanish accented
 // characters and 'ñ', via the Unicode letter category \p{L}),
 // with no spaces (a single surname),
 // and is between 3 to 50 characters long, matching the
-// VARCHAR(50) column size defined in estudiante.apellidos1_estudiante
-export const studentLastName1 = /^[\p{L}]{3,50}$/u;
+// VARCHAR(50) column size defined in estudiante.primer_apellido_estudiante
+export const studentFirstLastName = /^[\p{L}]{3,50}$/u;
 
-// The pattern ensures the student's second last name contains only
-// letters (both uppercase and lowercase, including Spanish accented
-// characters and 'ñ', via the Unicode letter category \p{L}),
-// with no spaces (a single surname),
-// and is between 3 to 50 characters long, matching the
-// VARCHAR(50) column size defined in estudiante.apellidos2_estudiante
-export const studentLastName2 = /^[\p{L}]{3,50}$/u;
+// The pattern ensures the student's second lastname, when provided,
+// contains only letters (both uppercase and lowercase, including
+// Spanish accented characters and 'ñ', via the Unicode letter
+// category \p{L}), with no spaces (a single given name), and is
+// between 3 to 50 characters long. This field is OPTIONAL: an empty
+// string is also accepted, since not every student has a second given
+// lastname, matching the VARCHAR(50) column size defined in
+// estudiante.segundo_apellido_estudiante
+export const studentSecondLastName = /^([\p{L}]{3,50})?$/u;
 
 // The pattern ensures the student document number accepts either:
 // - a purely numeric Colombian national ID (cédula/tarjeta de identidad),
@@ -82,3 +86,18 @@ export const studentDocumentTypeId = /^\d{1,10}$/;
 // and is between 1 to 10 digits long, matching the INTEGER foreign key
 // defined in estudiante.id_genero_estudiante
 export const studentGenderId = /^\d{1,10}$/;
+
+// The pattern ensures the student's birth date follows the ISO 8601
+// date format (YYYY-MM-DD, matching Sequelize's DATEONLY
+// serialization), with the year restricted to the range 1900-2099,
+// the month restricted to 01-12, and the day restricted to 01-31.
+// IMPORTANT LIMITATION: a regular expression can only validate the
+// FORMAT and numeric ranges of a date, not whether it is a real
+// calendar date. This pattern will incorrectly accept impossible
+// dates such as '2024-02-30' or '2024-06-31'. For full calendar
+// correctness, this pattern must be combined with Joi.date() at the
+// schema layer (e.g. Joi.date().min('1900-01-01').max('2099-12-31')),
+// which validates real calendar dates natively.
+// Matches the DATEONLY column defined in
+// estudiante.fecha_nacimiento_estudiante
+export const studentBirthDate = /^(19\d{2}|20\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
