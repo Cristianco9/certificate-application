@@ -1,0 +1,68 @@
+// Import the sequelize instance from the database connection library
+import { sequelize } from '../../libraries/DBConnection.js';
+// Import DataTypes from sequelize to define column types
+import { DataTypes } from 'sequelize';
+// Define the name of the certificate recipient phones table
+export const CERTIFICATE_RECIPIENT_PHONE_TABLE = 'receptor_certificado_telefono';
+// Define the CertificateRecipientPhone model. Bridge table linking a
+// CertificateRecipient to one of their Phone records.
+export const CertificateRecipientPhone = sequelize.define(CERTIFICATE_RECIPIENT_PHONE_TABLE, {
+  // Define the 'id' column
+  id: {
+    // Integer type
+    type: DataTypes.INTEGER,
+    // This field cannot be null
+    allowNull: false,
+    // Primary key
+    primaryKey: true,
+    // Must be unique
+    unique: true,
+    // Auto increment value
+    autoIncrement: true,
+    // Database column name
+    field: 'id_receptor_certificado_telefono',
+  },
+  // Foreign key to CertificateRecipient
+  certificateRecipientId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    field: 'id_receptor_certificado',
+    references: {
+      model: 'receptor_certificado',
+      key: 'id_receptor_certificado',
+    },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  },
+  // Foreign key to Phone
+  phoneId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    field: 'id_telefono',
+    references: {
+      model: 'telefono',
+      key: 'id_telefono',
+    },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  },
+}, {
+  // Pass the sequelize instance
+  sequelize,
+  // Specify the table name
+  tableName: CERTIFICATE_RECIPIENT_PHONE_TABLE,
+  // Specify the model name
+  modelName: 'certificateRecipientPhone',
+  // This table does not have timestamps; creation/update tracking
+  // lives on the Phone record itself
+  timestamps: false,
+  // Composite unique constraint: the same phone cannot be linked to
+  // the same certificate recipient more than once
+  indexes: [
+    {
+      unique: true,
+      fields: ['id_receptor_certificado', 'id_telefono'],
+      name: 'uq_receptor_certificado_telefono',
+    },
+  ],
+});
