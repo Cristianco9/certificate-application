@@ -20,6 +20,7 @@ import { Phone }                 from './phone.js';
 import { UserPhone }             from './userPhone.js';
 import { StudentPhone }          from './studentPhone.js';
 import { InstitutionPhone }      from './institutionPhone.js';
+import { CertificateRecipientPhone } from './certificateRecipientPhone.js';
 
 import { Student }               from './student.js';
 import { Grade }                 from './grade.js';
@@ -456,13 +457,14 @@ export function setupAssociations() {
 
   // ============================================================
   // PHONES (many-to-many via dedicated bridge tables)
-  // Business rule: each actor (User, Student, Institution) can have
-  // multiple phones, but a given phone belongs to exactly one actor.
-  // This ownership rule is NOT expressed by the many-to-many shape
-  // itself (which would technically allow the same phone to be shared),
-  // but is enforced procedurally at the service layer: a Phone row must
-  // only ever be linked through ONE of the three bridge tables below,
-  // never more than one, for a given phone id.
+  // Business rule: each actor (User, Student, Institution,
+  // CertificateRecipient) can have multiple phones, but a given phone
+  // belongs to exactly one actor. This ownership rule is NOT expressed
+  // by the many-to-many shape itself (which would technically allow
+  // the same phone to be shared), but is enforced procedurally at the
+  // service layer: a Phone row must only ever be linked through ONE
+  // of the four bridge tables below, never more than one, for a given
+  // phone id.
   // ============================================================
 
   // A user has many phones (through the junction table)
@@ -583,6 +585,47 @@ export function setupAssociations() {
     as: 'institutionPhones',
   });
   InstitutionPhone.belongsTo(Phone, {
+    foreignKey: 'phoneId',
+    targetKey: 'id',
+    as: 'phone',
+  });
+
+  // A certificate recipient has many phones (through the junction table)
+  CertificateRecipient.belongsToMany(Phone, {
+    through: CertificateRecipientPhone,
+    foreignKey: 'certificateRecipientId',
+    otherKey: 'phoneId',
+    as: 'phones',
+  });
+
+  // A phone can belong to many certificate recipients (through the
+  // junction table). In practice, per the ownership rule above, a
+  // phone is only ever linked to a single certificate recipient record.
+  Phone.belongsToMany(CertificateRecipient, {
+    through: CertificateRecipientPhone,
+    foreignKey: 'phoneId',
+    otherKey: 'certificateRecipientId',
+    as: 'certificateRecipients',
+  });
+
+  // Direct associations to the junction table
+  CertificateRecipient.hasMany(CertificateRecipientPhone, {
+    foreignKey: 'certificateRecipientId',
+    sourceKey: 'id',
+    as: 'certificateRecipientPhones',
+  });
+  CertificateRecipientPhone.belongsTo(CertificateRecipient, {
+    foreignKey: 'certificateRecipientId',
+    targetKey: 'id',
+    as: 'certificateRecipient',
+  });
+
+  Phone.hasMany(CertificateRecipientPhone, {
+    foreignKey: 'phoneId',
+    sourceKey: 'id',
+    as: 'certificateRecipientPhones',
+  });
+  CertificateRecipientPhone.belongsTo(Phone, {
     foreignKey: 'phoneId',
     targetKey: 'id',
     as: 'phone',
