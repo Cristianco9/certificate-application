@@ -21,7 +21,7 @@ export const Gender = sequelize.define(GENDER_TABLE, {
   },
   // Gender name (g.s 'Masculino', 'Femenino', 'No binario', 'Otro', 'Prefiero no decirlo')
   name: {
-   type: DataTypes.ENUM('Masculino', 'Femenino', 'No binario', 'Otro', 'Prefiero no decirlo'),
+    type: DataTypes.ENUM('Masculino', 'Femenino', 'No binario', 'Otro', 'Prefiero no decirlo'),
     allowNull: false,
     unique: true,
     field: 'nombre_genero',
