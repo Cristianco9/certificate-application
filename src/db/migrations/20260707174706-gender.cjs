@@ -20,7 +20,7 @@ module.exports = {
 
       // Gender name (g.s 'Masculino', 'Femenino', 'No binario', 'Otro', 'Prefiero no decirlo')
       nombre_genero: {
-        type: DataTypes.ENUM('Masculino', 'Femenino', 'No binario', 'Otro', 'Prefiero no decirlo'),
+        type: Sequelize.ENUM('Masculino', 'Femenino', 'No binario', 'Otro', 'Prefiero no decirlo'),
         allowNull: false,
         unique: true,
       },
