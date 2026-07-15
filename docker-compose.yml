@@ -33,22 +33,6 @@ services:
     networks:
       - iensch-certification-application-network
 
-  # Descomenta esto si quieres containerizar también tu app Node
-  # app:
-  #   build: .
-  #   container_name: iensch-certification-application-api
-  #   env_file: .env
-  #   environment:
-  #     DB_HOST: iensch-certification-application-db   # nombre del servicio, no 127.0.0.1
-  #     DB_PORT: 3306                                    # puerto interno, no 3355
-  #   ports:
-  #     - "3377:3377"
-  #   depends_on:
-  #     iensch-certification-application-db:
-  #       condition: service_healthy
-  #   networks:
-  #     - iensch-certification-application-network
-
 volumes:
   db_data:
 
