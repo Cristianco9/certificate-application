@@ -4,16 +4,19 @@ services:
     container_name: iensch-certification-application-db
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=d47ac305ae7593831b5fea899e6037907161a5c29d1ed4710a0219ba229f9a95
-      - MYSQL_DATABASE=iensc_certification_application_db
-      - MYSQL_USER=developer
-      - MYSQL_PASSWORD=aa24d32b8b1cfe04a74f668fd58acddbccbe86a9a17a0eff52bb5830e3d1d652
-      - MYSQL_PORT=3306
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3355:3306"
     volumes:
-      - ./db_data:/var/lib/mysql
-      - ./my.cnf:/etc/mysql/my.cnf
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     networks:
       - iensch-certification-application-network
 
@@ -21,13 +24,30 @@ services:
     image: phpmyadmin/phpmyadmin
     container_name: iensch-certification-application-rdbms
     environment:
-      - PMA_HOST=iensch-certification-application-db
+      PMA_HOST: iensch-certification-application-db
     ports:
       - "8080:80"
     depends_on:
-      - iensch-certification-application-db
+      iensch-certification-application-db:
+        condition: service_healthy
     networks:
       - iensch-certification-application-network
+
+  # Descomenta esto si quieres containerizar también tu app Node
+  # app:
+  #   build: .
+  #   container_name: iensch-certification-application-api
+  #   env_file: .env
+  #   environment:
+  #     DB_HOST: iensch-certification-application-db   # nombre del servicio, no 127.0.0.1
+  #     DB_PORT: 3306                                    # puerto interno, no 3355
+  #   ports:
+  #     - "3377:3377"
+  #   depends_on:
+  #     iensch-certification-application-db:
+  #       condition: service_healthy
+  #   networks:
+  #     - iensch-certification-application-network
 
 volumes:
   db_data:
