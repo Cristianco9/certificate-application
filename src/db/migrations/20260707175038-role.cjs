@@ -20,7 +20,7 @@ module.exports = {
 
       // Role name (e.g. 'Máster', 'Auxiliar', 'Administrador', 'Funcionario', 'Rector')
       nombre_rol: {
-        type: DataTypes.ENUM('Máster', 'Auxiliar', 'Administrador', 'Funcionario', 'Rector'),
+        type: Sequelize.ENUM('Máster', 'Auxiliar', 'Administrador', 'Funcionario', 'Rector'),
         allowNull: false,
         unique: true,
       },
