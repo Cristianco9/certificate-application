@@ -4,7 +4,7 @@
 module.exports = {
 
   // ============================================================
-  // UP — Create the 'nivel_academico' table
+  // UP — Create the 'nivel_académico' table
   // ============================================================
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('nivel_academico', {
@@ -18,16 +18,16 @@ module.exports = {
         autoIncrement: true,
       },
 
-      // Academic level (e.g 'Técnico', 'Tecnológo', 'Licenciado', 'Especialsita', 'Maestría', 'Doctorado', 'Post-Doctorado'),
+      // Academic level (e.g 'Técnico', 'tecnólogo', 'Licenciado', 'Especialista', 'Maestría', 'Doctorado', 'Post-Doctorado')
       nombre_nivel_academico: {
-        type: DataTypes.ENUM('Técnico', 'Tecnológo', 'Licenciado', 'Especialsita', 'Maestría', 'Doctorado', 'Post-Doctorado'),
+        type: Sequelize.ENUM('Técnico', 'tecnólogo', 'Licenciado', 'Especialista', 'Maestría', 'Doctorado', 'Post-Doctorado'),
         allowNull: false,
         unique: true,
       },
 
-      // Academic level abbreviation (e.g. 'Téc', 'Tec', 'Lic', 'Esp', 'Mgs', 'Ph.D')
+      // Academic level abbreviation (e.g. 'Téc', 'Tgo', 'Lic', 'Esp', 'Mgs', 'Ph.D')
       abreviatura_nivel_academico: {
-        type: DataTypes.ENUM('Téc', 'Tec', 'Lic', 'Esp', 'Mgs', 'Ph.D'),
+        type: Sequelize.ENUM('Téc', 'Tgo', 'Lic', 'Esp', 'Mgs', 'Ph.D'),
         allowNull: false,
         unique: true,
       },
@@ -45,7 +45,6 @@ module.exports = {
         allowNull: false,
         defaultValue: Sequelize.NOW,
       },
-
     });
   },
 
