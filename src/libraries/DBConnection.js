@@ -3,21 +3,22 @@ import { Sequelize } from 'sequelize';
 // Import configuration settings
 import { config } from "../config/config.js";
 
-// Create a new instance of Sequelize with the provided URI and options
+// Create a new instance of Sequelize with the provided credentials and options
 export const sequelize = new Sequelize(
   config.dbName,
-  config.dbRootUser,
-  config.dbRootPassword,
+  config.dbUser,
+  config.dbPassword,
   {
-  // Specify the data base host
-  host: config.dbHost,
-  // Specify the data base port
-  port: config.dbPort,
-  // Specify the dialect as MySQL
-  dialect: 'mysql',
-  // Enable logging of SQL queries to the console
-  logging: console.log,
-});
+    // Specify the database host
+    host: config.dbHost,
+    // Specify the database port
+    port: config.dbPort,
+    // Specify the dialect as MySQL
+    dialect: config.dialect,
+    // Enable logging of SQL queries to the console
+    logging: console.log,
+  }
+);
 
 /**
  * Function to test the database connection
