@@ -19,7 +19,7 @@ export const DocumentType = sequelize.define(DOCUMENT_TYPE_TABLE, {
     // Database column name
     field: 'id_tipo_documento',
   },
-  // Document type name (e.g. 'Cédula de Ciudadanía', 'Tarjeta de Identidad', 'Registro Civil, 'Cédula de Extranjería, 'Pasaporte', 'Permiso Especial de Permanenciac (PEP)', 'NIT')
+  // Document type name (e.g. 'Cédula de Ciudadanía', 'Tarjeta de Identidad', 'Registro Civil, 'Cédula de Extranjería, 'Pasaporte', 'Permiso Especial de Permanencia (PEP)', 'NIT')
   name: {
     type: DataTypes.ENUM('Cédula de Ciudadanía', 'Tarjeta de Identidad', 'Registro Civil', 'Cédula de Extranjería', 'Pasaporte', 'Permiso Especial de Permanencia (PEP)', 'NIT'),
     allowNull: false,
