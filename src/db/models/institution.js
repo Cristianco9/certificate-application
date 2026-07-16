@@ -16,6 +16,8 @@ export const Institution = sequelize.define(INSTITUTION_TABLE, {
     primaryKey: true,
     // Must be unique
     unique: true,
+    // Auto increment value
+    autoIncrement: true,
     // Database column name
     field: 'id_institucion',
   },

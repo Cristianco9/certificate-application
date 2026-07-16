@@ -42,6 +42,20 @@ module.exports = {
         onUpdate: 'CASCADE',
       },
 
+      // Creation timestamp
+      fecha_creacion: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+
+      // Update timestamp
+      fecha_modificacion: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+
     });
 
     // Composite unique constraint: the same phone cannot be linked to
