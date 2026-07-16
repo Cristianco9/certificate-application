@@ -16,6 +16,8 @@ export const AcademicLevel = sequelize.define(ACADEMIC_LEVEL_TABLE, {
     primaryKey: true,
     // Must be unique
     unique: true,
+    // Auto increment value
+    autoIncrement: true,
     // Database column name
     field: 'id_nivel_academico',
   },

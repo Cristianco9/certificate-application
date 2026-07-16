@@ -48,6 +48,21 @@ export const UserPhone = sequelize.define(USER_PHONE_TABLE, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   },
+    // Creation date
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    field: 'fecha_creacion',
+    },
+    // Last update date
+  updatedAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    field: 'fecha_modificacion',
+    },
+
 }, {
   // Pass the sequelize instance
   sequelize,

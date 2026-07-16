@@ -17,6 +17,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         unique: true,
+        autoIncrement: true,
       },
 
       // Country name
@@ -31,19 +32,19 @@ module.exports = {
         type: Sequelize.STRING(2),
         allowNull: true,
       },
-      
+
       // Creation timestamp
       fecha_creacion: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.NOW,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
 
       // Update timestamp
       fecha_modificacion: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.NOW,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
 
     });
