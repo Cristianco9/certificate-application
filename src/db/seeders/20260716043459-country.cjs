@@ -20,7 +20,7 @@ module.exports = {
         },
       ]);
     } else {
-      console.log('Country "Colombia" already exists. Skipping insert.');
+      console.error('Country "Colombia" already exists. Skipping insert.');
     }
   },
 
