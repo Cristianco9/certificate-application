@@ -16,6 +16,8 @@ export const Score = sequelize.define(SCORE_TABLE, {
     primaryKey: true,
     // Must be unique
     unique: true,
+    // Auto increment value
+    autoIncrement: true,
     // Database column name
     field: 'id_calificacion',
   },

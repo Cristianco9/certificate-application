@@ -16,6 +16,8 @@ export const Country = sequelize.define(COUNTRY_TABLE, {
     primaryKey: true,
     // Must be unique
     unique: true,
+    // Auto increment value
+    autoIncrement: true,
     // Database column name
     field: 'id_pais',
   },
