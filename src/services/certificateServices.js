@@ -109,7 +109,6 @@ export class CertificateServices {
    *
    * @param {number} certificateId - The id of the certificate to update.
    * @param {Object} newCertificateData - The new data to persist.
-   * @param {number} [newCertificateData.institutionId] - A corrected issuing institution, if needed.
    * @param {number} [newCertificateData.recipientId] - The recipient who will collect the document.
    * @param {string} [newCertificateData.status] - The new status; must be one of CertificateServices.STATUS.
    * @returns {Promise<{status: string}>} - A status object describing the outcome.
@@ -154,7 +153,6 @@ export class CertificateServices {
       // Update the record in the database
       const [updatedRows] = await Certificate.update(
         {
-          institutionId: newCertificateData.institutionId,
           recipientId: newCertificateData.recipientId,
           status: newCertificateData.status,
         },
