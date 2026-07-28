@@ -1,59 +1,47 @@
 // Joi is used across the project for request validation (see AGENTS.md section 9)
 import Joi from 'joi';
-
-// ==========================================================
-// FIELD-LEVEL CONSTANTS
-// Mirrors the closed ENUM sets defined in the Sequelize model
-// (models/academicLevel.js) and the migration
-// (migrations/20260707173556-academicLevel.cjs). Kept here, not
-// imported from the service layer, so this schema has no dependency
-// on AcademicLevelServices — validation must be able to run before
-// any service code executes.
-// ==========================================================
-
-// Allowed values for 'nombre_nivel_academico'
-const ACADEMIC_LEVEL_NAME_VALUES = [
-  'Técnico',
-  'tecnólogo',
-  'Licenciado',
-  'Especialista',
-  'Maestría',
-  'Doctorado',
-  'Post-Doctorado',
-];
-
-// Allowed values for 'abreviatura_nivel_academico'
-const ACADEMIC_LEVEL_ABBREVIATION_VALUES = ['Téc', 'Tgo', 'Lic', 'Esp', 'Mgs', 'Ph.D'];
+// Regex patterns are always imported from utils/RegEx/<domain>RegEx.js,
+// never written inline in the schema (see AGENTS.md section 2)
+import {
+  academicLevelName as academicLevelNameRegEx,
+  academicLevelAbbreviation as academicLevelAbbreviationRegEx,
+  academicLevelId as academicLevelIdRegEx,
+} from '../utils/RegEx/academicLevelRegEx.js';
 
 // ==========================================================
 // SHARED SUB-SHAPES
-// Not exported directly; reused by the id-based schemas below to
-// avoid repeating the same validation rule twice.
+// Not exported directly; reused by the schemas below to avoid
+// repeating the same validation rule twice.
 // ==========================================================
 
-// Validates the numeric primary key ('id_nivel_academico')
-const academicLevelId = Joi.number().integer().positive().required().messages({
-  'number.base': 'The academic level id must be a number',
-  'number.integer': 'The academic level id must be an integer',
-  'number.positive': 'The academic level id must be a positive number',
-  'any.required': 'The academic level id is required',
-});
+// Validates the primary key ('id_nivel_academico'). Kept as a string
+// pattern (rather than Joi.number()) to match academicLevelIdRegEx,
+// since route params always arrive as strings.
+const academicLevelId = Joi.string()
+  .pattern(academicLevelIdRegEx)
+  .messages({
+    'string.base': 'The academic level id must be a string of digits',
+    'string.pattern.base': 'The academic level id must contain only digits (1 to 10 digits long)',
+    'any.required': 'The academic level id is required',
+  });
 
-// Validates 'name' ('nombre_nivel_academico')
+// Validates 'name' ('nombre_nivel_academico'): letters, spaces, 3 to
+// 50 characters long
 const academicLevelName = Joi.string()
-  .valid(...ACADEMIC_LEVEL_NAME_VALUES)
+  .pattern(academicLevelNameRegEx)
   .messages({
     'string.base': 'The academic level name must be a string',
-    'any.only': `The academic level name must be one of: ${ACADEMIC_LEVEL_NAME_VALUES.join(', ')}`,
+    'string.pattern.base': 'The academic level name must be 3 to 50 characters long and contain only letters and spaces',
     'any.required': 'The academic level name is required',
   });
 
-// Validates 'abbreviation' ('abreviatura_nivel_academico')
+// Validates 'abbreviation' ('abreviatura_nivel_academico') against the
+// closed set of academic level abbreviations: Téc, Tgo, Lic, Esp, Mgs, Ph.D
 const academicLevelAbbreviation = Joi.string()
-  .valid(...ACADEMIC_LEVEL_ABBREVIATION_VALUES)
+  .pattern(academicLevelAbbreviationRegEx)
   .messages({
     'string.base': 'The academic level abbreviation must be a string',
-    'any.only': `The academic level abbreviation must be one of: ${ACADEMIC_LEVEL_ABBREVIATION_VALUES.join(', ')}`,
+    'string.pattern.base': 'The academic level abbreviation must be one of: Téc, Tgo, Lic, Esp, Mgs, Ph.D',
     'any.required': 'The academic level abbreviation is required',
   });
 
@@ -85,7 +73,7 @@ export const updateAcademicLevelSchema = Joi.object({
  * (typically sourced from req.params).
  */
 export const getAcademicLevelSchema = Joi.object({
-  id: academicLevelId,
+  id: academicLevelId.required(),
 });
 
 /**
@@ -93,5 +81,5 @@ export const getAcademicLevelSchema = Joi.object({
  * (typically sourced from req.params).
  */
 export const deleteAcademicLevelSchema = Joi.object({
-  id: academicLevelId,
+  id: academicLevelId.required(),
 });
