@@ -95,17 +95,22 @@ export class CertificateServices {
   }
 
   /**
-   * Updates the non-essential, correctable fields of an existing
-   * certificate. The act number, issue date, issuing user, enrollment,
-   * and status are intentionally not editable here: the first four are
-   * immutable historical facts once a certificate is issued, and status
-   * transitions must go through reprint() or voidOne() to preserve the
-   * audit trail.
+   * Updates the correctable fields of an existing certificate. The act
+   * number, issue date, issuing user, and enrollment are intentionally
+   * not editable here, since they are immutable historical facts once a
+   * certificate is issued. 'status', however, IS accepted by this
+   * method: when provided, it is validated against the closed ENUM set
+   * defined in both the model (DataTypes.ENUM('EMITIDO', 'ANULADO',
+   * 'REIMPRESO')) and the migration (estado_certificado), via
+   * CertificateServices._assertValidStatus, before ever reaching the
+   * database. This method never deletes the certificate or any of its
+   * data — it only persists the fields supplied, leaving every other
+   * column untouched.
    *
    * @param {number} certificateId - The id of the certificate to update.
    * @param {Object} newCertificateData - The new data to persist.
-   * @param {number} [newCertificateData.institutionId] - A corrected issuing institution, if needed.
    * @param {number} [newCertificateData.recipientId] - The recipient who will collect the document.
+   * @param {string} [newCertificateData.status] - The new status; must be one of CertificateServices.STATUS.
    * @returns {Promise<{status: string}>} - A status object describing the outcome.
    */
   async updateOne(certificateId, newCertificateData) {
@@ -114,15 +119,21 @@ export class CertificateServices {
       throw Boom.badRequest('No data was provided to update');
     }
 
-    // Reject attempts to change immutable or audit-controlled fields
-    // through this generic method
-    const forbiddenFields = ['actNumber', 'issueDate', 'userId', 'enrollmentId', 'status'];
+    // Reject attempts to change immutable historical facts through this
+    // generic method
+    const forbiddenFields = ['actNumber', 'issueDate', 'userId', 'enrollmentId'];
     const attemptedForbiddenField = forbiddenFields.find((field) =>
       Object.prototype.hasOwnProperty.call(newCertificateData, field)
     );
 
     if (attemptedForbiddenField) {
       throw Boom.badRequest(`The field '${attemptedForbiddenField}' cannot be changed through a generic update`);
+    }
+
+    // If a new status is provided, validate it belongs to the ENUM
+    // defined in the model and migration before touching the database
+    if (newCertificateData.status) {
+      CertificateServices._assertValidStatus(newCertificateData.status);
     }
 
     try {
@@ -142,8 +153,8 @@ export class CertificateServices {
       // Update the record in the database
       const [updatedRows] = await Certificate.update(
         {
-          institutionId: newCertificateData.institutionId,
           recipientId: newCertificateData.recipientId,
+          status: newCertificateData.status,
         },
         {
           where: { id: certificateId }

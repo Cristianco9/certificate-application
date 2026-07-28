@@ -15,7 +15,7 @@ export const academicLevelName = /^[\p{L} ]{3,50}$/u;
 // literal period rather than the regex 'any character' wildcard.
 // Matches the VARCHAR(10) column size defined in
 // nivel_academico.abreviatura_nivel_academico
-export const academicLevelAbbreviation = /^(Téc|Tec|Lic|Esp|Mgs|Ph\.D)$/;
+export const academicLevelAbbreviation = /^(Téc|Tgo|Lic|Esp|Mgs|Ph\.D)$/;
 
 // The pattern ensures the academic level id contains only numbers
 // and is between 1 to 10 digits long, matching the INTEGER primary key

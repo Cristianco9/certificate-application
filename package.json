@@ -4,7 +4,7 @@
   "description": "Web application to generate academic certification",
   "main": "src/app.js",
   "type": "module",
-"scripts": {
+  "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "dev-dep": "npm install && npm install nodemon morgan eslint eslint-config-prettier eslint-plugin-prettier prettier --save-dev -D",
@@ -29,26 +29,26 @@
   "license": "MIT",
   "dependencies": {
     "@hapi/boom": "^10.0.1",
-    "bcryptjs": "^2.4.3",
+    "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "ejs": "^3.1.10",
-    "express": "^4.19.2",
-    "joi": "^17.13.3",
-    "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.11.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "joi": "^18.2.3",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.23.2",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "sequelize": "^6.37.8",
-    "sequelize-cli": "^6.6.2"
+    "sequelize-cli": "^6.6.5"
   },
   "devDependencies": {
-    "eslint": "^9.39.5",
-    "eslint-config-prettier": "^9.1.2",
+    "eslint": "^10.8.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
     "morgan": "^1.11.0",
     "nodemon": "^3.1.14",
-    "prettier": "^3.9.5"
+    "prettier": "^3.9.6"
   }
 }
