@@ -8,7 +8,10 @@ import Boom from '@hapi/boom';
  *
  * Extracts the country id and the fields to update from the request body,
  * delegates the update to CountryServices, and responds according to the
- * outcome.
+ * outcome. The rotated JWT is not signed here: authAppVerifyToken already
+ * generated it upstream, wrote it to the httpOnly 'authentication'
+ * cookie, and exposed the same value via res.locals.newUserToken for
+ * clients (e.g. the React SPA) that also need the raw token in the body.
  *
  * @param {Object} req - The Express request object.
  * @param {Object} req.body - The validated request body (see countrySchema.updateCountryData).
@@ -16,9 +19,10 @@ import Boom from '@hapi/boom';
  * @param {string} [req.body.name] - The new name of the country.
  * @param {string} [req.body.iso2Code] - The new ISO 3166-1 alpha-2 code of the country.
  * @param {Object} res - The Express response object.
+ * @param {string} res.locals.newUserToken - The rotated JWT set by authAppVerifyToken.
  * @param {Function} next - The next middleware function in the Express.js stack.
  *
- * @returns {Promise<void>} - Sends a JSON response with the operation result.
+ * @returns {Promise<void>} - Sends a JSON response with the operation result and the rotated token.
  */
 export const updateOneCountry = async (req, res, next) => {
   // Extract the country id and the new data from the request body
@@ -39,6 +43,8 @@ export const updateOneCountry = async (req, res, next) => {
       return res.status(200).json({
         success: true,
         message: 'País actualizado exitosamente',
+        // Echo the token already rotated by authAppVerifyToken
+        authentication: res.locals.newUserToken,
       });
     }
   } catch (error) {
