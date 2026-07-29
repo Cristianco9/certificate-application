@@ -3,9 +3,12 @@
 // and 'ñ', via the Unicode letter category \p{L}),
 // spaces (to allow multi-word values such as 'Cédula de Ciudadanía' or
 // 'Tarjeta de Identidad'),
+// and parentheses (required by the ENUM value 'Permiso Especial de
+// Permanencia (PEP)', the only value in this catalog that carries
+// punctuation),
 // and is between 3 to 50 characters long, matching the
 // VARCHAR(50) column size defined in tipo_documento.nombre_tipodocumento
-export const documentTypeName = /^[\p{L} ]{3,50}$/u;
+export const documentTypeName = /^[\p{L} ()]{3,50}$/u;
 
 // The pattern ensures the document type id contains only numbers
 // and is between 1 to 10 digits long, matching the INTEGER primary key
