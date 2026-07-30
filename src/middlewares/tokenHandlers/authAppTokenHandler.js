@@ -41,6 +41,7 @@ export const authAppVerifyToken = (req, res, next) => {
     // Extract user data from the decoded token
     const userData = {
       id: decoded.id,
+      role: decoded.role
     };
 
     // Regenerate a new token for the user
@@ -48,6 +49,11 @@ export const authAppVerifyToken = (req, res, next) => {
 
     // Send the new token in a cookie to the client
     res.cookie('authentication', newUserToken, { httpOnly: true });
+
+    // Expose the same token via res.locals so downstream controllers
+    // can echo it back in the JSON body (e.g. for SPA clients that
+    // need the raw token value, not just the httpOnly cookie)
+    res.locals.newUserToken = newUserToken;
 
     // Attach user data to the request object for later use
     req.user = decoded;
