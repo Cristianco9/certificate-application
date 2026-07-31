@@ -1,9 +1,11 @@
 // Import the Router class from Express
 import { Router } from "express";
-// Import the UIRouter for handling user-interface-related routes
-import { UIRouter } from "./UIRouter.js";
-// Import the UIRouter for handling user-related routes
-import { userRouter } from "./userRouter.js";
+
+// Import the Services Routes for handle services related-routes
+import countryRouter from "./countryRouter";
+import academicLevelRouter from "./academicLevelRouter";
+import genderRouter from "./genderRouter";
+import roleRouter from "./roleRouter";
 
 // Function to set up API routes
 const routerApi = (app) => {
@@ -14,11 +16,11 @@ const routerApi = (app) => {
   // Use the router instance for the '/app/v1' path
   app.use('/app/v1', router);
 
-  // Use the userRouter for handling the root '/' route under '/app/v1/'
-  router.use('/', UIRouter);
-
-  // Use the userRouter for handling '/users' routes under '/app/v1'
-  router.use('/users', userRouter);
+  // Catalog of the sub-routes
+  router.use('/academic-levels', academicLevelRouter);
+  router.use('/genders', genderRouter);
+  router.use('/roles', roleRouter);
+  router.use('/countries', countryRouter);
 }
 
 // Export the routerApi function for use in other parts of the application
