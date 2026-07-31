@@ -3,6 +3,7 @@ import { Router } from "express";
 
 // Import the Services Routes for handle services related-routes
 import countryRouter from "./countryRouter";
+import academicLevelRouter from "./academicLevelRouter";
 
 // Function to set up API routes
 const routerApi = (app) => {
@@ -14,6 +15,7 @@ const routerApi = (app) => {
   app.use('/app/v1', router);
 
   // Catalog of the sub-routes
+  router.use('/academic-level', academicLevelRouter);
   router.use('/countries', countryRouter);
 }
 
