@@ -1,7 +1,5 @@
 // Import the Router class from Express
 import { Router } from "express";
-// Import the UIRouter for handling user-interface-related routes
-import { UIRouter } from "./UIRouter.js";
 // Import the UIRouter for handling user-related routes
 import { userRouter } from "./userRouter.js";
 
@@ -13,9 +11,6 @@ const routerApi = (app) => {
 
   // Use the router instance for the '/app/v1' path
   app.use('/app/v1', router);
-
-  // Use the userRouter for handling the root '/' route under '/app/v1/'
-  router.use('/', UIRouter);
 
   // Use the userRouter for handling '/users' routes under '/app/v1'
   router.use('/users', userRouter);
