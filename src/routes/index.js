@@ -5,6 +5,7 @@ import { Router } from "express";
 import countryRouter from "./countryRouter";
 import academicLevelRouter from "./academicLevelRouter";
 import genderRouter from "./genderRouter";
+import roleRouter from "./roleRouter";
 
 // Function to set up API routes
 const routerApi = (app) => {
@@ -16,8 +17,9 @@ const routerApi = (app) => {
   app.use('/app/v1', router);
 
   // Catalog of the sub-routes
-  router.use('/academic-level', academicLevelRouter);
-  router.use('/gender', genderRouter);
+  router.use('/academic-levels', academicLevelRouter);
+  router.use('/genders', genderRouter);
+  router.use('/roles', roleRouter);
   router.use('/countries', countryRouter);
 }
 
