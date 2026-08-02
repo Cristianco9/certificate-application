@@ -41,7 +41,7 @@ const joiName = Joi.string().pattern(academicLevelName).messages({
 // Backs AcademicLevel.abbreviation ('abreviatura_nivel_academico')
 const joiAbbreviation = Joi.string().pattern(academicLevelAbbreviation).messages({
   'string.base': 'La abreviatura del nivel académico debe ser una cadena de texto.',
-  'string.pattern.base': 'La abreviatura del nivel académico debe ser una de: Téc, Tgo, Lic, Esp, Mgs, Ph.D.',
+  'string.pattern.base': 'La abreviatura del nivel académico debe ser una de: Téc, Tgo, Lic, Esp, Mgs, Ph.D .',
 });
 
 // ── Schema export ────────────────────────────────────────────────────────────
