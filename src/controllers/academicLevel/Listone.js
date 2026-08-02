@@ -1,5 +1,5 @@
 // Import the AcademicLevelServices class to manage academic-level-related database operations
-import { AcademicLevelServices } from '../../services/academicLevelService.js';
+import { AcademicLevelServices } from '../../services/academicLevelServices.js';
 // Boom allows managing possible errors with HTTP-friendly error objects
 import Boom from '@hapi/boom';
 
