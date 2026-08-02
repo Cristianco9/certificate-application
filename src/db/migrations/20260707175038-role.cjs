@@ -27,7 +27,7 @@ module.exports = {
 
       // Role description
       descripcion_rol: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(70),
         allowNull: false,
       },
 
