@@ -30,7 +30,7 @@ export const Role = sequelize.define(ROLE_TABLE, {
   },
   // Role description
   description: {
-    type: DataTypes.STRING(50),
+    type: DataTypes.STRING(70),
     allowNull: false,
     field: 'descripcion_rol',
   },
