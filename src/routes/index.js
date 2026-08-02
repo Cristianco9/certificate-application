@@ -2,10 +2,10 @@
 import { Router } from "express";
 
 // Import the Services Routes for handle services related-routes
-import countryRouter from "./countryRouter";
-import academicLevelRouter from "./academicLevelRouter";
-import genderRouter from "./genderRouter";
-import roleRouter from "./roleRouter";
+import countryRouter from "./countryRouter.js";
+import academicLevelRouter from "./academicLevelRouter.js";
+import genderRouter from "./genderRouter.js";
+import roleRouter from "./roleRouter.js";
 
 // Function to set up API routes
 const routerApi = (app) => {
