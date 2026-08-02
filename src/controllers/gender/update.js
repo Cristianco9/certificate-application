@@ -1,5 +1,5 @@
 // Import the GenderServices class to manage gender-related database operations
-import { GenderServices } from '../../services/genderService.js';
+import { GenderServices } from '../../services/genderServices.js';
 // Boom allows managing possible errors with HTTP-friendly error objects
 import Boom from '@hapi/boom';
 
