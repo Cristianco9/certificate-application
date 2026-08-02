@@ -1,5 +1,5 @@
 // Import the CountryServices class to manage country-related database operations
-import { CountryServices } from '../../services/countryService.js';
+import { CountryServices } from '../../services/countryServices.js';
 // Boom allows managing possible errors with HTTP-friendly error objects
 import Boom from '@hapi/boom';
 
