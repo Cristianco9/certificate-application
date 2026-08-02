@@ -38,7 +38,7 @@ const joiName = Joi.string().pattern(roleName).messages({
 // Backs Role.description ('descripcion_rol'), free text
 const joiDescription = Joi.string().pattern(roleDescription).messages({
   'string.base': 'La descripción del rol debe ser una cadena de texto.',
-  'string.pattern.base': 'La descripción del rol debe tener entre 3 y 50 caracteres y contener solo letras, números, espacios y los signos . , -',
+  'string.pattern.base': 'La descripción del rol debe tener entre 3 y 70 caracteres y contener solo letras, números, espacios y los signos . , -',
 });
 
 // ── Schema export ────────────────────────────────────────────────────────────
