@@ -1,5 +1,5 @@
 // Import the RoleServices class to manage role-related database operations
-import { RoleServices } from '../../services/roleService.js';
+import { RoleServices } from '../../services/roleServices.js';
 // Boom allows managing possible errors with HTTP-friendly error objects
 import Boom from '@hapi/boom';
 
