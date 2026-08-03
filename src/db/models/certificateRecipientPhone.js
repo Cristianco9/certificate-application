@@ -69,9 +69,8 @@ export const CertificateRecipientPhone = sequelize.define(CERTIFICATE_RECIPIENT_
   tableName: CERTIFICATE_RECIPIENT_PHONE_TABLE,
   // Specify the model name
   modelName: 'certificateRecipientPhone',
-  // This table does not have timestamps; creation/update tracking
-  // lives on the Phone record itself
-  timestamps: false,
+  // Enable automatic timestamps
+  timestamps: true,
   // Composite unique constraint: the same phone cannot be linked to
   // the same certificate recipient more than once
   indexes: [
