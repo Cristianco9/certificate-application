@@ -105,7 +105,4 @@ export const Certificate = sequelize.define(CERTIFICATE_TABLE, {
   modelName: 'certificate',
   // Enable automatic timestamps
   timestamps: true,
-  // Map Sequelize timestamps to database columns
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_modificacion',
 });
