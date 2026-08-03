@@ -63,7 +63,4 @@ export const Subject = sequelize.define(SUBJECT_TABLE, {
   modelName: 'subject',
   // Enable automatic timestamps
   timestamps: true,
-  // Map Sequelize timestamps to database columns
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_modificacion',
 });
