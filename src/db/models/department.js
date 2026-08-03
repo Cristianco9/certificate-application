@@ -60,7 +60,4 @@ export const Department = sequelize.define(DEPARTMENT_TABLE, {
   modelName: 'department',
   // Enable automatic timestamps
   timestamps: true,
-  // Map Sequelize timestamps to database columns
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_modificacion',
 });
