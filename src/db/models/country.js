@@ -57,7 +57,4 @@ export const Country = sequelize.define(COUNTRY_TABLE, {
   modelName: 'country',
   // Enable automatic timestamps
   timestamps: true,
-  // Map Sequelize timestamps to database columns
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_modificacion',
 });
