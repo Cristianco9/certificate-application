@@ -70,9 +70,6 @@ export const Enrollment = sequelize.define(ENROLLMENT_TABLE, {
   modelName: 'enrollment',
   // Enable automatic timestamps
   timestamps: true,
-  // Map Sequelize timestamps to database columns
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_modificacion',
   // Composite unique constraint: a student can only be enrolled once in the same group
   indexes: [
     {
