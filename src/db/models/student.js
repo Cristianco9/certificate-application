@@ -125,9 +125,6 @@ export const Student = sequelize.define(STUDENT_TABLE, {
   modelName: 'student',
   // Enable automatic timestamps
   timestamps: true,
-  // Map Sequelize timestamps to database columns
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_modificacion',
   // Composite unique constraint to identify a student when no document number is available
   indexes: [
     {
