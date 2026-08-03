@@ -92,9 +92,6 @@ export const Group = sequelize.define(GROUP_TABLE, {
   modelName: 'group',
   // Enable automatic timestamps
   timestamps: true,
-  // Map Sequelize timestamps to database columns
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_modificacion',
   // Composite unique constraint: a group name must be unique per year, grade and institution
   indexes: [
     {
