@@ -51,7 +51,4 @@ export const DocumentType = sequelize.define(DOCUMENT_TYPE_TABLE, {
   modelName: 'documentType',
   // Enable automatic timestamps
   timestamps: true,
-  // Map Sequelize timestamps to database columns
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_modificacion',
 });
