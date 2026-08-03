@@ -70,11 +70,8 @@ export const UserPhone = sequelize.define(USER_PHONE_TABLE, {
   tableName: USER_PHONE_TABLE,
   // Specify the model name
   modelName: 'userPhone',
-  // This table does not have timestamps; creation/update tracking
-  // lives on the Phone record itself
-  timestamps: false,
-  // Composite unique constraint: the same phone cannot be linked to
-  // the same user more than once
+  // Enable automatic timestamps
+  timestamps: true,
   indexes: [
     {
       unique: true,
