@@ -57,7 +57,4 @@ export const Grade = sequelize.define(GRADE_TABLE, {
   modelName: 'grade',
   // Enable automatic timestamps
   timestamps: true,
-  // Map Sequelize timestamps to database columns
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_modificacion',
 });
