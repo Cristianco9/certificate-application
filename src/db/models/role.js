@@ -57,7 +57,4 @@ export const Role = sequelize.define(ROLE_TABLE, {
   modelName: 'role',
   // Enable automatic timestamps
   timestamps: true,
-  // Map Sequelize timestamps to database columns
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_modificacion',
 });
