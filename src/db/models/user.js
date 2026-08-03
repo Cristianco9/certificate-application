@@ -141,7 +141,4 @@ export const User = sequelize.define(USER_TABLE, {
   modelName: 'user',
   // Enable automatic timestamps
   timestamps: true,
-  // Map Sequelize timestamps to database columns
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_modificacion',
 });
