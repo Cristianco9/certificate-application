@@ -69,11 +69,8 @@ export const InstitutionPhone = sequelize.define(INSTITUTION_PHONE_TABLE, {
   tableName: INSTITUTION_PHONE_TABLE,
   // Specify the model name
   modelName: 'institutionPhone',
-  // This table does not have timestamps; creation/update tracking
-  // lives on the Phone record itself
-  timestamps: false,
-  // Composite unique constraint: the same phone cannot be linked to
-  // the same institution more than once
+  // Enable automatic timestamps
+  timestamps: true,
   indexes: [
     {
       unique: true,
