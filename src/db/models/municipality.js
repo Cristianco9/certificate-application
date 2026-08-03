@@ -60,7 +60,4 @@ export const Municipality = sequelize.define(MUNICIPALITY_TABLE, {
   modelName: 'municipality',
   // Enable automatic timestamps
   timestamps: true,
-  // Map Sequelize timestamps to database columns
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_modificacion',
 });
