@@ -68,9 +68,8 @@ export const StudentPhone = sequelize.define(STUDENT_PHONE_TABLE, {
   tableName: STUDENT_PHONE_TABLE,
   // Specify the model name
   modelName: 'studentPhone',
-  // This table does not have timestamps; creation/update tracking
-  // lives on the Phone record itself
-  timestamps: false,
+  // Enable automatic timestamps
+  timestamps: true,
   // Composite unique constraint: the same phone cannot be linked to
   // the same student more than once
   indexes: [
