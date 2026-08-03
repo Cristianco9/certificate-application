@@ -51,7 +51,4 @@ export const Phone = sequelize.define(PHONE_TABLE, {
   modelName: 'phone',
   // Enable automatic timestamps
   timestamps: true,
-  // Map Sequelize timestamps to database columns
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_modificacion',
 });
