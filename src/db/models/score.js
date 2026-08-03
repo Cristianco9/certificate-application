@@ -82,9 +82,6 @@ export const Score = sequelize.define(SCORE_TABLE, {
   modelName: 'score',
   // Enable automatic timestamps
   timestamps: true,
-  // Map Sequelize timestamps to database columns
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_modificacion',
   // Composite unique constraint: one score per subject per enrollment
   indexes: [
     {
