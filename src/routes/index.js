@@ -4,7 +4,7 @@ import { Router } from "express";
 // Import the Services Routes for handle services related-routes
 import countryRouter from "./countryRouter.js";
 import departmentRouter from "./departmentRouter.js";
-import municipalityRouter from "./munipalityRouter.js";
+import municipalityRouter from "./municipalityRouter.js";
 import academicLevelRouter from "./academicLevelRouter.js";
 import genderRouter from "./genderRouter.js";
 import roleRouter from "./roleRouter.js";
