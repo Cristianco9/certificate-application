@@ -1,0 +1,169 @@
+// ────────────────────────────────────────────────────────────────────────────
+// GROUP ROUTER
+// Entity: Group | Table: grupo
+//
+// Defines and exposes the HTTP endpoints used to manage the "group"
+// catalog. This is an administrative catalog: every route is protected and
+// only users whose JWT carries the appropriate role are allowed to operate
+// on it.
+//
+// Security pipeline applied to each route (in this strict order, per
+// AGENTS.md section 7):
+//   1. validatorHandler(schema, 'body') → validates the incoming payload
+//      (Joi). Never touches the database or downstream middlewares with
+//      unvalidated data.
+//   2. checkApiKey → verifies the client app's API key.
+//   3. authAppVerifyToken → validates the session JWT and rotates it.
+//   4. checkRole([...]) → authorizes only the allowed roles (when the
+//      route requires role-based control, applied right after the token
+//      check since it depends on the decoded JWT).
+//   5. controller → executes the business operation and builds the response.
+//
+// Mounted at: /app/v1/groups  (see src/routes/index.js)
+// ────────────────────────────────────────────────────────────────────────────
+
+import { Router } from 'express';
+
+// ── Middlewares ─────────────────────────────────────────────────────────────
+
+import { validatorHandler } from '../middlewares/validatorHandler.js';
+import { checkApiKey } from '../middlewares/apiAuthHandler.js';
+import { authAppVerifyToken } from '../middlewares/tokenHandlers/authAppTokenHandler.js';
+import { checkRole } from '../middlewares/checkRoleHandler.js';
+
+// ── Validation schema ───────────────────────────────────────────────────────
+
+import { groupSchema } from '../schemas/groupSchema.js';
+
+// ── Controllers ─────────────────────────────────────────────────────────────
+
+import { createOneGroup } from '../controllers/group/create.js';
+import { listAllGroups } from '../controllers/group/listAll.js';
+import { listOneGroup } from '../controllers/group/listOne.js';
+import { searchGroupsByName } from '../controllers/group/searchByName.js';
+import { listGroupsByInstitution } from '../controllers/group/listByInstitution.js';
+import { listGroupsByGradeAndYear } from '../controllers/group/listByGradeAndYear.js';
+import { updateOneGroup } from '../controllers/group/update.js';
+import { changeGroupStatus } from '../controllers/group/changeStatus.js';
+import { deleteOneGroup } from '../controllers/group/delete.js';
+
+// Create a new Router instance dedicated to the group resource
+const groupRouter = Router();
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POST /create  →  Create a new group
+// Body: { name, year, gradeId?, shift, institutionId?, status }
+// ─────────────────────────────────────────────────────────────────────────────
+groupRouter.post(
+  '/create',
+  validatorHandler(groupSchema.newGroupData, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  createOneGroup
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /list-all  →  List every group
+// Body: {} (no payload to validate)
+// ─────────────────────────────────────────────────────────────────────────────
+groupRouter.get(
+  '/list-all',
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
+  listAllGroups
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /list-one  →  Retrieve a single group by id
+// Body: { id }
+// ─────────────────────────────────────────────────────────────────────────────
+groupRouter.get(
+  '/list-one',
+  validatorHandler(groupSchema.getGroupById, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  listOneGroup
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POST /search-by-name  →  Search groups by partial name
+// Body: { partialName }
+// ─────────────────────────────────────────────────────────────────────────────
+groupRouter.post(
+  '/search-by-name',
+  validatorHandler(groupSchema.searchGroupsByName, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  searchGroupsByName
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /get-by-institution  →  Retrieve every group belonging to a given institution
+// Body: { institutionId }
+// ─────────────────────────────────────────────────────────────────────────────
+groupRouter.get(
+  '/get-by-institution',
+  validatorHandler(groupSchema.listGroupsByInstitution, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  listGroupsByInstitution
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /get-by-grade-and-year  →  Retrieve groups matching a grade and academic year
+// Body: { gradeId, year }
+// ─────────────────────────────────────────────────────────────────────────────
+groupRouter.get(
+  '/get-by-grade-and-year',
+  validatorHandler(groupSchema.listGroupsByGradeAndYear, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  listGroupsByGradeAndYear
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PATCH /update  →  Update an existing group
+// Body: { id, name?, year?, gradeId?, shift?, institutionId?, status? }
+// ─────────────────────────────────────────────────────────────────────────────
+groupRouter.patch(
+  '/update',
+  validatorHandler(groupSchema.updateGroupData, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  updateOneGroup
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PATCH /change-status  →  Change the status of a group (ACTIVO/INACTIVO)
+// Body: { id, status }
+// ─────────────────────────────────────────────────────────────────────────────
+groupRouter.patch(
+  '/change-status',
+  validatorHandler(groupSchema.changeGroupStatus, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  changeGroupStatus
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DELETE /delete  →  Delete a group by id
+// Body: { id }
+// ─────────────────────────────────────────────────────────────────────────────
+groupRouter.delete(
+  '/delete',
+  validatorHandler(groupSchema.deleteGroup, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  deleteOneGroup
+);
+
+export default groupRouter;
