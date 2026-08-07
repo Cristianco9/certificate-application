@@ -9,6 +9,7 @@ import academicLevelRouter from "./academicLevelRouter.js";
 import genderRouter from "./genderRouter.js";
 import roleRouter from "./roleRouter.js";
 import documentTypeRouter from "./documentTypeRouter.js";
+import gradeRouter from "./gradeRouter.js";
 import institutionRouter from "./institutionRouter.js";
 import groupRouter from "./groupRouter.js";
 
@@ -26,6 +27,7 @@ const routerApi = (app) => {
   router.use('/genders', genderRouter);
   router.use('/roles', roleRouter);
   router.use('/document-types', documentTypeRouter);
+  router.use('/grades', gradeRouter);
   router.use('/institutions', institutionRouter);
   router.use('/groups', groupRouter);
   router.use('/countries', countryRouter);
