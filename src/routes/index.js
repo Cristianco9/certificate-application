@@ -10,6 +10,7 @@ import genderRouter from "./genderRouter.js";
 import roleRouter from "./roleRouter.js";
 import documentTypeRouter from "./documentTypeRouter.js";
 import institutionRouter from "./institutionRouter.js";
+import groupRouter from "./groupRouter.js";
 
 // Function to set up API routes
 const routerApi = (app) => {
@@ -26,6 +27,7 @@ const routerApi = (app) => {
   router.use('/roles', roleRouter);
   router.use('/document-types', documentTypeRouter);
   router.use('/institutions', institutionRouter);
+  router.use('/groups', groupRouter);
   router.use('/countries', countryRouter);
   router.use('/departments', departmentRouter);
   router.use('/municipalities', municipalityRouter);
