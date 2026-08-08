@@ -61,8 +61,8 @@ const certificateRouter = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 certificateRouter.post(
   '/create',
-  validatorHandler(certificateSchema.newCertificateData, 'body'),
   checkApiKey,
+  validatorHandler(certificateSchema.newCertificateData, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   createOneCertificate
@@ -74,8 +74,8 @@ certificateRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 certificateRouter.patch(
   '/update',
-  validatorHandler(certificateSchema.updateCertificateData, 'body'),
   checkApiKey,
+  validatorHandler(certificateSchema.updateCertificateData, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   updateOneCertificate
@@ -87,8 +87,8 @@ certificateRouter.patch(
 // ─────────────────────────────────────────────────────────────────────────────
 certificateRouter.post(
   '/reprint',
-  validatorHandler(certificateSchema.reprintCertificate, 'body'),
   checkApiKey,
+  validatorHandler(certificateSchema.reprintCertificate, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   reprintCertificate
@@ -100,8 +100,8 @@ certificateRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 certificateRouter.post(
   '/void',
-  validatorHandler(certificateSchema.voidCertificate, 'body'),
   checkApiKey,
+  validatorHandler(certificateSchema.voidCertificate, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   voidCertificate
@@ -113,8 +113,8 @@ certificateRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 certificateRouter.delete(
   '/delete',
-  validatorHandler(certificateSchema.deleteCertificate, 'body'),
   checkApiKey,
+  validatorHandler(certificateSchema.deleteCertificate, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   deleteOneCertificate
@@ -138,8 +138,8 @@ certificateRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 certificateRouter.get(
   '/list-one',
-  validatorHandler(certificateSchema.getCertificateById, 'body'),
   checkApiKey,
+  validatorHandler(certificateSchema.getCertificateById, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   listOneCertificate
@@ -151,8 +151,8 @@ certificateRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 certificateRouter.post(
   '/get-by-act-number',
-  validatorHandler(certificateSchema.getCertificateByActNumber, 'body'),
   checkApiKey,
+  validatorHandler(certificateSchema.getCertificateByActNumber, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   getCertificateByActNumber
@@ -164,8 +164,8 @@ certificateRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 certificateRouter.post(
   '/get-by-enrollment',
-  validatorHandler(certificateSchema.getCertificateByEnrollment, 'body'),
   checkApiKey,
+  validatorHandler(certificateSchema.getCertificateByEnrollment, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   getCertificateByEnrollment
@@ -177,8 +177,8 @@ certificateRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 certificateRouter.post(
   '/get-by-user',
-  validatorHandler(certificateSchema.listCertificatesByUser, 'body'),
   checkApiKey,
+  validatorHandler(certificateSchema.listCertificatesByUser, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   listCertificatesByUser
@@ -190,8 +190,8 @@ certificateRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 certificateRouter.post(
   '/get-by-institution',
-  validatorHandler(certificateSchema.listCertificatesByInstitution, 'body'),
   checkApiKey,
+  validatorHandler(certificateSchema.listCertificatesByInstitution, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   listCertificatesByInstitution
@@ -203,8 +203,8 @@ certificateRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 certificateRouter.post(
   '/get-by-status',
-  validatorHandler(certificateSchema.listCertificatesByStatus, 'body'),
   checkApiKey,
+  validatorHandler(certificateSchema.listCertificatesByStatus, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   listCertificatesByStatus
@@ -216,8 +216,8 @@ certificateRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 certificateRouter.post(
   '/get-by-date-range',
-  validatorHandler(certificateSchema.listCertificatesByDateRange, 'body'),
   checkApiKey,
+  validatorHandler(certificateSchema.listCertificatesByDateRange, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   listCertificatesByDateRange
