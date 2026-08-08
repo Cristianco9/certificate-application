@@ -8,13 +8,10 @@ import roleRouter from "./roleRouter.js";
 import documentTypeRouter from "./documentTypeRouter.js";
 import gradeRouter from "./gradeRouter.js";
 import institutionRouter from "./institutionRouter.js";
-<<<<<<< HEAD
 import groupRouter from "./groupRouter.js";
-=======
 import countryRouter from "./countryRouter.js";
 import departmentRouter from "./departmentRouter.js";
 import municipalityRouter from "./municipalityRouter.js";
->>>>>>> main
 
 // Function to set up API routes
 const routerApi = (app) => {
