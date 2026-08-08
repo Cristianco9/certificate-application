@@ -60,14 +60,14 @@ const municipalityRouter = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 municipalityRouter.post(
   '/create',
-  // Step 1: validate the creation payload
-  validatorHandler(municipalitySchema.newMunicipalityData, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the creation payload
+  validatorHandler(municipalitySchema.newMunicipalityData, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   createOneMunicipality
 );
@@ -78,13 +78,13 @@ municipalityRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 municipalityRouter.get(
   '/list-all',
-  // Step 1: no schema — this endpoint takes no input parameters
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: no schema — this endpoint takes no input parameters
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   // Step 5: delegate to the controller
   listAllMunicipalities
 );
@@ -95,14 +95,14 @@ municipalityRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 municipalityRouter.get(
   '/list-one',
-  // Step 1: validate that a valid id was provided
-  validatorHandler(municipalitySchema.getMunicipalityById, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate that a valid id was provided
+  validatorHandler(municipalitySchema.getMunicipalityById, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   listOneMunicipality
 );
@@ -113,14 +113,14 @@ municipalityRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 municipalityRouter.post(
   '/search-by-name',
-  // Step 1: validate the partial search text
-  validatorHandler(municipalitySchema.searchMunicipalitiesByName, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the partial search text
+  validatorHandler(municipalitySchema.searchMunicipalitiesByName, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   listMunicipalitiesByPartialName
 );
@@ -133,14 +133,14 @@ municipalityRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 municipalityRouter.get(
   '/get-by-department',
-  // Step 1: validate the department id
-  validatorHandler(municipalitySchema.listMunicipalitiesByDepartment, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the department id
+  validatorHandler(municipalitySchema.listMunicipalitiesByDepartment, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   listMunicipalitiesByDepartment
 );
@@ -151,14 +151,14 @@ municipalityRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 municipalityRouter.patch(
   '/update',
-  // Step 1: validate the update payload
-  validatorHandler(municipalitySchema.updateMunicipalityData, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the update payload
+  validatorHandler(municipalitySchema.updateMunicipalityData, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   updateOneMunicipality
 );
@@ -169,14 +169,14 @@ municipalityRouter.patch(
 // ─────────────────────────────────────────────────────────────────────────────
 municipalityRouter.delete(
   '/delete',
-  // Step 1: validate that a valid id was provided
-  validatorHandler(municipalitySchema.deleteMunicipality, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate that a valid id was provided
+  validatorHandler(municipalitySchema.deleteMunicipality, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   deleteOneMunicipality
 );
