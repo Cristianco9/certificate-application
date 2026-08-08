@@ -56,8 +56,8 @@ const groupRouter = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 groupRouter.post(
   '/create',
-  validatorHandler(groupSchema.newGroupData, 'body'),
   checkApiKey,
+  validatorHandler(groupSchema.newGroupData, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   createOneGroup
@@ -81,8 +81,8 @@ groupRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 groupRouter.get(
   '/list-one',
-  validatorHandler(groupSchema.getGroupById, 'body'),
   checkApiKey,
+  validatorHandler(groupSchema.getGroupById, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   listOneGroup
@@ -94,8 +94,8 @@ groupRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 groupRouter.post(
   '/search-by-name',
-  validatorHandler(groupSchema.searchGroupsByName, 'body'),
   checkApiKey,
+  validatorHandler(groupSchema.searchGroupsByName, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   searchGroupsByName
@@ -107,8 +107,8 @@ groupRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 groupRouter.get(
   '/get-by-institution',
-  validatorHandler(groupSchema.listGroupsByInstitution, 'body'),
   checkApiKey,
+  validatorHandler(groupSchema.listGroupsByInstitution, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   listGroupsByInstitution
@@ -120,8 +120,8 @@ groupRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 groupRouter.get(
   '/get-by-grade-and-year',
-  validatorHandler(groupSchema.listGroupsByGradeAndYear, 'body'),
   checkApiKey,
+  validatorHandler(groupSchema.listGroupsByGradeAndYear, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   listGroupsByGradeAndYear
@@ -133,8 +133,8 @@ groupRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 groupRouter.patch(
   '/update',
-  validatorHandler(groupSchema.updateGroupData, 'body'),
   checkApiKey,
+  validatorHandler(groupSchema.updateGroupData, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   updateOneGroup
@@ -146,8 +146,8 @@ groupRouter.patch(
 // ─────────────────────────────────────────────────────────────────────────────
 groupRouter.patch(
   '/change-status',
-  validatorHandler(groupSchema.changeGroupStatus, 'body'),
   checkApiKey,
+  validatorHandler(groupSchema.changeGroupStatus, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   changeGroupStatus
@@ -159,8 +159,8 @@ groupRouter.patch(
 // ─────────────────────────────────────────────────────────────────────────────
 groupRouter.delete(
   '/delete',
-  validatorHandler(groupSchema.deleteGroup, 'body'),
   checkApiKey,
+  validatorHandler(groupSchema.deleteGroup, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   deleteOneGroup
