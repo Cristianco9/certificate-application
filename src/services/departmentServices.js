@@ -1,5 +1,7 @@
 // Import the Department data model
 import { Department } from '../db/models/department.js';
+// Import the Country model
+import { Country } from '../db/models/country.js';
 // Import the Municipality model to enforce the delete-guard business rule
 import { Municipality } from '../db/models/municipality.js';
 // Import the Sequelize operators to build advanced query conditions
@@ -25,6 +27,11 @@ import Boom from '@hapi/boom';
  * uniqueness scoped to the parent country as a business rule at the
  * service layer, per AGENTS.md section 6 ('Antes de mutar datos, se
  * valida la existencia/condición previa').
+ *
+ * Every method that returns a Department record (listOne, listAll,
+ * listByPartialName, listByCountry) embeds its parent country as a
+ * nested { id, name } object under 'country', rather than exposing the
+ * raw 'countryId' foreign key integer.
  */
 export class DepartmentServices {
 
@@ -41,15 +48,24 @@ export class DepartmentServices {
    * @returns {Promise<{status: string}>}
    */
   async createOne(newDepartment) {
-
     try {
+      // Verify the parent country exists before creating a department under it
+      const existingCountry = await Country.findOne({
+        where: { id: newDepartment.countryId }
+      });
+
+      if (!existingCountry) {
+        throw Boom.notFound('The provided country does not exist');
+      }
 
       // Normalize the name before persisting it (trim surrounding whitespace)
       const normalizedName = DepartmentServices.formatName(newDepartment.name);
 
       // Verify a department with the same name does not already exist
       // for the given country
-      const existingDepartment = await this._findByNameAndCountry(normalizedName, newDepartment.countryId);
+      const existingDepartment = await this._findByNameAndCountry(
+        normalizedName, newDepartment.countryId
+      );
 
       if (existingDepartment) {
         throw Boom.conflict('A department with the provided name already exists for that country');
@@ -91,6 +107,18 @@ export class DepartmentServices {
 
       if (!existingDepartment) {
         throw Boom.notFound('Department not found');
+      }
+
+      // If a new country is provided, verify it actually exists before
+      // reassigning the department to it
+      if (newDepartmentData.countryId) {
+        const existingCountry = await Country.findOne({
+          where: { id: newDepartmentData.countryId }
+        });
+
+        if (!existingCountry) {
+          throw Boom.notFound('The provided country does not exist');
+        }
       }
 
       // Normalize the name before persisting it, when provided
@@ -178,10 +206,11 @@ export class DepartmentServices {
   }
 
   /**
-   * Retrieves a single department by its id.
+   * Retrieves a single department by its id, embedding its parent
+   * country as a nested { id, name } object.
    *
    * @param {number} departmentId - The id of the department to retrieve.
-   * @returns {Promise<Department>} - The department record.
+   * @returns {Promise<Object>} - The formatted department record.
    */
   async listOne(departmentId) {
 
@@ -190,13 +219,16 @@ export class DepartmentServices {
     }
 
     try {
-      const theDepartment = await this._findById(departmentId);
+      const theDepartment = await Department.findOne({
+        where: { id: departmentId },
+        include: DepartmentServices.COUNTRY_INCLUDE,
+      });
 
       if (!theDepartment) {
         throw Boom.notFound('Department not found');
       }
 
-      return theDepartment;
+      return DepartmentServices._formatDepartment(theDepartment);
 
     } catch (error) {
       throw Boom.boomify(error, { message: 'Unable to find the department' });
@@ -204,18 +236,20 @@ export class DepartmentServices {
   }
 
   /**
-   * Retrieves all department records, ordered alphabetically by name.
+   * Retrieves all department records, ordered alphabetically by name,
+   * each with its parent country embedded as a nested { id, name } object.
    *
-   * @returns {Promise<Department[]>} - The list of department records.
+   * @returns {Promise<Object[]>} - The formatted list of department records.
    */
   async listAll() {
 
     try {
       const allDepartments = await Department.findAll({
-        order: [['name', 'ASC']]
+        order: [['name', 'ASC']],
+        include: DepartmentServices.COUNTRY_INCLUDE,
       });
 
-      return allDepartments;
+      return allDepartments.map(DepartmentServices._formatDepartment);
 
     } catch (error) {
       throw Boom.boomify(error, { message: 'Unable to find the departments' });
@@ -223,12 +257,13 @@ export class DepartmentServices {
   }
 
   /**
-   * Searches departments whose name partially matches the given text.
+   * Searches departments whose name partially matches the given text,
+   * each with its parent country embedded as a nested { id, name } object.
    * Supports the multi-criteria search requirement described in
    * context.md (e.g. 'Nombre parcial').
    *
    * @param {string} partialName - The partial name to search for.
-   * @returns {Promise<Department[]>} - The matching department records.
+   * @returns {Promise<Object[]>} - The formatted, matching department records.
    */
   async listByPartialName(partialName) {
 
@@ -241,10 +276,11 @@ export class DepartmentServices {
         where: {
           name: { [Op.like]: `%${partialName}%` }
         },
-        order: [['name', 'ASC']]
+        order: [['name', 'ASC']],
+        include: DepartmentServices.COUNTRY_INCLUDE,
       });
 
-      return matchingDepartments;
+      return matchingDepartments.map(DepartmentServices._formatDepartment);
 
     } catch (error) {
       throw Boom.boomify(error, { message: 'Unable to search the departments' });
@@ -252,11 +288,12 @@ export class DepartmentServices {
   }
 
   /**
-   * Retrieves all departments belonging to a given country. Useful for
-   * cascading selects in the UI (e.g. country -> department -> municipality).
+   * Retrieves all departments belonging to a given country, each with
+   * its parent country embedded as a nested { id, name } object. Useful
+   * for cascading selects in the UI (e.g. country -> department -> municipality).
    *
    * @param {number} countryId - The id of the country.
-   * @returns {Promise<Department[]>} - The matching department records.
+   * @returns {Promise<Object[]>} - The formatted, matching department records.
    */
   async listByCountry(countryId) {
 
@@ -267,10 +304,11 @@ export class DepartmentServices {
     try {
       const departmentsByCountry = await Department.findAll({
         where: { countryId },
-        order: [['name', 'ASC']]
+        order: [['name', 'ASC']],
+        include: DepartmentServices.COUNTRY_INCLUDE,
       });
 
-      return departmentsByCountry;
+      return departmentsByCountry.map(DepartmentServices._formatDepartment);
 
     } catch (error) {
       throw Boom.boomify(error, { message: 'Unable to find the departments for the given country' });
@@ -287,7 +325,11 @@ export class DepartmentServices {
   // ==========================================================
 
   /**
-   * Finds a department by its primary key.
+   * Finds a department by its primary key. Used internally by write
+   * operations (updateOne/deleteOne) that only need to check existence,
+   * so it intentionally does NOT eager-load the country association —
+   * callers that need the formatted, nested-country shape should go
+   * through listOne() instead.
    *
    * @private
    * @param {number} departmentId - The id of the department to find.
@@ -334,9 +376,43 @@ export class DepartmentServices {
   // ==========================================================
   // STATIC UTILITIES
   // Stateless helpers that do not depend on instance data, and are
-  // therefore exposed as static methods (callable as
-  // DepartmentServices.formatName(...) without instantiating the class).
+  // therefore exposed as static methods. The ones prefixed with '_'
+  // are intended strictly for internal use within this class (mirroring
+  // the instance-method privacy convention), since ecmaVersion 12
+  // (ES2021) does not support true private static members without
+  // '#' fields.
   // ==========================================================
+
+  /**
+   * The Sequelize include shared by every read method that needs to
+   * embed the parent country as a nested object rather than a raw
+   * countryId integer.
+   *
+   * @static
+   */
+  static COUNTRY_INCLUDE = [
+    { model: Country, as: 'country', attributes: ['id', 'name'] },
+  ];
+
+  /**
+   * Reshapes a Department Sequelize instance (with its 'country'
+   * association eagerly loaded via COUNTRY_INCLUDE) into a plain object
+   * where the raw 'countryId' foreign key is replaced by a nested
+   * { id, name } object under 'country'.
+   *
+   * @private
+   * @static
+   * @param {Department} department - The Sequelize Department instance to format.
+   * @returns {Object} - The formatted, plain department object.
+   */
+  static _formatDepartment(department) {
+    const { countryId, country, ...rest } = department.toJSON();
+
+    return {
+      ...rest,
+      country: country ?? null,
+    };
+  }
 
   /**
    * Normalizes a department name to the format expected by the
