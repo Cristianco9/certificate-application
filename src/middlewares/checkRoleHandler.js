@@ -2,7 +2,16 @@ import { verifyToken } from '../utils/auth/tokenVerify.js';
 import { config } from '../config/config.js';
 
 /**
- * Middleware to check user roles based on the provided token.
+ * Middleware to check user roles based on the decoded JWT payload.
+ *
+ * This middleware assumes it always runs AFTER authAppVerifyToken in the
+ * route pipeline (see AGENTS.md section 7): authAppVerifyToken is the one
+ * responsible for reading the 'authentication' httpOnly cookie, verifying
+ * the JWT, and setting req.user = decoded. checkRole does NOT re-verify
+ * the token itself — it only authorizes based on the role already decoded
+ * upstream. This also means the role check only works correctly if the
+ * signed token payload actually includes a 'role' claim (see
+ * UserServices.login, which signs { id, role } on successful login).
  *
  * @param {Array<string>} roles
  * - The roles that are allowed to access the route.
@@ -11,34 +20,23 @@ import { config } from '../config/config.js';
  */
 export const checkRole = (roles) => {
   return (req, res, next) => {
-    // Extract the authentication token from the request body
-    const authenticationToken = req.body.authentication;
-
-    // Check if the token is provided
-    if (!authenticationToken) {
+    // req.user is populated by authAppVerifyToken upstream; if it's
+    // missing, either the pipeline order is wrong or the session was
+    // never established
+    if (!req.user) {
       return res.status(403).json({
         error: 'Access Denied: No authentication token provided.'
       });
     }
 
-    try {
-      // Verify the token
-      const user = verifyToken(authenticationToken, config.officialsAppJwtKey);
-
-      // Check if user role is valid and authorized
-      if (!user || !user.role || !roles.includes(user.role)) {
-        return res.status(403).json({
-          error: 'Unauthorized: Insufficient permissions.'
-        });
-      }
-
-      // Attach user information to the request object
-      req.user = user;
-      next();
-    } catch (error) {
-      return res.status(401).json({
-        error: 'Token Invalid: ' + error.message
+    // Check if the user's role is present and authorized for this route
+    if (!req.user.role || !roles.includes(req.user.role)) {
+      return res.status(403).json({
+        error: 'Unauthorized: Insufficient permissions.'
       });
     }
+
+    // req.user is already attached by authAppVerifyToken; nothing further to set
+    next();
   };
 };
