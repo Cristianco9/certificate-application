@@ -20,6 +20,7 @@ import Joi from 'joi';
 
 import {
   userId,
+  username,
   userFirstName,
   userLastName,
   userDocumentNumber,
@@ -39,6 +40,12 @@ import {
 const joiId = Joi.string().pattern(userId).messages({
   'string.base': 'El id debe ser una cadena de texto.',
   'string.pattern.base': 'El id debe contener solo dígitos (1 a 10 dígitos).',
+});
+
+// backs User.username() ('alias_usuario').
+const joiUsername = Joi.string().pattern(username).messages({
+  'string.base': 'El nombre de usuario debe ser una cadena de texto.',
+  'string.pattern.base': 'El nombre de usuario debe tener entre 3 y 30 caracteres (letras, números, puntos, guiones).',
 });
 
 // Backs User.firstName ('nombres_usuario').
@@ -122,20 +129,20 @@ export const userSchema = {
   // GET /users/list-all → no input parameters, no schema applied.
 
   // POST /users/login (body: { credentials: { username, password } })
-  // Validates the login credentials. The service uses 'username' and 'password'.
-  // Note: In the current implementation, 'username' is actually the email.
+  // Validates the login credentials against UserServices.login(username, password).
   loginCredentials: Joi.object({
     credentials: Joi.object({
-      username: joiEmail.required(),
+      username: joiUsername.required(),
       password: joiPassword.required(),
     }).required(),
   }),
 
-  // POST /users (body: { firstName, lastName, documentTypeId, documentNumber,
+  // POST /users (body: { username, firstName, lastName, documentTypeId, documentNumber,
   // municipalityId, roleId, academicLevelId, email, status, password, genderId, lastLogin? })
   // Validates UserServices.createOne(newUser). All fields except lastLogin are required.
   // lastLogin is optional because it can be set to a default (e.g., current date) in the service.
   newUserData: Joi.object({
+    username: joiUsername.required(),
     firstName: joiFirstName.required(),
     lastName: joiLastName.required(),
     documentTypeId: joiDocumentTypeId.required(),
@@ -150,12 +157,16 @@ export const userSchema = {
     lastLogin: joiLastLogin,
   }),
 
-  // PATCH /users (body: { id, firstName?, lastName?, documentTypeId?, documentNumber?,
-  // municipalityId?, roleId?, academicLevelId?, email?, status?, password?, genderId?, lastLogin? })
+  // PATCH /users (body: { id, username?, firstName?, lastName?, documentTypeId?, documentNumber?,
+  // municipalityId?, roleId?, academicLevelId?, email?, status?, genderId?, lastLogin? })
   // Validates UserServices.updateOne(userId, newUserData).
-  // 'id' is always required; at least one other field must be present.
+  // 'password' is intentionally NOT included here: UserServices.updateOne rejects it
+  // outright, since password changes must go through changePasswordData or
+  // resetPasswordData instead. 'id' is always required; at least one other field
+  // must be present.
   updateUserData: Joi.object({
     id: joiId.required(),
+    username: joiUsername,
     firstName: joiFirstName,
     lastName: joiLastName,
     documentTypeId: joiDocumentTypeId,
@@ -165,15 +176,26 @@ export const userSchema = {
     academicLevelId: joiAcademicLevelId,
     email: joiEmail,
     status: joiStatus,
-    password: joiPassword,
     genderId: joiGenderId,
     lastLogin: joiLastLogin,
   }).or(
-    'firstName', 'lastName', 'documentTypeId', 'documentNumber',
-    'municipalityId', 'roleId', 'academicLevelId', 'email',
-    'status', 'password', 'genderId', 'lastLogin'
+    'username', 'firstName', 'lastName', 'documentTypeId', 'documentNumber',
+    'municipalityId', 'roleId', 'academicLevelId', 'email','status',
+    'genderId', 'lastLogin'
   ).messages({
     'object.missing': 'Debe proporcionar al menos un campo para actualizar el usuario.',
+  }),
+
+  // POST /users/reset-password (body: { email, documentNumber, newPassword })
+  // Validates UserServices.resetPassword(email, documentNumber, newPassword).
+  // Used by a user who cannot log in and does not remember their current
+  // password. No session/token is involved: identity is verified by matching
+  // email + documentNumber to the SAME user record before the password is
+  // replaced. All three fields are required.
+  resetPasswordData: Joi.object({
+    email: joiEmail.required(),
+    documentNumber: joiDocumentNumber.required(),
+    newPassword: joiPassword.required(),
   }),
 
   // DELETE /users (body: { id })
