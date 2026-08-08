@@ -60,14 +60,14 @@ const departmentRouter = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 departmentRouter.post(
   '/create',
-  // Step 1: validate the creation payload
-  validatorHandler(departmentSchema.newDepartmentData, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the creation payload
+  validatorHandler(departmentSchema.newDepartmentData, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   createOneDepartment
 );
@@ -78,13 +78,13 @@ departmentRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 departmentRouter.get(
   '/list-all',
-  // Step 1: no schema — this endpoint takes no input parameters
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: no schema — this endpoint takes no input parameters
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   // Step 5: delegate to the controller
   listAllDepartments
 );
@@ -95,14 +95,14 @@ departmentRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 departmentRouter.get(
   '/list-one',
-  // Step 1: validate that a valid id was provided
-  validatorHandler(departmentSchema.getDepartmentById, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate that a valid id was provided
+  validatorHandler(departmentSchema.getDepartmentById, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   listOneDepartment
 );
@@ -113,14 +113,14 @@ departmentRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 departmentRouter.post(
   '/search-by-name',
-  // Step 1: validate the partial search text
-  validatorHandler(departmentSchema.searchDepartmentsByName, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the partial search text
+  validatorHandler(departmentSchema.searchDepartmentsByName, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   listDepartmentsByPartialName
 );
@@ -133,14 +133,14 @@ departmentRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 departmentRouter.get(
   '/get-by-country',
-  // Step 1: validate the country id
-  validatorHandler(departmentSchema.listDepartmentsByCountry, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the country id
+  validatorHandler(departmentSchema.listDepartmentsByCountry, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   listDepartmentsByCountry
 );
@@ -151,14 +151,14 @@ departmentRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 departmentRouter.patch(
   '/update',
-  // Step 1: validate the update payload
-  validatorHandler(departmentSchema.updateDepartmentData, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the update payload
+  validatorHandler(departmentSchema.updateDepartmentData, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   updateOneDepartment
 );
@@ -169,14 +169,14 @@ departmentRouter.patch(
 // ─────────────────────────────────────────────────────────────────────────────
 departmentRouter.delete(
   '/delete',
-  // Step 1: validate that a valid id was provided
-  validatorHandler(departmentSchema.deleteDepartment, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate that a valid id was provided
+  validatorHandler(departmentSchema.deleteDepartment, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   deleteOneDepartment
 );
