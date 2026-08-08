@@ -54,8 +54,8 @@ const gradeRouter = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 gradeRouter.post(
   '/create',
-  validatorHandler(gradeSchema.newGradeData, 'body'),
   checkApiKey,
+  validatorHandler(gradeSchema.newGradeData, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   createOneGrade
@@ -79,8 +79,8 @@ gradeRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 gradeRouter.get(
   '/list-one',
-  validatorHandler(gradeSchema.getGradeById, 'body'),
   checkApiKey,
+  validatorHandler(gradeSchema.getGradeById, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   listOneGrade
@@ -92,8 +92,8 @@ gradeRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 gradeRouter.post(
   '/get-by-name',
-  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   checkApiKey,
+  validatorHandler(gradeSchema.getGradeByName, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   getGradeByName
@@ -105,8 +105,8 @@ gradeRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 gradeRouter.post(
   '/search-by-description',
-  validatorHandler(gradeSchema.searchGradesByDescription, 'body'),
   checkApiKey,
+  validatorHandler(gradeSchema.searchGradesByDescription, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   searchGradesByDescription
@@ -118,8 +118,8 @@ gradeRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 gradeRouter.patch(
   '/update',
-  validatorHandler(gradeSchema.updateGradeData, 'body'),
   checkApiKey,
+  validatorHandler(gradeSchema.updateGradeData, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   updateOneGrade
@@ -131,8 +131,8 @@ gradeRouter.patch(
 // ─────────────────────────────────────────────────────────────────────────────
 gradeRouter.delete(
   '/delete',
-  validatorHandler(gradeSchema.deleteGrade, 'body'),
   checkApiKey,
+  validatorHandler(gradeSchema.deleteGrade, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   deleteOneGrade
