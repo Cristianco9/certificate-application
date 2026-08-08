@@ -55,7 +55,7 @@ const userRouter = Router();
 userRouter.post(
   '/login',
   validatorHandler(userSchema.loginCredentials, 'body'),
-  // No checkApiKey or authAppVerifyToken because this is the entry point
+  checkApiKey,
   login
 );
 
@@ -81,7 +81,7 @@ userRouter.get(
   '/list-all',
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster','Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
+  checkRole(['Máster', 'Administrador']),
   listAllUsers
 );
 
