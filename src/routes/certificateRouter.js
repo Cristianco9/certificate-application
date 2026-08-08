@@ -64,7 +64,7 @@ certificateRouter.post(
   validatorHandler(certificateSchema.newCertificateData, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   createOneCertificate
 );
 
@@ -77,7 +77,7 @@ certificateRouter.patch(
   validatorHandler(certificateSchema.updateCertificateData, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   updateOneCertificate
 );
 
@@ -128,7 +128,7 @@ certificateRouter.get(
   '/list-all',
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   listAllCertificates
 );
 
@@ -141,7 +141,7 @@ certificateRouter.get(
   validatorHandler(certificateSchema.getCertificateById, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   listOneCertificate
 );
 
