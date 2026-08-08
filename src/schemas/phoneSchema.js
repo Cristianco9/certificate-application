@@ -18,6 +18,7 @@ import Joi from 'joi';
 import {
   phoneId,
   phoneNumber,
+  partialPhoneNumber
 } from '../utils/RegEx/phoneRegEx.js';
 
 // ── Primitive Joi types ─────────────────────────────────────────────────────
@@ -33,6 +34,11 @@ const joiId = Joi.string().pattern(phoneId).messages({
 const joiNumber = Joi.string().pattern(phoneNumber).messages({
   'string.base': 'El número de teléfono debe ser una cadena de texto.',
   'string.pattern.base': 'El número de teléfono debe ser un móvil colombiano (10 dígitos, comienza con 3) o un fijo (7 a 10 dígitos, con o sin +57).',
+});
+
+const joiPartialNumber = Joi.string().pattern(partialPhoneNumber).messages({
+  'string.base': 'El número parcial debe ser una cadena de texto.',
+  'string.pattern.base': 'Solo se permiten dígitos, opcionalmente precedidos por +57.',
 });
 
 // ── Schema export ────────────────────────────────────────────────────────────
@@ -56,7 +62,7 @@ export const phoneSchema = {
   // POST /phones/search-by-number (body: { partialNumber })
   // Validates PhoneServices.listByPartialNumber(partialNumber)
   searchPhonesByNumber: Joi.object({
-    partialNumber: joiNumber.required(),
+    partialNumber: joiPartialNumber.required(),
   }),
 
   // POST /phones (body: { number })
