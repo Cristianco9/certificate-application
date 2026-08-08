@@ -1,11 +1,12 @@
 // ────────────────────────────────────────────────────────────────────────────
-// GRADE ROUTER
-// Entity: Grade | Table: grado
+// PHONE ROUTER
+// Entity: Phone | Table: telefono
 //
-// Defines and exposes the HTTP endpoints used to manage the "grade"
-// catalog. This is an administrative catalog: every route is protected and
-// only users whose JWT carries the appropriate role are allowed to operate
-// on it.
+// Defines and exposes the HTTP endpoints used to manage the "phone"
+// catalog. Phones are shared records that can be linked to different
+// actors (User, Student, Institution, CertificateRecipient) through
+// bridge tables, but the Phone service itself only manages the phone
+// records (CRUD and search), not the ownership relationships.
 //
 // Security pipeline applied to each route (in this strict order, per
 // AGENTS.md section 7):
@@ -19,7 +20,7 @@
 //      check since it depends on the decoded JWT).
 //   5. controller → executes the business operation and builds the response.
 //
-// Mounted at: /app/v1/grades  (see src/routes/index.js)
+// Mounted at: /app/v1/phones  (see src/routes/index.js)
 // ────────────────────────────────────────────────────────────────────────────
 
 import { Router } from 'express';
@@ -33,109 +34,109 @@ import { checkRole } from '../middlewares/checkRoleHandler.js';
 
 // ── Validation schema ───────────────────────────────────────────────────────
 
-import { gradeSchema } from '../schemas/gradeSchema.js';
+import { phoneSchema } from '../schemas/phoneSchema.js';
 
 // ── Controllers ─────────────────────────────────────────────────────────────
 
-import { createOneGrade } from '../controllers/grade/create.js';
-import { listAllGrades } from '../controllers/grade/listAll.js';
-import { listOneGrade } from '../controllers/grade/listOne.js';
-import { getGradeByName } from '../controllers/grade/getByName.js';
-import { searchGradesByDescription } from '../controllers/grade/searchByDescription.js';
-import { updateOneGrade } from '../controllers/grade/update.js';
-import { deleteOneGrade } from '../controllers/grade/delete.js';
+import { createOnePhone } from '../controllers/phone/create.js';
+import { updateOnePhone } from '../controllers/phone/update.js';
+import { deleteOnePhone } from '../controllers/phone/delete.js';
+import { listOnePhone } from '../controllers/phone/listOne.js';
+import { listAllPhones } from '../controllers/phone/listAll.js';
+import { getPhoneByNumber } from '../controllers/phone/listByNumber.js';
+import { searchPhonesByNumber } from '../controllers/phone/searchByNumber.js';
 
-// Create a new Router instance dedicated to the grade resource
-const gradeRouter = Router();
+// Create a new Router instance dedicated to the phone resource
+const phoneRouter = Router();
 
 // ─────────────────────────────────────────────────────────────────────────────
-// POST /create  →  Create a new grade
-// Body: { name, description }
+// POST /create  →  Create a new phone
+// Body: { number }
 // ─────────────────────────────────────────────────────────────────────────────
-gradeRouter.post(
+phoneRouter.post(
   '/create',
-  validatorHandler(gradeSchema.newGradeData, 'body'),
+  validatorHandler(phoneSchema.newPhoneData, 'body'),
   checkApiKey,
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
-  createOneGrade
+  createOnePhone
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
-// GET /list-all  →  List every grade (ordered by ENUM sequence)
+// GET /list-all  →  List every phone
 // Body: {} (no payload to validate)
 // ─────────────────────────────────────────────────────────────────────────────
-gradeRouter.get(
+phoneRouter.get(
   '/list-all',
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
-  listAllGrades
+  checkRole(['Máster', 'Administrador']),
+  listAllPhones
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
-// GET /list-one  →  Retrieve a single grade by id
+// GET /list-one  →  Retrieve a single phone by id
 // Body: { id }
 // ─────────────────────────────────────────────────────────────────────────────
-gradeRouter.get(
+phoneRouter.get(
   '/list-one',
-  validatorHandler(gradeSchema.getGradeById, 'body'),
-  checkApiKey,
-  authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
-  listOneGrade
-);
-
-// ─────────────────────────────────────────────────────────────────────────────
-// POST /get-by-name  →  Retrieve a single grade by its exact name (ENUM)
-// Body: { name }
-// ─────────────────────────────────────────────────────────────────────────────
-gradeRouter.post(
-  '/get-by-name',
-  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
-  checkApiKey,
-  authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
-  getGradeByName
-);
-
-// ─────────────────────────────────────────────────────────────────────────────
-// POST /search-by-description  →  Search grades by partial description
-// Body: { partialDescription }
-// ─────────────────────────────────────────────────────────────────────────────
-gradeRouter.post(
-  '/search-by-description',
-  validatorHandler(gradeSchema.searchGradesByDescription, 'body'),
+  validatorHandler(phoneSchema.getPhoneById, 'body'),
   checkApiKey,
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
-  searchGradesByDescription
+  listOnePhone
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
-// PATCH /update  →  Update an existing grade
-// Body: { id, name?, description? }
+// POST /get-by-number  →  Retrieve a phone by exact number
+// Body: { number }
 // ─────────────────────────────────────────────────────────────────────────────
-gradeRouter.patch(
+phoneRouter.post(
+  '/get-by-number',
+  validatorHandler(phoneSchema.getPhoneByNumber, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  getPhoneByNumber
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POST /search-by-number  →  Search phones by partial number
+// Body: { partialNumber }
+// ─────────────────────────────────────────────────────────────────────────────
+phoneRouter.post(
+  '/search-by-number',
+  validatorHandler(phoneSchema.searchPhonesByNumber, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  searchPhonesByNumber
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PATCH /update  →  Update a phone number
+// Body: { id, number }
+// ─────────────────────────────────────────────────────────────────────────────
+phoneRouter.patch(
   '/update',
-  validatorHandler(gradeSchema.updateGradeData, 'body'),
+  validatorHandler(phoneSchema.updatePhoneData, 'body'),
   checkApiKey,
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
-  updateOneGrade
+  updateOnePhone
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
-// DELETE /delete  →  Delete a grade by id
+// DELETE /delete  →  Delete a phone by id
 // Body: { id }
 // ─────────────────────────────────────────────────────────────────────────────
-gradeRouter.delete(
+phoneRouter.delete(
   '/delete',
-  validatorHandler(gradeSchema.deleteGrade, 'body'),
+  validatorHandler(phoneSchema.deletePhone, 'body'),
   checkApiKey,
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
-  deleteOneGrade
+  deleteOnePhone
 );
 
-export default gradeRouter;
+export default phoneRouter;

@@ -1,11 +1,12 @@
 // ────────────────────────────────────────────────────────────────────────────
-// GRADE ROUTER
-// Entity: Grade | Table: grado
+// USER ROUTER
+// Entity: User | Table: usuario
 //
-// Defines and exposes the HTTP endpoints used to manage the "grade"
-// catalog. This is an administrative catalog: every route is protected and
-// only users whose JWT carries the appropriate role are allowed to operate
-// on it.
+// Defines and exposes the HTTP endpoints used to manage the "user"
+// entity. Users are the actors of the system (Administrator, Rector,
+// Academic Secretary, Auxiliary). This is an administrative catalog:
+// every route is protected and only users whose JWT carries the
+// appropriate role are allowed to operate on it.
 //
 // Security pipeline applied to each route (in this strict order, per
 // AGENTS.md section 7):
@@ -19,7 +20,7 @@
 //      check since it depends on the decoded JWT).
 //   5. controller → executes the business operation and builds the response.
 //
-// Mounted at: /app/v1/grades  (see src/routes/index.js)
+// Mounted at: /app/v1/users  (see src/routes/index.js)
 // ────────────────────────────────────────────────────────────────────────────
 
 import { Router } from 'express';
@@ -33,109 +34,96 @@ import { checkRole } from '../middlewares/checkRoleHandler.js';
 
 // ── Validation schema ───────────────────────────────────────────────────────
 
-import { gradeSchema } from '../schemas/gradeSchema.js';
+import { userSchema } from '../schemas/userSchema.js';
 
 // ── Controllers ─────────────────────────────────────────────────────────────
 
-import { createOneGrade } from '../controllers/grade/create.js';
-import { listAllGrades } from '../controllers/grade/listAll.js';
-import { listOneGrade } from '../controllers/grade/listOne.js';
-import { getGradeByName } from '../controllers/grade/getByName.js';
-import { searchGradesByDescription } from '../controllers/grade/searchByDescription.js';
-import { updateOneGrade } from '../controllers/grade/update.js';
-import { deleteOneGrade } from '../controllers/grade/delete.js';
+import { login } from '../controllers/user/login.js';
+import { createOneUser } from '../controllers/user/create.js';
+import { updateOneUser } from '../controllers/user/update.js';
+import { deleteOneUser } from '../controllers/user/delete.js';
+import { listOneUser } from '../controllers/user/listOne.js';
+import { listAllUsers } from '../controllers/user/listAll.js';
 
-// Create a new Router instance dedicated to the grade resource
-const gradeRouter = Router();
+// Create a new Router instance dedicated to the user resource
+const userRouter = Router();
 
 // ─────────────────────────────────────────────────────────────────────────────
-// POST /create  →  Create a new grade
-// Body: { name, description }
+// POST /login  →  Authenticate a user and start a session
+// Body: { credentials: { username, password } }
 // ─────────────────────────────────────────────────────────────────────────────
-gradeRouter.post(
-  '/create',
-  validatorHandler(gradeSchema.newGradeData, 'body'),
+userRouter.post(
+  '/login',
+  validatorHandler(userSchema.loginCredentials, 'body'),
   checkApiKey,
-  authAppVerifyToken,
-  checkRole(['Máster', 'Administrador']),
-  createOneGrade
+  login
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
-// GET /list-all  →  List every grade (ordered by ENUM sequence)
+// POST /create  →  Create a new user
+// Body: { firstName, lastName, documentTypeId, documentNumber, municipalityId,
+//         roleId, academicLevelId, email, status, password, genderId, lastLogin? }
+// ─────────────────────────────────────────────────────────────────────────────
+userRouter.post(
+  '/create',
+  validatorHandler(userSchema.newUserData, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  createOneUser
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /list-all  →  List every user (passwords excluded)
 // Body: {} (no payload to validate)
 // ─────────────────────────────────────────────────────────────────────────────
-gradeRouter.get(
+userRouter.get(
   '/list-all',
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
-  listAllGrades
+  checkRole(['Máster', 'Administrador']),
+  listAllUsers
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
-// GET /list-one  →  Retrieve a single grade by id
+// GET /list-one  →  Retrieve a single user by id
 // Body: { id }
 // ─────────────────────────────────────────────────────────────────────────────
-gradeRouter.get(
+userRouter.get(
   '/list-one',
-  validatorHandler(gradeSchema.getGradeById, 'body'),
-  checkApiKey,
-  authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
-  listOneGrade
-);
-
-// ─────────────────────────────────────────────────────────────────────────────
-// POST /get-by-name  →  Retrieve a single grade by its exact name (ENUM)
-// Body: { name }
-// ─────────────────────────────────────────────────────────────────────────────
-gradeRouter.post(
-  '/get-by-name',
-  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
-  checkApiKey,
-  authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
-  getGradeByName
-);
-
-// ─────────────────────────────────────────────────────────────────────────────
-// POST /search-by-description  →  Search grades by partial description
-// Body: { partialDescription }
-// ─────────────────────────────────────────────────────────────────────────────
-gradeRouter.post(
-  '/search-by-description',
-  validatorHandler(gradeSchema.searchGradesByDescription, 'body'),
+  validatorHandler(userSchema.getUserById, 'body'),
   checkApiKey,
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
-  searchGradesByDescription
+  listOneUser
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
-// PATCH /update  →  Update an existing grade
-// Body: { id, name?, description? }
+// PATCH /update  →  Update an existing user
+// Body: { id, firstName?, lastName?, documentTypeId?, documentNumber?,
+//         municipalityId?, roleId?, academicLevelId?, email?, status?,
+//         password?, genderId?, lastLogin? }
 // ─────────────────────────────────────────────────────────────────────────────
-gradeRouter.patch(
+userRouter.patch(
   '/update',
-  validatorHandler(gradeSchema.updateGradeData, 'body'),
+  validatorHandler(userSchema.updateUserData, 'body'),
   checkApiKey,
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
-  updateOneGrade
+  updateOneUser
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
-// DELETE /delete  →  Delete a grade by id
+// DELETE /delete  →  Delete a user by id
 // Body: { id }
 // ─────────────────────────────────────────────────────────────────────────────
-gradeRouter.delete(
+userRouter.delete(
   '/delete',
-  validatorHandler(gradeSchema.deleteGrade, 'body'),
+  validatorHandler(userSchema.deleteUser, 'body'),
   checkApiKey,
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
-  deleteOneGrade
+  deleteOneUser
 );
 
-export default gradeRouter;
+export default userRouter;
