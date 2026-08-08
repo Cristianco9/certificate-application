@@ -90,7 +90,7 @@ certificateRouter.post(
   validatorHandler(certificateSchema.reprintCertificate, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Funcionario']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   reprintCertificate
 );
 
@@ -103,7 +103,7 @@ certificateRouter.post(
   validatorHandler(certificateSchema.voidCertificate, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Funcionario']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   voidCertificate
 );
 
@@ -154,7 +154,7 @@ certificateRouter.post(
   validatorHandler(certificateSchema.getCertificateByActNumber, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Funcionario']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   getCertificateByActNumber
 );
 
@@ -167,7 +167,7 @@ certificateRouter.post(
   validatorHandler(certificateSchema.getCertificateByEnrollment, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Funcionario']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   getCertificateByEnrollment
 );
 
@@ -180,7 +180,7 @@ certificateRouter.post(
   validatorHandler(certificateSchema.listCertificatesByUser, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Funcionario']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   listCertificatesByUser
 );
 
@@ -193,7 +193,7 @@ certificateRouter.post(
   validatorHandler(certificateSchema.listCertificatesByInstitution, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Funcionario']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   listCertificatesByInstitution
 );
 
@@ -206,7 +206,7 @@ certificateRouter.post(
   validatorHandler(certificateSchema.listCertificatesByStatus, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Funcionario']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   listCertificatesByStatus
 );
 
@@ -219,7 +219,7 @@ certificateRouter.post(
   validatorHandler(certificateSchema.listCertificatesByDateRange, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador', 'Funcionario']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   listCertificatesByDateRange
 );
 
