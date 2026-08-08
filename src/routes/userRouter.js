@@ -41,6 +41,7 @@ import { userSchema } from '../schemas/userSchema.js';
 import { login } from '../controllers/user/login.js';
 import { createOneUser } from '../controllers/user/create.js';
 import { updateOneUser } from '../controllers/user/update.js';
+import { resetPassword } from '../controllers/user/resetPassword.js';
 import { deleteOneUser } from '../controllers/user/delete.js';
 import { listOneUser } from '../controllers/user/listOne.js';
 import { listAllUsers } from '../controllers/user/listAll.js';
@@ -54,8 +55,8 @@ const userRouter = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 userRouter.post(
   '/login',
-  validatorHandler(userSchema.loginCredentials, 'body'),
   checkApiKey,
+  validatorHandler(userSchema.loginCredentials, 'body'),
   login
 );
 
@@ -66,8 +67,8 @@ userRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 userRouter.post(
   '/create',
-  validatorHandler(userSchema.newUserData, 'body'),
   checkApiKey,
+  validatorHandler(userSchema.newUserData, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   createOneUser
@@ -91,8 +92,8 @@ userRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 userRouter.get(
   '/list-one',
-  validatorHandler(userSchema.getUserById, 'body'),
   checkApiKey,
+  validatorHandler(userSchema.getUserById, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   listOneUser
@@ -106,11 +107,28 @@ userRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 userRouter.patch(
   '/update',
-  validatorHandler(userSchema.updateUserData, 'body'),
   checkApiKey,
+  validatorHandler(userSchema.updateUserData, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   updateOneUser
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POST /reset-password  →  Reset a user's password without an active session
+// (the 'forgot password' flow: the user is NOT logged in and does not
+// remember their current password, so there is no session token to verify
+// or rotate). Identity is verified inside UserServices.resetPassword by
+// requiring email AND documentNumber to both match the same user record —
+// not by a JWT. After a successful reset, the user must log in again
+// through POST /login using their new password.
+// Body: { email, documentNumber, newPassword }
+// ─────────────────────────────────────────────────────────────────────────────
+userRouter.post(
+  '/reset-password',
+  checkApiKey,
+  validatorHandler(userSchema.resetPasswordData, 'body'),
+  resetPassword
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -119,8 +137,8 @@ userRouter.patch(
 // ─────────────────────────────────────────────────────────────────────────────
 userRouter.delete(
   '/delete',
-  validatorHandler(userSchema.deleteUser, 'body'),
   checkApiKey,
+  validatorHandler(userSchema.deleteUser, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   deleteOneUser
