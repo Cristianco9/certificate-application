@@ -38,12 +38,12 @@ import { userSchema } from '../schemas/userSchema.js';
 
 // ── Controllers ─────────────────────────────────────────────────────────────
 
-import { login } from '../controllers/users/login.js';
-import { createOneUser } from '../controllers/users/create.js';
-import { updateOneUser } from '../controllers/users/update.js';
-import { deleteOneUser } from '../controllers/users/delete.js';
-import { listOneUser } from '../controllers/users/listOne.js';
-import { listAllUsers } from '../controllers/users/listAll.js';
+import { login } from '../controllers/user/login.js';
+import { createOneUser } from '../controllers/user/create.js';
+import { updateOneUser } from '../controllers/user/update.js';
+import { deleteOneUser } from '../controllers/user/delete.js';
+import { listOneUser } from '../controllers/user/listOne.js';
+import { listAllUsers } from '../controllers/user/listAll.js';
 
 // Create a new Router instance dedicated to the user resource
 const userRouter = Router();
