@@ -1,64 +1,82 @@
+import jwt from 'jsonwebtoken';
 import { config } from '../../config/config.js';
 import { signUserToken } from '../../utils/auth/tokenSign.js';
-import jwt from 'jsonwebtoken';
 
 /**
- * Middleware to verify JWT tokens for the application.
- * Regenerates a new token if the old one is valid.
+ * Middleware to authenticate API requests using a JWT stored
+ * in an HTTP-only cookie.
  *
- * @param {Request} req - The request object.
- * @param {Response} res - The response object.
- * @param {Function} next - The next middleware function.
+ * If the token is valid, a new token is generated and the
+ * authentication cookie is refreshed.
+ *
+ * @param {Request} req - Express request object.
+ * @param {Response} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ * @returns {Response|void}
  */
 export const authAppVerifyToken = (req, res, next) => {
+  const authenticationToken = req.cookies?.authentication;
 
-  const authenticationToken = req.cookies.authentication;
-
-  let message = "";
-
-  // Check for the presence of the authentication token
+  // No authentication token was provided.
   if (!authenticationToken) {
-    res.clearCookie('authentication');
-    message = "Acceso denegado. Para acceder a este recurso, por favor inicie sección.";
-    return res.status(403).render("authError", { message: message, type: "no-token" });
+    return res.status(401).json({
+      success: false,
+      message:
+        'Authentication required. Please sign in to access this resource.',
+      error: 'AUTHENTICATION_REQUIRED',
+    });
   }
 
-  // Verify the token using the secret key
-  jwt.verify(authenticationToken, config.authAppJwtKey, (err, decoded) => {
-    if (err) {
-      // Handle specific JWT errors
-      if (err.name === 'TokenExpiredError') {
+  jwt.verify(
+    authenticationToken,
+    config.authAppJwtKey,
+    (err, decoded) => {
+      // Token validation failed.
+      if (err) {
         res.clearCookie('authentication');
-        message = "La sesión se ha finalizado, por favor inicie sección e inténtelo de nuevo.";
-        return res.status(401).render("authError", { message: message, type: "token-exp" });
-      } else {
-        res.clearCookie('authentication');
-        message = "Acceso denegado. Los datos del usuario no son validos, por favor inicie sección e inténtelo de nuevo.";
-        return res.status(401).render("authError", { message: message, type: "token-inv" });
+
+        if (err.name === 'TokenExpiredError') {
+          return res.status(401).json({
+            success: false,
+            message:
+              'Your session has expired. Please sign in again.',
+            error: 'TOKEN_EXPIRED',
+          });
+        }
+
+        return res.status(401).json({
+          success: false,
+          message:
+            'Invalid authentication credentials. Please sign in again.',
+          error: 'INVALID_TOKEN',
+        });
       }
+
+      // Extract only the claims required by the application.
+      const userData = {
+        id: decoded.id,
+        role: decoded.role,
+      };
+
+      // Generate a fresh token to extend the session.
+      const newUserToken = signUserToken(
+        userData,
+        config.authAppJwtKey,
+        '1h'
+      );
+
+      // Refresh the authentication cookie.
+      res.cookie('authentication', newUserToken, {
+        httpOnly: true,
+        secure: config.nodeEnv === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 1000,
+      });
+
+      // Attach authenticated user data to the request.
+      req.user = userData;
+
+      return next();
     }
-
-    // Extract user data from the decoded token
-    const userData = {
-      id: decoded.id,
-      role: decoded.role
-    };
-
-    // Regenerate a new token for the user
-    const newUserToken = signUserToken(userData, config.authAppJwtKey, '1h');
-
-    // Send the new token in a cookie to the client
-    res.cookie('authentication', newUserToken, { httpOnly: true });
-
-    // Expose the same token via res.locals so downstream controllers
-    // can echo it back in the JSON body (e.g. for SPA clients that
-    // need the raw token value, not just the httpOnly cookie)
-    res.locals.newUserToken = newUserToken;
-
-    // Attach user data to the request object for later use
-    req.user = decoded;
-
-    // Proceed to the next middleware or controller
-    next();
-  });
+  );
 };
