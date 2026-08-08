@@ -82,7 +82,7 @@ gradeRouter.get(
   validatorHandler(gradeSchema.getGradeById, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   listOneGrade
 );
 
@@ -95,7 +95,7 @@ gradeRouter.post(
   validatorHandler(gradeSchema.getGradeByName, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   getGradeByName
 );
 
