@@ -13,6 +13,7 @@ import Boom from '@hapi/boom';
  * @param {Object} req - The Express request object.
  * @param {Object} req.body - The validated request body (see userSchema.updateUserData).
  * @param {string} req.body.id - The id of the user to update.
+ * @param {string} req.body.username - The user's username.
  * @param {string} [req.body.firstName] - The new first name(s).
  * @param {string} [req.body.lastName] - The new last name(s).
  * @param {string} [req.body.documentTypeId] - The new document type id.
@@ -22,7 +23,6 @@ import Boom from '@hapi/boom';
  * @param {string} [req.body.academicLevelId] - The new academic level id.
  * @param {string} [req.body.email] - The new email.
  * @param {string} [req.body.status] - The new status.
- * @param {string} [req.body.password] - The new password (plain-text).
  * @param {string} [req.body.genderId] - The new gender id.
  * @param {string} [req.body.lastLogin] - The new last login date.
  * @param {Object} res - The Express response object.
@@ -33,6 +33,7 @@ import Boom from '@hapi/boom';
 export const updateOneUser = async (req, res, next) => {
   const { id } = req.body;
   const newUserData = {
+    username: req.body.username,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     documentTypeId: req.body.documentTypeId,
@@ -42,7 +43,6 @@ export const updateOneUser = async (req, res, next) => {
     academicLevelId: req.body.academicLevelId,
     email: req.body.email,
     status: req.body.status,
-    password: req.body.password,
     genderId: req.body.genderId,
     lastLogin: req.body.lastLogin,
   };
