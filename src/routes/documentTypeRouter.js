@@ -61,14 +61,14 @@ const documentTypeRouter = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 documentTypeRouter.post(
   '/create',
-  // Step 1: validate the creation payload
-  validatorHandler(documentTypeSchema.newDocumentTypeData, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the creation payload
+  validatorHandler(documentTypeSchema.newDocumentTypeData, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   createOneDocumentType
 );
@@ -79,13 +79,13 @@ documentTypeRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 documentTypeRouter.get(
   '/list-all',
-  // Step 1: no schema — this endpoint takes no input parameters
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: no schema — this endpoint takes no input parameters
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   // Step 5: delegate to the controller
   listAllDocumentTypes
 );
@@ -96,14 +96,14 @@ documentTypeRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 documentTypeRouter.get(
   '/list-one',
-  // Step 1: validate that a valid id was provided
-  validatorHandler(documentTypeSchema.getDocumentTypeById, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate that a valid id was provided
+  validatorHandler(documentTypeSchema.getDocumentTypeById, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   listOneDocumentType
 );
@@ -116,14 +116,14 @@ documentTypeRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 documentTypeRouter.post(
   '/get-by-name',
-  // Step 1: validate the exact name to search for
-  validatorHandler(documentTypeSchema.getDocumentTypeByName, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the exact name to search for
+  validatorHandler(documentTypeSchema.getDocumentTypeByName, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   listDocumentTypeByName
 );
@@ -134,14 +134,14 @@ documentTypeRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 documentTypeRouter.patch(
   '/update',
-  // Step 1: validate the update payload
-  validatorHandler(documentTypeSchema.updateDocumentTypeData, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the update payload
+  validatorHandler(documentTypeSchema.updateDocumentTypeData, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   updateOneDocumentType
 );
@@ -152,14 +152,14 @@ documentTypeRouter.patch(
 // ─────────────────────────────────────────────────────────────────────────────
 documentTypeRouter.delete(
   '/delete',
-  // Step 1: validate that a valid id was provided
-  validatorHandler(documentTypeSchema.deleteDocumentType, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate that a valid id was provided
+  validatorHandler(documentTypeSchema.deleteDocumentType, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   deleteOneDocumentType
 );
