@@ -1,5 +1,7 @@
 // Import the Municipality data model
 import { Municipality } from '../db/models/municipality.js';
+// Import the Department model
+import { Department } from '../db/models/department.js';
 // Import the models that reference Municipality, needed to enforce the delete-guard business rules
 import { Institution } from '../db/models/institution.js';
 import { Student } from '../db/models/student.js';
@@ -32,6 +34,11 @@ import Boom from '@hapi/boom';
  * to it with onDelete: 'RESTRICT' (hard constraints), while
  * 'institucion' points to it with onDelete: 'SET NULL' (soft). The
  * deletion guard below checks all four.
+ *
+ * Every method that returns a Municipality record (listOne, listAll,
+ * listByPartialName, listByDepartment) embeds its parent department as
+ * a nested { id, name } object under 'department', rather than
+ * exposing the raw 'departmentId' foreign key integer.
  */
 export class MunicipalityServices {
 
@@ -194,10 +201,11 @@ export class MunicipalityServices {
   }
 
   /**
-   * Retrieves a single municipality by its id.
+   * Retrieves a single municipality by its id, embedding its parent
+   * department as a nested { id, name } object.
    *
    * @param {number} municipalityId - The id of the municipality to retrieve.
-   * @returns {Promise<Municipality>} - The municipality record.
+   * @returns {Promise<Object>} - The formatted municipality record.
    */
   async listOne(municipalityId) {
 
@@ -206,13 +214,16 @@ export class MunicipalityServices {
     }
 
     try {
-      const theMunicipality = await this._findById(municipalityId);
+      const theMunicipality = await Municipality.findOne({
+        where: { id: municipalityId },
+        include: MunicipalityServices.DEPARTMENT_INCLUDE,
+      });
 
       if (!theMunicipality) {
         throw Boom.notFound('Municipality not found');
       }
 
-      return theMunicipality;
+      return MunicipalityServices._formatMunicipality(theMunicipality);
 
     } catch (error) {
       throw Boom.boomify(error, { message: 'Unable to find the municipality' });
@@ -220,18 +231,20 @@ export class MunicipalityServices {
   }
 
   /**
-   * Retrieves all municipality records, ordered alphabetically by name.
+   * Retrieves all municipality records, ordered alphabetically by name,
+   * each with its parent department embedded as a nested { id, name } object.
    *
-   * @returns {Promise<Municipality[]>} - The list of municipality records.
+   * @returns {Promise<Object[]>} - The formatted list of municipality records.
    */
   async listAll() {
 
     try {
       const allMunicipalities = await Municipality.findAll({
-        order: [['name', 'ASC']]
+        order: [['name', 'ASC']],
+        include: MunicipalityServices.DEPARTMENT_INCLUDE,
       });
 
-      return allMunicipalities;
+      return allMunicipalities.map(MunicipalityServices._formatMunicipality);
 
     } catch (error) {
       throw Boom.boomify(error, { message: 'Unable to find the municipalities' });
@@ -239,12 +252,13 @@ export class MunicipalityServices {
   }
 
   /**
-   * Searches municipalities whose name partially matches the given text.
+   * Searches municipalities whose name partially matches the given text,
+   * each with its parent department embedded as a nested { id, name } object.
    * Supports the multi-criteria search requirement described in
    * context.md (e.g. 'Nombre parcial').
    *
    * @param {string} partialName - The partial name to search for.
-   * @returns {Promise<Municipality[]>} - The matching municipality records.
+   * @returns {Promise<Object[]>} - The formatted, matching municipality records.
    */
   async listByPartialName(partialName) {
 
@@ -257,10 +271,11 @@ export class MunicipalityServices {
         where: {
           name: { [Op.like]: `%${partialName}%` }
         },
-        order: [['name', 'ASC']]
+        order: [['name', 'ASC']],
+        include: MunicipalityServices.DEPARTMENT_INCLUDE,
       });
 
-      return matchingMunicipalities;
+      return matchingMunicipalities.map(MunicipalityServices._formatMunicipality);
 
     } catch (error) {
       throw Boom.boomify(error, { message: 'Unable to search the municipalities' });
@@ -268,12 +283,13 @@ export class MunicipalityServices {
   }
 
   /**
-   * Retrieves all municipalities belonging to a given department. Useful
-   * for cascading selects in the UI (country -> department ->
+   * Retrieves all municipalities belonging to a given department, each
+   * with its parent department embedded as a nested { id, name } object.
+   * Useful for cascading selects in the UI (country -> department ->
    * municipality).
    *
    * @param {number} departmentId - The id of the department.
-   * @returns {Promise<Municipality[]>} - The matching municipality records.
+   * @returns {Promise<Object[]>} - The formatted, matching municipality records.
    */
   async listByDepartment(departmentId) {
 
@@ -284,10 +300,11 @@ export class MunicipalityServices {
     try {
       const municipalitiesByDepartment = await Municipality.findAll({
         where: { departmentId },
-        order: [['name', 'ASC']]
+        order: [['name', 'ASC']],
+        include: MunicipalityServices.DEPARTMENT_INCLUDE,
       });
 
-      return municipalitiesByDepartment;
+      return municipalitiesByDepartment.map(MunicipalityServices._formatMunicipality);
 
     } catch (error) {
       throw Boom.boomify(error, { message: 'Unable to find the municipalities for the given department' });
@@ -304,7 +321,11 @@ export class MunicipalityServices {
   // ==========================================================
 
   /**
-   * Finds a municipality by its primary key.
+   * Finds a municipality by its primary key. Used internally by write
+   * operations (updateOne/deleteOne) that only need to check existence,
+   * so it intentionally does NOT eager-load the department association —
+   * callers that need the formatted, nested-department shape should go
+   * through listOne() instead.
    *
    * @private
    * @param {number} municipalityId - The id of the municipality to find.
@@ -412,9 +433,43 @@ export class MunicipalityServices {
   // ==========================================================
   // STATIC UTILITIES
   // Stateless helpers that do not depend on instance data, and are
-  // therefore exposed as static methods (callable as
-  // MunicipalityServices.formatName(...) without instantiating the class).
+  // therefore exposed as static methods. The ones prefixed with '_'
+  // are intended strictly for internal use within this class (mirroring
+  // the instance-method privacy convention), since ecmaVersion 12
+  // (ES2021) does not support true private static members without
+  // '#' fields.
   // ==========================================================
+
+  /**
+   * The Sequelize include shared by every read method that needs to
+   * embed the parent department as a nested object rather than a raw
+   * departmentId integer.
+   *
+   * @static
+   */
+  static DEPARTMENT_INCLUDE = [
+    { model: Department, as: 'department', attributes: ['id', 'name'] },
+  ];
+
+  /**
+   * Reshapes a Municipality Sequelize instance (with its 'department'
+   * association eagerly loaded via DEPARTMENT_INCLUDE) into a plain
+   * object where the raw 'departmentId' foreign key is replaced by a
+   * nested { id, name } object under 'department'.
+   *
+   * @private
+   * @static
+   * @param {Municipality} municipality - The Sequelize Municipality instance to format.
+   * @returns {Object} - The formatted, plain municipality object.
+   */
+  static _formatMunicipality(municipality) {
+    const { departmentId, department, ...rest } = municipality.toJSON();
+
+    return {
+      ...rest,
+      department: department ?? null,
+    };
+  }
 
   /**
    * Normalizes a municipality name to the format expected by the
