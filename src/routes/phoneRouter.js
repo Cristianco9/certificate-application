@@ -1,0 +1,142 @@
+// ────────────────────────────────────────────────────────────────────────────
+// PHONE ROUTER
+// Entity: Phone | Table: telefono
+//
+// Defines and exposes the HTTP endpoints used to manage the "phone"
+// catalog. Phones are shared records that can be linked to different
+// actors (User, Student, Institution, CertificateRecipient) through
+// bridge tables, but the Phone service itself only manages the phone
+// records (CRUD and search), not the ownership relationships.
+//
+// Security pipeline applied to each route (in this strict order, per
+// AGENTS.md section 7):
+//   1. validatorHandler(schema, 'body') → validates the incoming payload
+//      (Joi). Never touches the database or downstream middlewares with
+//      unvalidated data.
+//   2. checkApiKey → verifies the client app's API key.
+//   3. authAppVerifyToken → validates the session JWT and rotates it.
+//   4. checkRole([...]) → authorizes only the allowed roles (when the
+//      route requires role-based control, applied right after the token
+//      check since it depends on the decoded JWT).
+//   5. controller → executes the business operation and builds the response.
+//
+// Mounted at: /app/v1/phones  (see src/routes/index.js)
+// ────────────────────────────────────────────────────────────────────────────
+
+import { Router } from 'express';
+
+// ── Middlewares ─────────────────────────────────────────────────────────────
+
+import { validatorHandler } from '../middlewares/validatorHandler.js';
+import { checkApiKey } from '../middlewares/apiAuthHandler.js';
+import { authAppVerifyToken } from '../middlewares/tokenHandlers/authAppTokenHandler.js';
+import { checkRole } from '../middlewares/checkRoleHandler.js';
+
+// ── Validation schema ───────────────────────────────────────────────────────
+
+import { phoneSchema } from '../schemas/phoneSchema.js';
+
+// ── Controllers ─────────────────────────────────────────────────────────────
+
+import { createOnePhone } from '../controllers/phone/create.js';
+import { updateOnePhone } from '../controllers/phone/update.js';
+import { deleteOnePhone } from '../controllers/phone/delete.js';
+import { listOnePhone } from '../controllers/phone/listOne.js';
+import { listAllPhones } from '../controllers/phone/listAll.js';
+import { getPhoneByNumber } from '../controllers/phone/listByNumber.js';
+import { searchPhonesByNumber } from '../controllers/phone/searchByNumber.js';
+
+// Create a new Router instance dedicated to the phone resource
+const phoneRouter = Router();
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POST /create  →  Create a new phone
+// Body: { number }
+// ─────────────────────────────────────────────────────────────────────────────
+phoneRouter.post(
+  '/create',
+  validatorHandler(phoneSchema.newPhoneData, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  createOnePhone
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /list-all  →  List every phone
+// Body: {} (no payload to validate)
+// ─────────────────────────────────────────────────────────────────────────────
+phoneRouter.get(
+  '/list-all',
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
+  listAllPhones
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /list-one  →  Retrieve a single phone by id
+// Body: { id }
+// ─────────────────────────────────────────────────────────────────────────────
+phoneRouter.get(
+  '/list-one',
+  validatorHandler(phoneSchema.getPhoneById, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  listOnePhone
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POST /get-by-number  →  Retrieve a phone by exact number
+// Body: { number }
+// ─────────────────────────────────────────────────────────────────────────────
+phoneRouter.post(
+  '/get-by-number',
+  validatorHandler(phoneSchema.getPhoneByNumber, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  getPhoneByNumber
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POST /search-by-number  →  Search phones by partial number
+// Body: { partialNumber }
+// ─────────────────────────────────────────────────────────────────────────────
+phoneRouter.post(
+  '/search-by-number',
+  validatorHandler(phoneSchema.searchPhonesByNumber, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  searchPhonesByNumber
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PATCH /update  →  Update a phone number
+// Body: { id, number }
+// ─────────────────────────────────────────────────────────────────────────────
+phoneRouter.patch(
+  '/update',
+  validatorHandler(phoneSchema.updatePhoneData, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  updateOnePhone
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DELETE /delete  →  Delete a phone by id
+// Body: { id }
+// ─────────────────────────────────────────────────────────────────────────────
+phoneRouter.delete(
+  '/delete',
+  validatorHandler(phoneSchema.deletePhone, 'body'),
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador']),
+  deleteOnePhone
+);
+
+export default phoneRouter;
