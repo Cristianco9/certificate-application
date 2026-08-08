@@ -60,14 +60,14 @@ const countryRouter = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 countryRouter.post(
   '/create',
-  // Step 1: validate the creation payload
-  validatorHandler(countrySchema.newCountryData, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the creation payload
+  validatorHandler(countrySchema.newCountryData, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   createOneCountry
 );
@@ -78,13 +78,13 @@ countryRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 countryRouter.get(
   '/list-all',
-  // Step 1: no schema — this endpoint takes no input parameters
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: no schema — this endpoint takes no input parameters
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   listAllCountries
 );
@@ -95,14 +95,14 @@ countryRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 countryRouter.get(
   '/list-one',
-  // Step 1: validate that a valid id was provided
-  validatorHandler(countrySchema.getCountryById, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate that a valid id was provided
+  validatorHandler(countrySchema.getCountryById, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   listOneCountry
 );
@@ -113,14 +113,14 @@ countryRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 countryRouter.post(
   '/search-by-name',
-  // Step 1: validate the partial search text
-  validatorHandler(countrySchema.searchCountriesByName, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the partial search text
+  validatorHandler(countrySchema.searchCountriesByName, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   searchCountriesByName
 );
@@ -132,14 +132,14 @@ countryRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 countryRouter.get(
   '/get-by-iso2-code',
-  // Step 1: validate the ISO code
-  validatorHandler(countrySchema.getCountryByIso2Code, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the ISO code
+  validatorHandler(countrySchema.getCountryByIso2Code, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   getCountryByIso2Code
 );
@@ -150,14 +150,14 @@ countryRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 countryRouter.patch(
   '/update',
-  // Step 1: validate the update payload
-  validatorHandler(countrySchema.updateCountryData, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the update payload
+  validatorHandler(countrySchema.updateCountryData, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   updateOneCountry
 );
@@ -168,14 +168,14 @@ countryRouter.patch(
 // ─────────────────────────────────────────────────────────────────────────────
 countryRouter.delete(
   '/delete',
-  // Step 1: validate that a valid id was provided
-  validatorHandler(countrySchema.deleteCountry, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate that a valid id was provided
+  validatorHandler(countrySchema.deleteCountry, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   deleteOneCountry
 );
