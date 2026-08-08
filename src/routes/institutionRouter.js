@@ -54,8 +54,8 @@ const institutionRouter = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 institutionRouter.post(
   '/create',
-  validatorHandler(institutionSchema.newInstitutionData, 'body'),
   checkApiKey,
+  validatorHandler(institutionSchema.newInstitutionData, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   createOneInstitution
@@ -79,8 +79,8 @@ institutionRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 institutionRouter.get(
   '/list-one',
-  validatorHandler(institutionSchema.getInstitutionById, 'body'),
   checkApiKey,
+  validatorHandler(institutionSchema.getInstitutionById, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   listOneInstitution
@@ -92,8 +92,8 @@ institutionRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 institutionRouter.post(
   '/search-by-name',
-  validatorHandler(institutionSchema.searchInstitutionsByName, 'body'),
   checkApiKey,
+  validatorHandler(institutionSchema.searchInstitutionsByName, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   searchInstitutionsByName
@@ -105,8 +105,8 @@ institutionRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 institutionRouter.get(
   '/get-by-institutional-code',
-  validatorHandler(institutionSchema.getInstitutionByInstitutionalCode, 'body'),
   checkApiKey,
+  validatorHandler(institutionSchema.getInstitutionByInstitutionalCode, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   getInstitutionByInstitutionalCode
@@ -118,8 +118,8 @@ institutionRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 institutionRouter.get(
   '/get-by-nit',
-  validatorHandler(institutionSchema.getInstitutionByNit, 'body'),
   checkApiKey,
+  validatorHandler(institutionSchema.getInstitutionByNit, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   getInstitutionByNit
@@ -131,8 +131,8 @@ institutionRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 institutionRouter.patch(
   '/update',
-  validatorHandler(institutionSchema.updateInstitutionData, 'body'),
   checkApiKey,
+  validatorHandler(institutionSchema.updateInstitutionData, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   updateOneInstitution
@@ -144,8 +144,8 @@ institutionRouter.patch(
 // ─────────────────────────────────────────────────────────────────────────────
 institutionRouter.delete(
   '/delete',
-  validatorHandler(institutionSchema.deleteInstitution, 'body'),
   checkApiKey,
+  validatorHandler(institutionSchema.deleteInstitution, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   deleteOneInstitution
