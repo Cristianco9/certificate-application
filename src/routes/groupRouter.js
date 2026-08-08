@@ -84,7 +84,7 @@ groupRouter.get(
   validatorHandler(groupSchema.getGroupById, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   listOneGroup
 );
 
@@ -97,7 +97,7 @@ groupRouter.post(
   validatorHandler(groupSchema.searchGroupsByName, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   searchGroupsByName
 );
 
@@ -123,7 +123,7 @@ groupRouter.get(
   validatorHandler(groupSchema.listGroupsByGradeAndYear, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   listGroupsByGradeAndYear
 );
 
