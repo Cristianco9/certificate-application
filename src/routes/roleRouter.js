@@ -61,10 +61,10 @@ const roleRouter = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 roleRouter.post(
   '/create',
-  // Step 1: validate the creation payload
-  validatorHandler(roleSchema.newRoleData, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the creation payload
+  validatorHandler(roleSchema.newRoleData, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
@@ -79,9 +79,9 @@ roleRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 roleRouter.get(
   '/list-all',
-  // Step 1: no schema — this endpoint takes no input parameters
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: no schema — this endpoint takes no input parameters
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
@@ -96,10 +96,10 @@ roleRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 roleRouter.get(
   '/list-one',
+  // Step 1: verify the API key
+  checkApiKey,
   // Step 1: validate that a valid id was provided
   validatorHandler(roleSchema.getRoleById, 'body'),
-  // Step 2: verify the API key
-  checkApiKey,
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
@@ -114,10 +114,10 @@ roleRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 roleRouter.get(
   '/get-by-name',
-  // Step 1: validate the name
-  validatorHandler(roleSchema.getRoleByName, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the name
+  validatorHandler(roleSchema.getRoleByName, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
@@ -132,10 +132,10 @@ roleRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 roleRouter.post(
   '/search-by-description',
-  // Step 1: validate the partial search text
-  validatorHandler(roleSchema.searchRolesByDescription, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the partial search text
+  validatorHandler(roleSchema.searchRolesByDescription, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
@@ -150,10 +150,10 @@ roleRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 roleRouter.patch(
   '/update',
-  // Step 1: validate the update payload
-  validatorHandler(roleSchema.updateRoleData, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the update payload
+  validatorHandler(roleSchema.updateRoleData, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
@@ -168,10 +168,10 @@ roleRouter.patch(
 // ─────────────────────────────────────────────────────────────────────────────
 roleRouter.delete(
   '/delete',
-  // Step 1: validate that a valid id was provided
-  validatorHandler(roleSchema.deleteRole, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate that a valid id was provided
+  validatorHandler(roleSchema.deleteRole, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
