@@ -55,8 +55,8 @@ const phoneRouter = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 phoneRouter.post(
   '/create',
-  validatorHandler(phoneSchema.newPhoneData, 'body'),
   checkApiKey,
+  validatorHandler(phoneSchema.newPhoneData, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   createOnePhone
@@ -80,8 +80,8 @@ phoneRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 phoneRouter.get(
   '/list-one',
-  validatorHandler(phoneSchema.getPhoneById, 'body'),
   checkApiKey,
+  validatorHandler(phoneSchema.getPhoneById, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   listOnePhone
@@ -93,8 +93,8 @@ phoneRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 phoneRouter.post(
   '/get-by-number',
-  validatorHandler(phoneSchema.getPhoneByNumber, 'body'),
   checkApiKey,
+  validatorHandler(phoneSchema.getPhoneByNumber, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   getPhoneByNumber
@@ -106,8 +106,8 @@ phoneRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 phoneRouter.post(
   '/search-by-number',
-  validatorHandler(phoneSchema.searchPhonesByNumber, 'body'),
   checkApiKey,
+  validatorHandler(phoneSchema.searchPhonesByNumber, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   searchPhonesByNumber
@@ -119,8 +119,8 @@ phoneRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 phoneRouter.patch(
   '/update',
-  validatorHandler(phoneSchema.updatePhoneData, 'body'),
   checkApiKey,
+  validatorHandler(phoneSchema.updatePhoneData, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   updateOnePhone
@@ -132,8 +132,8 @@ phoneRouter.patch(
 // ─────────────────────────────────────────────────────────────────────────────
 phoneRouter.delete(
   '/delete',
-  validatorHandler(phoneSchema.deletePhone, 'body'),
   checkApiKey,
+  validatorHandler(phoneSchema.deletePhone, 'body'),
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador']),
   deleteOnePhone
