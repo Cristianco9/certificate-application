@@ -21,6 +21,13 @@ export const User = sequelize.define(USER_TABLE, {
     // Database column name
     field: 'id_usuario',
   },
+  // Username used for login
+  username: {
+    type: DataTypes.STRING(30),
+    allowNull: false,
+    unique: true,
+    field: 'alias_usuario',
+  },
   // User first name(s)
   firstName: {
     type: DataTypes.STRING(50),
