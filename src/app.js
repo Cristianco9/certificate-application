@@ -45,14 +45,6 @@ app.use(cookieParser());
 // Static files path
 // Store in the constant the project dirname
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// Define the path to static files a throw the src/public/ path
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Views engine
-// Define the access path to the HTML view templates
-app.set('views', path.join(__dirname, 'views'));
-// Define the HTML templates engine, and the templates file extension
-app.set('view engine', 'ejs');
 
 // Immediately Invoked Function Expression (IIFE) to run the server
 (async () => {
