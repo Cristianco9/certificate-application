@@ -7,14 +7,10 @@
 // every value through the request body — never via URL params or query
 // string — so every schema below is meant to be applied as
 // validatorHandler(schema, 'body'), including the ones that only carry an
-// id or a single primitive argument. Methods that take a single primitive
-// argument on the service side (listOne, deleteOne, listByNumber,
-// listByPartialNumber, getPhoneOwner) are still validated as a small
-// object with one named key, since Joi always validates an object shape.
-//
-// Ownership management methods (linkPhoneToOwner, unlinkPhoneFromOwner)
-// require three arguments: phoneId, ownerType, and ownerId. These are
-// validated as a single object containing all three fields.
+// id. Methods that take a single primitive argument on the service side
+// (listOne, deleteOne, listByNumber, listByPartialNumber) are still
+// validated as a small object with one named key, since Joi always
+// validates an object shape.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import Joi from 'joi';
@@ -39,25 +35,9 @@ const joiNumber = Joi.string().pattern(phoneNumber).messages({
   'string.pattern.base': 'El número de teléfono debe ser un móvil colombiano (10 dígitos, comienza con 3) o un fijo (7 a 10 dígitos, con o sin +57).',
 });
 
-// Backs the ownerType parameter used in linkPhoneToOwner and
-// unlinkPhoneFromOwner. Must be one of the four supported owner types.
-const joiOwnerType = Joi.string().valid('user', 'student', 'institution', 'certificateRecipient').messages({
-  'string.base': 'El tipo de propietario debe ser una cadena de texto.',
-  'any.only': 'El tipo de propietario debe ser "user", "student", "institution" o "certificateRecipient".',
-});
-
-// Backs the ownerId parameter used in linkPhoneToOwner and
-// unlinkPhoneFromOwner. Same format as any other ID.
-const joiOwnerId = Joi.string().pattern(phoneId).messages({
-  'string.base': 'El id del propietario debe ser una cadena de texto.',
-  'string.pattern.base': 'El id del propietario debe contener solo dígitos (1 a 10 dígitos).',
-});
-
 // ── Schema export ────────────────────────────────────────────────────────────
 
 export const phoneSchema = {
-
-  // ── Single-record lookups ──────────────────────────────────────────────────
 
   // POST /phones/get-by-id (body: { id })
   // Validates PhoneServices.listOne(phoneId)
@@ -74,13 +54,10 @@ export const phoneSchema = {
   }),
 
   // POST /phones/search-by-number (body: { partialNumber })
-  // Validates PhoneServices.listByPartialNumber(partialNumber).
-  // Uses the same character-set rule as 'number' since it's the same field.
+  // Validates PhoneServices.listByPartialNumber(partialNumber)
   searchPhonesByNumber: Joi.object({
     partialNumber: joiNumber.required(),
   }),
-
-  // ── Phone record CRUD ─────────────────────────────────────────────────────
 
   // POST /phones (body: { number })
   // Validates PhoneServices.createOne(newPhone). 'number' is required.
@@ -90,8 +67,7 @@ export const phoneSchema = {
 
   // PATCH /phones (body: { id, number })
   // Validates PhoneServices.updateOne(phoneId, newPhoneData).
-  // 'id' is always required; 'number' is also required because it is the
-  // only mutable field (there is no other field to update).
+  // 'id' and 'number' are required because number is the only mutable field.
   updatePhoneData: Joi.object({
     id: joiId.required(),
     number: joiNumber.required(),
@@ -101,30 +77,6 @@ export const phoneSchema = {
   // Validates PhoneServices.deleteOne(phoneId)
   deletePhone: Joi.object({
     id: joiId.required(),
-  }),
-
-  // ── Ownership management ─────────────────────────────────────────────────
-
-  // POST /phones/link (body: { phoneId, ownerType, ownerId })
-  // Validates PhoneServices.linkPhoneToOwner(phoneId, ownerType, ownerId)
-  linkPhoneToOwner: Joi.object({
-    phoneId: joiId.required(),
-    ownerType: joiOwnerType.required(),
-    ownerId: joiOwnerId.required(),
-  }),
-
-  // POST /phones/unlink (body: { phoneId, ownerType, ownerId })
-  // Validates PhoneServices.unlinkPhoneFromOwner(phoneId, ownerType, ownerId)
-  unlinkPhoneFromOwner: Joi.object({
-    phoneId: joiId.required(),
-    ownerType: joiOwnerType.required(),
-    ownerId: joiOwnerId.required(),
-  }),
-
-  // POST /phones/get-owner (body: { phoneId })
-  // Validates PhoneServices.getPhoneOwner(phoneId)
-  getPhoneOwner: Joi.object({
-    phoneId: joiId.required(),
   }),
 
 };
