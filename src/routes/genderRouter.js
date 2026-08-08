@@ -59,14 +59,14 @@ const genderRouter = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 genderRouter.post(
   '/create',
-  // Step 1: validate the creation payload
-  validatorHandler(genderSchema.newGenderData, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the creation payload
+  validatorHandler(genderSchema.newGenderData, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   createOneGender
 );
@@ -77,13 +77,13 @@ genderRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 genderRouter.get(
   '/list-all',
-  // Step 1: no schema — this endpoint takes no input parameters
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: no schema — this endpoint takes no input parameters
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   // Step 5: delegate to the controller
   listAllGenders
 );
@@ -94,14 +94,14 @@ genderRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 genderRouter.get(
   '/list-one',
-  // Step 1: validate that a valid id was provided
-  validatorHandler(genderSchema.getGenderById, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate that a valid id was provided
+  validatorHandler(genderSchema.getGenderById, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   listOneGender
 );
@@ -112,14 +112,14 @@ genderRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 genderRouter.get(
   '/get-by-name',
-  // Step 1: validate the name
-  validatorHandler(genderSchema.getGenderByName, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the name
+  validatorHandler(genderSchema.getGenderByName, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   getGenderByName
 );
@@ -130,14 +130,14 @@ genderRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 genderRouter.patch(
   '/update',
-  // Step 1: validate the update payload
-  validatorHandler(genderSchema.updateGenderData, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the update payload
+  validatorHandler(genderSchema.updateGenderData, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   updateOneGender
 );
@@ -148,14 +148,14 @@ genderRouter.patch(
 // ─────────────────────────────────────────────────────────────────────────────
 genderRouter.delete(
   '/delete',
-  // Step 1: validate that a valid id was provided
-  validatorHandler(genderSchema.deleteGender, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate that a valid id was provided
+  validatorHandler(genderSchema.deleteGender, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   deleteOneGender
 );
