@@ -12,6 +12,7 @@ import groupRouter from "./groupRouter.js";
 import countryRouter from "./countryRouter.js";
 import departmentRouter from "./departmentRouter.js";
 import municipalityRouter from "./municipalityRouter.js";
+import certificateRouter from "./certificateRouter.js";
 
 
 // Function to set up API routes
@@ -34,6 +35,7 @@ const routerApi = (app) => {
   router.use('/countries', countryRouter);
   router.use('/departments', departmentRouter);
   router.use('/municipalities', municipalityRouter);
+  router.use('/certificates', certificateRouter);
 }
 
 // Export the routerApi function for use in other parts of the application
