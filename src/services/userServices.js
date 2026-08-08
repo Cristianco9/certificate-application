@@ -1,5 +1,5 @@
 // import the user data model
-import { User } from '../db/models/usersModel.js';
+import { User } from '../db/models/user.js';
 // import the promise to encrypt the user's password
 import { hashPassword } from '../utils/auth/passwordHash.js';
 // import the module to sign a JWT
