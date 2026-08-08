@@ -84,7 +84,7 @@ groupRouter.get(
   validatorHandler(groupSchema.getGroupById, 'body'),
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   listOneGroup
 );
 
