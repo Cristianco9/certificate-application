@@ -60,14 +60,14 @@ const academicLevelRouter = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 academicLevelRouter.post(
   '/create',
-  // Step 1: validate the creation payload
-  validatorHandler(academicLevelSchema.newAcademicLevelData, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the creation payload
+  validatorHandler(academicLevelSchema.newAcademicLevelData, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   createOneAcademicLevel
 );
@@ -78,13 +78,13 @@ academicLevelRouter.post(
 // ─────────────────────────────────────────────────────────────────────────────
 academicLevelRouter.get(
   '/list-all',
-  // Step 1: no schema — this endpoint takes no input parameters
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: no schema — this endpoint takes no input parameters
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   listAllAcademicLevels
 );
@@ -95,14 +95,14 @@ academicLevelRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 academicLevelRouter.get(
   '/list-one',
-  // Step 1: validate that a valid id was provided
-  validatorHandler(academicLevelSchema.getAcademicLevelById, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate that a valid id was provided
+  validatorHandler(academicLevelSchema.getAcademicLevelById, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   listOneAcademicLevel
 );
@@ -113,14 +113,14 @@ academicLevelRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 academicLevelRouter.get(
   '/get-by-name',
-  // Step 1: validate the name
-  validatorHandler(academicLevelSchema.getAcademicLevelByName, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the name
+  validatorHandler(academicLevelSchema.getAcademicLevelByName, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   getAcademicLevelByName
 );
@@ -132,14 +132,14 @@ academicLevelRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 academicLevelRouter.get(
   '/get-by-abbreviation',
-  // Step 1: validate the abbreviation
-  validatorHandler(academicLevelSchema.getAcademicLevelByAbbreviation, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the abbreviation
+  validatorHandler(academicLevelSchema.getAcademicLevelByAbbreviation, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize all consuming roles
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   getAcademicLevelByAbbreviation
 );
@@ -150,14 +150,14 @@ academicLevelRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 academicLevelRouter.patch(
   '/update',
-  // Step 1: validate the update payload
-  validatorHandler(academicLevelSchema.updateAcademicLevelData, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate the update payload
+  validatorHandler(academicLevelSchema.updateAcademicLevelData, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   updateOneAcademicLevel
 );
@@ -168,14 +168,14 @@ academicLevelRouter.patch(
 // ─────────────────────────────────────────────────────────────────────────────
 academicLevelRouter.delete(
   '/delete',
-  // Step 1: validate that a valid id was provided
-  validatorHandler(academicLevelSchema.deleteAcademicLevel, 'body'),
-  // Step 2: verify the API key
+  // Step 1: verify the API key
   checkApiKey,
+  // Step 2: validate that a valid id was provided
+  validatorHandler(academicLevelSchema.deleteAcademicLevel, 'body'),
   // Step 3: verify the session token
   authAppVerifyToken,
   // Step 4: authorize only the administrator role
-  checkRole(['Máster','Administrador']),
+  checkRole(['Máster', 'Administrador']),
   // Step 5: delegate to the controller
   deleteOneAcademicLevel
 );
