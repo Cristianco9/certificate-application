@@ -30,6 +30,14 @@ export const userDocumentNumber = /^(\d{6,10}|[a-zA-Z0-9]{6,20})$/;
 // VARCHAR(254) column size defined in usuario.email_usuario
 export const userEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]{3,}\.[a-zA-Z]{2,}$/;
 
+// The pattern ensures the username contains only letters (both uppercase
+// and lowercase, no accented characters, since usernames should stay
+// portable across systems/URLs), digits, and the symbols (._-) commonly
+// used in login identifiers, with no spaces allowed,
+// and is between 3 to 30 characters long, matching the
+// VARCHAR(30) column size defined in usuario.alias_usuario
+export const username = /^[a-zA-Z0-9._-]{3,30}$/;
+
 // The pattern validates the plain-text password entered by the user in
 // the form, BEFORE it is hashed with bcrypt for storage in
 // usuario.password_usuario (VARCHAR(255), which holds the resulting hash,
