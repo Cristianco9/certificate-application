@@ -12,6 +12,7 @@ import Boom from '@hapi/boom';
  *
  * @param {Object} req - The Express request object.
  * @param {Object} req.body - The validated request body (see userSchema.newUserData).
+ * @param {string} req.body.username - The user's username.
  * @param {string} req.body.firstName - The user's first name(s).
  * @param {string} req.body.lastName - The user's last name(s).
  * @param {string} req.body.documentTypeId - The id of the document type.
@@ -31,6 +32,7 @@ import Boom from '@hapi/boom';
  */
 export const createOneUser = async (req, res, next) => {
   const newUser = {
+    username: req.body.username,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     documentTypeId: req.body.documentTypeId,
