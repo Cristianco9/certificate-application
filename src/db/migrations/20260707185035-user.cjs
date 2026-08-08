@@ -18,6 +18,13 @@ module.exports = {
         autoIncrement: true,
       },
 
+      // Username
+      alias_usuario: {
+        type: Sequelize.STRING(30),
+        allowNull: false,
+        unique: true,
+      },
+
       // User first name(s)
       nombres_usuario: {
         type: Sequelize.STRING(50),
