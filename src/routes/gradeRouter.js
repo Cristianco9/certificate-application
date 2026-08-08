@@ -92,7 +92,7 @@ gradeRouter.get(
 // ─────────────────────────────────────────────────────────────────────────────
 gradeRouter.post(
   '/get-by-name',
-  validatorHandler(gradeSchema.getGradeByName, 'body'),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   checkApiKey,
   authAppVerifyToken,
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
