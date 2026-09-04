@@ -12,7 +12,6 @@ import groupRouter from "./groupRouter.js";
 import countryRouter from "./countryRouter.js";
 import departmentRouter from "./departmentRouter.js";
 import municipalityRouter from "./municipalityRouter.js";
-import certificateRouter from "./certificateRouter.js";
 import userRouter from "./userRouter.js";
 import phoneRouter from "./phoneRouter.js";
 import studentRouter from "./studentRouter.js";
@@ -38,7 +37,6 @@ const routerApi = (app) => {
   router.use('/countries', countryRouter);
   router.use('/departments', departmentRouter);
   router.use('/municipalities', municipalityRouter);
-  router.use('/certificates', certificateRouter);
   router.use('/users', userRouter);
   router.use('/phones', phoneRouter);
   router.use('/students', studentRouter);
