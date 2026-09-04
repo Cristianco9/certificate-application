@@ -1,4 +1,4 @@
-import { StudentServices } from '../../services/studentService.js';
+import { StudentServices } from '../../services/studentServices.js';
 import Boom from '@hapi/boom';
 
 /**
