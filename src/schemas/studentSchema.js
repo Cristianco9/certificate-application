@@ -28,8 +28,9 @@ import {
   studentDocumentTypeId,
   studentGenderId,
 } from '../utils/RegEx/studentRegEx.js';
-import { groupYear } from '../utils/RegEx/groupRegEx.js';
+import { groupYear, groupName, groupGradeId } from '../utils/RegEx/groupRegEx.js';
 import { gradeName } from '../utils/RegEx/gradeRegEx.js';
+import { municipalityName } from '../utils/RegEx/municipalityRegEx.js';
 
 // ── Primitive Joi types ─────────────────────────────────────────────────────
 
@@ -113,7 +114,8 @@ const joiGenderId = Joi.string().pattern(studentGenderId).allow('').messages({
 });
 
 // Backs Group.year ('anio_grupo'). Reused from groupRegEx.js because
-// getScoresByStudentAndYear filters scores by the group's academic year.
+// getScoresByStudentAndYear filters scores by the group's academic year,
+// and searchStudents filters by it too (as 'lastAcademicYear').
 const joiYear = Joi.string().pattern(groupYear).messages({
   'string.base': 'El año debe ser una cadena de texto.',
   'string.pattern.base': 'El año debe ser un número de 4 dígitos entre 1900 y 2099.',
@@ -124,6 +126,37 @@ const joiYear = Joi.string().pattern(groupYear).messages({
 const joiGradeName = Joi.string().pattern(gradeName).messages({
   'string.base': 'El nombre del grado debe ser una cadena de texto.',
   'string.pattern.base': 'El nombre del grado debe ser uno de: Primero, Segundo, Tercero, Cuarto, Quinto, Sexto, Séptimo, Octavo, Noveno, Décimo, Undécimo.',
+});
+
+// Backs Group.gradeId ('id_grado_grupo'). Reused from groupRegEx.js because
+// searchStudents filters by the grade attached to an enrollment.
+const joiGradeId = Joi.string().pattern(groupGradeId).messages({
+  'string.base': 'El id del grado debe ser una cadena de texto.',
+  'string.pattern.base': 'El id del grado debe contener solo dígitos (1 a 10 dígitos).',
+});
+
+// Backs Group.name ('nombre_grupo'). Reused from groupRegEx.js because
+// searchStudents filters by the group attached to an enrollment.
+const joiGroupName = Joi.string().pattern(groupName).messages({
+  'string.base': 'El grupo debe ser una cadena de texto.',
+  'string.pattern.base': 'El grupo debe tener entre 1 y 50 caracteres y contener solo letras, números y guiones.',
+});
+
+// Backs Municipality.name ('nombre_municipio'). Reused from
+// municipalityRegEx.js because searchStudents filters by a partial
+// birthplace, which resolves to a municipality name on the backend.
+const joiBirthplace = Joi.string().pattern(municipalityName).messages({
+  'string.base': 'El lugar de nacimiento debe ser una cadena de texto.',
+  'string.pattern.base': 'El lugar de nacimiento debe tener entre 3 y 50 caracteres y contener solo letras y espacios.',
+});
+
+// Backs Group.shift ('jornada'). Reused from the ENUM defined in the
+// 'grupo' table; a closed set of two values, so Joi.valid() is more
+// appropriate than a RegEx, matching how the shift is validated in
+// groupSchema.js.
+const joiJornada = Joi.string().valid('DIURNA', 'NOCTURNA').messages({
+  'string.base': 'La jornada debe ser una cadena de texto.',
+  'any.only': 'La jornada debe ser "DIURNA" o "NOCTURNA".',
 });
 
 // ── Schema export ────────────────────────────────────────────────────────────
@@ -251,5 +284,32 @@ export const studentSchema = {
   getScoresByStudentAndGrade: Joi.object({
     studentId: joiId.required(),
     gradeName: joiGradeName.required(),
+  }),
+
+  // POST /students/search (body: { firstName, secondName?, firstLastName,
+  //                                 secondLastName?, documentNumber?,
+  //                                 documentTypeId?, lastAcademicYear?,
+  //                                 gradeId?, group?, birthplace?, jornada? })
+  // Validates StudentServices.searchStudents(filters).
+  //
+  // Multi-criteria search used by the certificate-generation dialog.
+  // 'firstName' and 'firstLastName' are required (the user must always
+  // anchor the search to at least a name); every other field is optional
+  // and mirrors how the corresponding column or joined table is validated
+  // elsewhere — 'secondName' and 'secondLastName' reuse the same patterns
+  // as the create/update schemas, while the enrollment filters (year,
+  // grade, group, jornada) reuse the same primitives as groupSchema.
+  searchStudents: Joi.object({
+    firstName: joiFirstName.required(),
+    secondName: joiMiddleName.optional().allow(''),
+    firstLastName: joiFirstLastName.required(),
+    secondLastName: joiSecondLastName.optional().allow(''),
+    documentNumber: joiDocumentNumber.optional().allow(''),
+    documentTypeId: joiDocumentTypeId.optional().allow(''),
+    lastAcademicYear: joiYear.optional().allow(''),
+    gradeId: joiGradeId.optional().allow(''),
+    group: joiGroupName.optional().allow(''),
+    birthplace: joiBirthplace.optional().allow(''),
+    jornada: joiJornada.optional().allow(''),
   }),
 };
