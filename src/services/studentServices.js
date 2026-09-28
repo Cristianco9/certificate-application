@@ -717,6 +717,162 @@ export class StudentServices {
     };
   }
 
+  /**
+   * Multi-criteria student search. Every filter is optional except
+   * firstName/firstLastName (enforced by the Joi schema upstream).
+   *
+   * Name, birthplace and group use partial (LIKE) matching.
+   * Year / grade / group / jornada are applied to the SAME enrollment
+   * row (they're conditions on the same JOINed `grupo`, not on separate
+   * ones), so "grade 7 in 2022" means "an enrollment where both are true",
+   * not "was ever in grade 7 and ever in 2022".
+   *
+   * Each returned student carries their latest enrollment (year / grade /
+   * group / shift) so a results table can render the row in one call.
+   */
+  async searchStudents(filters) {
+    try {
+      // ── Student-level WHERE ────────────────────────────────────────────────
+      const studentWhere = {};
+
+      if (filters.firstName) {
+        studentWhere.firstName = { [Op.like]: `%${filters.firstName}%` };
+      }
+      if (filters.secondName) {
+        studentWhere.middleName = { [Op.like]: `%${filters.secondName}%` };
+      }
+      if (filters.firstLastName) {
+        studentWhere.firstLastName = { [Op.like]: `%${filters.firstLastName}%` };
+      }
+      if (filters.secondLastName) {
+        studentWhere.secondLastName = { [Op.like]: `%${filters.secondLastName}%` };
+      }
+      if (filters.documentNumber) {
+        studentWhere.documentNumber = filters.documentNumber;
+      }
+      if (filters.documentTypeId) {
+        studentWhere.documentTypeId = filters.documentTypeId;
+      }
+
+      // ── Includes ───────────────────────────────────────────────────────────
+      const includes = StudentServices.CATALOG_INCLUDES.map((inc) => {
+        // Override the Municipality include with a name filter when
+        // birthplace is provided; otherwise keep the default.
+        if (inc.as === 'municipality' && filters.birthplace) {
+          return {
+            ...inc,
+            required: true,
+            where: { name: { [Op.like]: `%${filters.birthplace}%` } },
+          };
+        }
+        return inc;
+      });
+
+      const hasEnrollmentFilter =
+        filters.lastAcademicYear || filters.gradeId || filters.group || filters.jornada;
+
+      if (hasEnrollmentFilter) {
+        const groupWhere = {};
+        if (filters.lastAcademicYear) groupWhere.year = filters.lastAcademicYear;
+        if (filters.gradeId) groupWhere.gradeId = filters.gradeId;
+        if (filters.group) groupWhere.name = { [Op.like]: `%${filters.group}%` };
+        if (filters.jornada) groupWhere.shift = filters.jornada;
+
+        includes.push({
+          model: Enrollment,
+          as: 'enrollments',
+          required: true,
+          attributes: [], // we don't need enrollment columns in the student row
+          include: [
+            {
+              model: Group,
+              as: 'group',
+              required: true,
+              attributes: [],
+              where: groupWhere,
+            },
+          ],
+        });
+      }
+
+      // ── Query ──────────────────────────────────────────────────────────────
+      const rows = await Student.findAll({
+        where: studentWhere,
+        include: includes,
+        order: [['firstName', 'ASC'], ['firstLastName', 'ASC']],
+      });
+
+      // Dedupe by student id — a student matching 3 enrollments would
+      // otherwise appear 3 times.
+      const seen = new Set();
+      const uniqueStudents = [];
+      for (const row of rows) {
+        if (seen.has(row.id)) continue;
+        seen.add(row.id);
+        uniqueStudents.push(row);
+      }
+
+      if (uniqueStudents.length === 0) {
+        return { total: 0, records: [] };
+      }
+
+      // ── Latest enrollment per student (single extra query) ─────────────────
+      const studentIds = uniqueStudents.map((s) => s.id);
+
+      const latestEnrollmentRows = await Enrollment.findAll({
+        where: { studentId: { [Op.in]: studentIds } },
+        include: [
+          {
+            model: Group,
+            as: 'group',
+            required: true,
+            attributes: ['id', 'name', 'year', 'shift'],
+            include: [{ model: Grade, as: 'grade', attributes: ['id', 'name'] }],
+          },
+        ],
+        // Newest year first; the first row per student is the one we keep.
+        order: [
+          ['studentId', 'ASC'],
+          [{ model: Group, as: 'group' }, 'year', 'DESC'],
+        ],
+      });
+
+      const latestByStudent = new Map();
+      for (const e of latestEnrollmentRows) {
+        if (!latestByStudent.has(e.studentId)) {
+          latestByStudent.set(e.studentId, e.group);
+        }
+      }
+
+      // ── Shape ──────────────────────────────────────────────────────────────
+      const records = uniqueStudents.map((student) => {
+        const formatted = StudentServices._formatStudent(student);
+        const group = latestByStudent.get(student.id) ?? null;
+
+        return {
+          ...formatted,
+          lastEnrollment: group
+            ? {
+              year: group.year,
+              shift: group.shift,
+              group: { id: group.id, name: group.name },
+              grade: group.grade
+                ? { id: group.grade.id, name: group.grade.name }
+                : null,
+            }
+            : null,
+        };
+      });
+
+      return { total: records.length, records };
+
+    } catch (error) {
+      throw Boom.boomify(error, {
+        message: 'Unable to search students with the provided filters',
+      });
+    }
+  }
+
   // ==========================================================
   // PRIVATE HELPERS (instance)
   // Naming convention: a leading underscore marks a method as
