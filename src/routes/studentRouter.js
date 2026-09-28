@@ -44,6 +44,7 @@ import { getScoresByStudentAndYear } from '../controllers/student/getScoresByYea
 import { getStudentAcademicHistory } from '../controllers/student/getAcademicHistory.js';
 import { getStudentCourseYears } from '../controllers/student/getCourseYears.js';
 import { getScoresByStudentAndGrade } from '../controllers/student/getScoresByGrade.js';
+import { searchStudents } from '../controllers/student/search.js';
 
 // Create a new Router instance dedicated to the student resource
 const studentRouter = Router();
@@ -228,6 +229,29 @@ studentRouter.post(
   checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
   validatorHandler(studentSchema.getScoresByStudentAndGrade, 'body'),
   getScoresByStudentAndGrade
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POST /search  →  Multi-criteria student search. Combines name, document,
+// birthplace and enrollment filters (year, grade, group, jornada) in a
+// single query. firstName and firstLastName are required; every other
+// field is optional (see studentSchema.searchStudents).
+//
+// NOTE: the role set here is narrower than the other student reads —
+// 'Auxiliar' is deliberately excluded, matching the academic-progress
+// endpoints below, since this route exposes the enrollment-level data
+// used to build certificates.
+// Body: { firstName, secondName?, firstLastName, secondLastName?,
+//         documentNumber?, documentTypeId?, lastAcademicYear?,
+//         gradeId?, group?, birthplace?, jornada? }
+// ─────────────────────────────────────────────────────────────────────────────
+studentRouter.post(
+  '/search',
+  checkApiKey,
+  authAppVerifyToken,
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario']),
+  validatorHandler(studentSchema.searchStudents, 'body'),
+  searchStudents
 );
 
 export default studentRouter;
