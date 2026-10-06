@@ -46,7 +46,7 @@ module.exports = {
 
       // School day shift
       jornada: {
-        type: Sequelize.ENUM('DIURNA', 'NOCTURNA'),
+        type: Sequelize.ENUM('Diurna', 'Nocturna'),
         allowNull: false,
       },
 
@@ -64,7 +64,7 @@ module.exports = {
 
       // Group status
       estado_grupo: {
-        type: Sequelize.ENUM('ACTIVO', 'INACTIVO'),
+        type: Sequelize.ENUM('Activo', 'Inactivo'),
         allowNull: false,
       },
 

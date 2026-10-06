@@ -49,7 +49,7 @@ export const Group = sequelize.define(GROUP_TABLE, {
   },
   // School day shift
   shift: {
-    type: DataTypes.ENUM('DIURNA', 'NOCTURNA'),
+    type: DataTypes.ENUM('Diurna', 'Nocturna'),
     allowNull: false,
     field: 'jornada',
   },
@@ -65,7 +65,7 @@ export const Group = sequelize.define(GROUP_TABLE, {
   },
   // Group status
   status: {
-    type: DataTypes.ENUM('ACTIVO', 'INACTIVO'),
+    type: DataTypes.ENUM('Activo', 'Inactivo'),
     allowNull: false,
     field: 'estado_grupo',
   },

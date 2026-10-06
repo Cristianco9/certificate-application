@@ -60,15 +60,15 @@ const joiInstitutionId = Joi.string().pattern(groupInstitutionId).messages({
 });
 
 // Backs Group.shift ('jornada'). ENUM('DIURNA','NOCTURNA').
-const joiShift = Joi.string().valid('DIURNA', 'NOCTURNA').messages({
+const joiShift = Joi.string().valid('Diurna', 'Nocturna').messages({
   'string.base': 'La jornada debe ser una cadena de texto.',
-  'any.only': 'La jornada debe ser "DIURNA" o "NOCTURNA".',
+  'any.only': 'La jornada debe ser "Diurna" o "Nocturna".',
 });
 
 // Backs Group.status ('estado_grupo'). ENUM('ACTIVO','INACTIVO').
-const joiStatus = Joi.string().valid('ACTIVO', 'INACTIVO').messages({
+const joiStatus = Joi.string().valid('Activo', 'Inactivo').messages({
   'string.base': 'El estado debe ser una cadena de texto.',
-  'any.only': 'El estado debe ser "ACTIVO" o "INACTIVO".',
+  'any.only': 'El estado debe ser "Activo" o "Inactivo".',
 });
 
 // ── Schema export ────────────────────────────────────────────────────────────
