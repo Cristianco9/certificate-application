@@ -84,17 +84,17 @@ INSERT IGNORE INTO grupo
   (nombre_grupo, anio_grupo, id_grado_grupo, jornada, id_institucion, estado_grupo)
 VALUES
   -- Baseline groups
-  ('6-A', 2020, @g_sexto,   'DIURNA',   @inst_id, 'ACTIVO'),
-  ('7-A', 2021, @g_septimo, 'DIURNA',   @inst_id, 'ACTIVO'),
-  ('7-B', 2022, @g_septimo, 'DIURNA',   @inst_id, 'ACTIVO'),
-  ('8-A', 2023, @g_octavo,  'DIURNA',   @inst_id, 'ACTIVO'),
+  ('6-A', 2020, @g_sexto,   'Diurna',   @inst_id, 'Activo'),
+  ('7-A', 2021, @g_septimo, 'Diurna',   @inst_id, 'Activo'),
+  ('7-B', 2022, @g_septimo, 'Diurna',   @inst_id, 'Activo'),
+  ('8-A', 2023, @g_octavo,  'Diurna',   @inst_id, 'Activo'),
   -- Additional cohorts
-  ('8-B', 2021, @g_octavo,  'DIURNA',   @inst_id, 'ACTIVO'),
-  ('9-A', 2022, @g_noveno,  'DIURNA',   @inst_id, 'ACTIVO'),
-  ('9-B', 2023, @g_noveno,  'DIURNA',   @inst_id, 'ACTIVO'),
-  ('10-A', 2023, @g_decimo, 'DIURNA',   @inst_id, 'ACTIVO'),
-  ('10-B', 2024, @g_decimo, 'NOCTURNA', @inst_id, 'ACTIVO'),
-  ('11-A', 2024, @g_once,   'DIURNA',   @inst_id, 'ACTIVO');
+  ('8-B', 2021, @g_octavo,  'Diurna',   @inst_id, 'Activo'),
+  ('9-A', 2022, @g_noveno,  'Diurna',   @inst_id, 'Activo'),
+  ('9-B', 2023, @g_noveno,  'Diurna',   @inst_id, 'Activo'),
+  ('10-A', 2023, @g_decimo, 'Diurna',   @inst_id, 'Activo'),
+  ('10-B', 2024, @g_decimo, 'Nocturna', @inst_id, 'Activo'),
+  ('11-A', 2024, @g_once,   'Diurna',   @inst_id, 'Activo');
 
 -- Group References
 SET @grp_6a_2020  = (SELECT id_grupo FROM grupo WHERE nombre_grupo = '6-A'  AND anio_grupo = 2020 LIMIT 1);
