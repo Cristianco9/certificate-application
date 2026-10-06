@@ -30,7 +30,6 @@ import {
 } from '../utils/RegEx/studentRegEx.js';
 import { groupYear, groupName, groupGradeId } from '../utils/RegEx/groupRegEx.js';
 import { gradeName } from '../utils/RegEx/gradeRegEx.js';
-import { municipalityName } from '../utils/RegEx/municipalityRegEx.js';
 
 // ── Primitive Joi types ─────────────────────────────────────────────────────
 
@@ -142,21 +141,14 @@ const joiGroupName = Joi.string().pattern(groupName).messages({
   'string.pattern.base': 'El grupo debe tener entre 1 y 50 caracteres y contener solo letras, números y guiones.',
 });
 
-// Backs Municipality.name ('nombre_municipio'). Reused from
-// municipalityRegEx.js because searchStudents filters by a partial
-// birthplace, which resolves to a municipality name on the backend.
-const joiBirthplace = Joi.string().pattern(municipalityName).messages({
-  'string.base': 'El lugar de nacimiento debe ser una cadena de texto.',
-  'string.pattern.base': 'El lugar de nacimiento debe tener entre 3 y 50 caracteres y contener solo letras y espacios.',
-});
-
 // Backs Group.shift ('jornada'). Reused from the ENUM defined in the
 // 'grupo' table; a closed set of two values, so Joi.valid() is more
 // appropriate than a RegEx, matching how the shift is validated in
-// groupSchema.js.
-const joiJornada = Joi.string().valid('DIURNA', 'NOCTURNA').messages({
+// groupSchema.js. Values match the ENUM casing exactly ('Diurna' /
+// 'Nocturna'), not the historical uppercase form.
+const joiJornada = Joi.string().valid('Diurna', 'Nocturna').messages({
   'string.base': 'La jornada debe ser una cadena de texto.',
-  'any.only': 'La jornada debe ser "DIURNA" o "NOCTURNA".',
+  'any.only': 'La jornada debe ser "Diurna" o "Nocturna".',
 });
 
 // ── Schema export ────────────────────────────────────────────────────────────
@@ -289,7 +281,7 @@ export const studentSchema = {
   // POST /students/search (body: { firstName, secondName?, firstLastName,
   //                                 secondLastName?, documentNumber?,
   //                                 documentTypeId?, lastAcademicYear?,
-  //                                 gradeId?, group?, birthplace?, jornada? })
+  //                                 gradeId?, group?, birthDate?, jornada? })
   // Validates StudentServices.searchStudents(filters).
   //
   // Multi-criteria search used by the certificate-generation dialog.
@@ -299,6 +291,9 @@ export const studentSchema = {
   // elsewhere — 'secondName' and 'secondLastName' reuse the same patterns
   // as the create/update schemas, while the enrollment filters (year,
   // grade, group, jornada) reuse the same primitives as groupSchema.
+  //
+  // 'birthDate' is an EXACT match against `estudiante.fecha_nacimiento_estudiante`
+  // (DATEONLY), replacing the earlier free-text 'birthplace' municipality filter.
   searchStudents: Joi.object({
     firstName: joiFirstName.required(),
     secondName: joiMiddleName.optional().allow(''),
@@ -309,7 +304,7 @@ export const studentSchema = {
     lastAcademicYear: joiYear.optional().allow(''),
     gradeId: joiGradeId.optional().allow(''),
     group: joiGroupName.optional().allow(''),
-    birthplace: joiBirthplace.optional().allow(''),
+    birthDate: joiBirthDate.optional().allow(''),
     jornada: joiJornada.optional().allow(''),
   }),
 };

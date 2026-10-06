@@ -721,14 +721,18 @@ export class StudentServices {
    * Multi-criteria student search. Every filter is optional except
    * firstName/firstLastName (enforced by the Joi schema upstream).
    *
-   * Name, birthplace and group use partial (LIKE) matching.
+   * Name and group use partial (LIKE) matching.
    * Year / grade / group / jornada are applied to the SAME enrollment
    * row (they're conditions on the same JOINed `grupo`, not on separate
    * ones), so "grade 7 in 2022" means "an enrollment where both are true",
    * not "was ever in grade 7 and ever in 2022".
    *
-   * Each returned student carries their latest enrollment (year / grade /
-   * group / shift) so a results table can render the row in one call.
+   * birthDate is an exact match on the DATEONLY column.
+   *
+   * Each returned student carries ALL of their enrollments (year / grade /
+   * group / shift), newest year first, so a results table can render the
+   * full academic trajectory of the student in one call — not just the
+   * most recent enrollment.
    */
   async searchStudents(filters) {
     try {
@@ -753,20 +757,18 @@ export class StudentServices {
       if (filters.documentTypeId) {
         studentWhere.documentTypeId = filters.documentTypeId;
       }
+      // Exact date match against `fecha_nacimiento_estudiante` (DATEONLY).
+      // The schema upstream guarantees a 'YYYY-MM-DD' string, so no
+      // parsing/normalization is needed here.
+      if (filters.birthDate) {
+        studentWhere.birthDate = filters.birthDate;
+      }
 
       // ── Includes ───────────────────────────────────────────────────────────
-      const includes = StudentServices.CATALOG_INCLUDES.map((inc) => {
-        // Override the Municipality include with a name filter when
-        // birthplace is provided; otherwise keep the default.
-        if (inc.as === 'municipality' && filters.birthplace) {
-          return {
-            ...inc,
-            required: true,
-            where: { name: { [Op.like]: `%${filters.birthplace}%` } },
-          };
-        }
-        return inc;
-      });
+      // The birthplace-municipality override was removed, so the base
+      // CATALOG_INCLUDES is used as-is: municipality is still embedded
+      // for display, but it is no longer used as a filter.
+      const includes = [...StudentServices.CATALOG_INCLUDES];
 
       const hasEnrollmentFilter =
         filters.lastAcademicYear || filters.gradeId || filters.group || filters.jornada;
@@ -803,7 +805,7 @@ export class StudentServices {
       });
 
       // Dedupe by student id — a student matching 3 enrollments would
-      // otherwise appear 3 times.
+      // otherwise appear 3 times in the result set.
       const seen = new Set();
       const uniqueStudents = [];
       for (const row of rows) {
@@ -816,10 +818,10 @@ export class StudentServices {
         return { total: 0, records: [] };
       }
 
-      // ── Latest enrollment per student (single extra query) ─────────────────
+      // ── ALL enrollments per student (single extra query) ───────────────────
       const studentIds = uniqueStudents.map((s) => s.id);
 
-      const latestEnrollmentRows = await Enrollment.findAll({
+      const allEnrollmentRows = await Enrollment.findAll({
         where: { studentId: { [Op.in]: studentIds } },
         include: [
           {
@@ -830,37 +832,42 @@ export class StudentServices {
             include: [{ model: Grade, as: 'grade', attributes: ['id', 'name'] }],
           },
         ],
-        // Newest year first; the first row per student is the one we keep.
+        // Newest year first, then by group name — matches the ordering
+        // convention used by GroupServices.listAll.
         order: [
           ['studentId', 'ASC'],
           [{ model: Group, as: 'group' }, 'year', 'DESC'],
+          [{ model: Group, as: 'group' }, 'name', 'ASC'],
         ],
       });
 
-      const latestByStudent = new Map();
-      for (const e of latestEnrollmentRows) {
-        if (!latestByStudent.has(e.studentId)) {
-          latestByStudent.set(e.studentId, e.group);
+      // Group all enrollments by student id
+      const enrollmentsByStudent = new Map();
+      for (const e of allEnrollmentRows) {
+        if (!enrollmentsByStudent.has(e.studentId)) {
+          enrollmentsByStudent.set(e.studentId, []);
         }
+        const group = e.group;
+        enrollmentsByStudent.get(e.studentId).push({
+          enrollmentId: e.id,
+          enrollmentDate: e.enrollmentDate,
+          year: group?.year ?? null,
+          shift: group?.shift ?? null,
+          group: group ? { id: group.id, name: group.name } : null,
+          grade: group?.grade
+            ? { id: group.grade.id, name: group.grade.name }
+            : null,
+        });
       }
 
       // ── Shape ──────────────────────────────────────────────────────────────
       const records = uniqueStudents.map((student) => {
         const formatted = StudentServices._formatStudent(student);
-        const group = latestByStudent.get(student.id) ?? null;
+        const enrollments = enrollmentsByStudent.get(student.id) ?? [];
 
         return {
           ...formatted,
-          lastEnrollment: group
-            ? {
-              year: group.year,
-              shift: group.shift,
-              group: { id: group.id, name: group.name },
-              grade: group.grade
-                ? { id: group.grade.id, name: group.grade.name }
-                : null,
-            }
-            : null,
+          enrollments,
         };
       });
 

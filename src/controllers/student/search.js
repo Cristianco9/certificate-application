@@ -19,10 +19,15 @@ import Boom from '@hapi/boom';
  * The response echoes the classic collection shape used by every other
  * read endpoint (success / message / total / records + rotated token),
  * so callers can consume it identically to `/students/list-all`,
- * `/students/get-by-municipality`, etc. Each returned student also
- * carries a `lastEnrollment` object (year, grade, group, jornada) so the
- * frontend can render the "Año de grado" and "Grado / grupo" columns of
- * the results table without an extra request.
+ * `/students/get-by-municipality`, etc.
+ *
+ * Each returned student carries an `enrollments` array — ALL of their
+ * enrollments, newest year first — rather than a single `lastEnrollment`
+ * object, so the frontend can render the full academic trajectory in
+ * one request. Each entry is shaped as:
+ *   `{ enrollmentId, enrollmentDate, year, shift, group: { id, name } | null,
+ *      grade: { id, name } | null }`.
+ * Students with no enrollments are returned with `enrollments: []`.
  *
  * The rotated JWT is not signed here: authAppVerifyToken already
  * generated it upstream, wrote it to the httpOnly 'authentication'
@@ -40,17 +45,16 @@ import Boom from '@hapi/boom';
  * @param {string} [req.body.lastAcademicYear] - Optional. 4-digit academic year (1900–2099).
  * @param {string} [req.body.gradeId] - Optional. Grade id filter.
  * @param {string} [req.body.group] - Optional. Partial group name.
- * @param {string} [req.body.birthplace] - Optional. Partial municipality name.
- * @param {string} [req.body.jornada] - Optional. 'DIURNA' or 'NOCTURNA'.
+ * @param {string} [req.body.birthDate] - Optional. Exact birth date (`YYYY-MM-DD`).
+ * @param {string} [req.body.jornada] - Optional. 'Diurna' or 'Nocturna'.
  * @param {Object} res - The Express response object.
  * @param {string} res.locals.newUserToken - The rotated JWT set by authAppVerifyToken.
  * @param {Function} next - The next middleware function in the Express.js stack.
  *
  * @returns {Promise<void>} - Sends a JSON response with the matching students
- * (each shaped as the standard formatted student plus a `lastEnrollment`
- * object: `{ year, shift, group: { id, name }, grade: { id, name } | null }`,
- * or `null` when the student has no enrollments), the count of records
- * returned by this request, and the rotated token.
+ * (each shaped as the standard formatted student plus an `enrollments`
+ * array), the count of records returned by this request, and the rotated
+ * token.
  */
 export const searchStudents = async (req, res, next) => {
   const studentManager = new StudentServices();
@@ -66,7 +70,7 @@ export const searchStudents = async (req, res, next) => {
       lastAcademicYear: req.body.lastAcademicYear,
       gradeId: req.body.gradeId,
       group: req.body.group,
-      birthplace: req.body.birthplace,
+      birthDate: req.body.birthDate,
       jornada: req.body.jornada,
     });
 
