@@ -308,3 +308,176 @@ JOIN matricula m ON e.id_estudiante = m.id_estudiante_matricula
 JOIN grupo g ON m.id_grupo_matricula = g.id_grupo
 JOIN grado gr ON g.id_grado_grupo = gr.id_grado
 ORDER BY e.id_estudiante, g.anio_grupo;
+
+-- ── 9. Phones (telefono) ────────────────────────────────────────────────────
+--
+-- Each phone number is UNIQUE (see migration 20260709204527-phone.cjs).
+-- Mobile format: 10 digits starting with 3. Landline: 7-10 digits, optional
+-- '+57' prefix. All numbers below match the phoneNumber RegEx.
+--
+-- Ownership plan (single-owner rule — one phone belongs to exactly ONE actor):
+--   - 6 student phones    → estudiante_telefono
+--   - 5 user phones       → usuario_telefono
+--   - 2 institution phones → institucion_telefono
+--   - 3 recipient phones  → receptor_certificado_telefono
+
+INSERT IGNORE INTO telefono (numero_telefono) VALUES
+  -- Student mobiles (one primary line per student, plus one landline for Juan)
+  ('3001234567'),   -- Juan's mobile
+  ('6022345678'),   -- Juan's home landline
+  ('3109876543'),   -- Valentina
+  ('3205551234'),   -- Santiago
+  ('3018765432'),   -- Mariana
+  ('3123334455'),   -- Mateo
+  -- User mobiles (one per staff account)
+  ('3157778899'),   -- master
+  ('3004445566'),   -- auxiliar
+  ('3189990011'),   -- administrador
+  ('3115554433'),   -- funcionario
+  ('3006665544'),   -- rector
+  -- Institution landlines (main + alternate)
+  ('6028889900'),   -- institution main
+  ('6028889901'),   -- institution alternate
+  -- Certificate recipient mobiles (one per acudiente)
+  ('3112223344'),   -- Carlos Pérez
+  ('3206667788'),   -- Lucía Rodríguez
+  ('3007776655');   -- Andrés Morales
+
+-- Phone ID references
+SET @tel_juan_mobile   = (SELECT id_telefono FROM telefono WHERE numero_telefono = '3001234567' LIMIT 1);
+SET @tel_juan_home     = (SELECT id_telefono FROM telefono WHERE numero_telefono = '6022345678' LIMIT 1);
+SET @tel_valentina     = (SELECT id_telefono FROM telefono WHERE numero_telefono = '3109876543' LIMIT 1);
+SET @tel_santiago      = (SELECT id_telefono FROM telefono WHERE numero_telefono = '3205551234' LIMIT 1);
+SET @tel_mariana       = (SELECT id_telefono FROM telefono WHERE numero_telefono = '3018765432' LIMIT 1);
+SET @tel_mateo         = (SELECT id_telefono FROM telefono WHERE numero_telefono = '3123334455' LIMIT 1);
+
+SET @tel_master        = (SELECT id_telefono FROM telefono WHERE numero_telefono = '3157778899' LIMIT 1);
+SET @tel_auxiliar      = (SELECT id_telefono FROM telefono WHERE numero_telefono = '3004445566' LIMIT 1);
+SET @tel_admin         = (SELECT id_telefono FROM telefono WHERE numero_telefono = '3189990011' LIMIT 1);
+SET @tel_funcionario   = (SELECT id_telefono FROM telefono WHERE numero_telefono = '3115554433' LIMIT 1);
+SET @tel_rector        = (SELECT id_telefono FROM telefono WHERE numero_telefono = '3006665544' LIMIT 1);
+
+SET @tel_inst_main     = (SELECT id_telefono FROM telefono WHERE numero_telefono = '6028889900' LIMIT 1);
+SET @tel_inst_alt      = (SELECT id_telefono FROM telefono WHERE numero_telefono = '6028889901' LIMIT 1);
+
+SET @tel_rec_carlos    = (SELECT id_telefono FROM telefono WHERE numero_telefono = '3112223344' LIMIT 1);
+SET @tel_rec_lucia     = (SELECT id_telefono FROM telefono WHERE numero_telefono = '3206667788' LIMIT 1);
+SET @tel_rec_andres    = (SELECT id_telefono FROM telefono WHERE numero_telefono = '3007776655' LIMIT 1);
+
+
+-- ── 10. Certificate Recipients (receptor_certificado) ───────────────────────
+--
+-- Acudientes / authorized recipients who can pick up certificates on behalf
+-- of the student. Each document number is UNIQUE. Middle names are NULL
+-- where the recipient has none (Lucía), matching the nullable column.
+
+INSERT IGNORE INTO receptor_certificado
+  (nombre_receptor_certificado, segundo_nombre_receptor_certificado,
+   apellidos_receptor_certificado, segundo_apellido_receptor_certificado,
+   id_tipodocumento_receptor_certificado, identificacion_receptor_certificado,
+   direccion_receptor_certificado)
+VALUES
+  ('Carlos', 'Andrés', 'Pérez',    'Gómez',    @dt_cc, '16345678', 'Calle 5 # 4-32 Barrio Centro'),
+  ('Lucía',  NULL,     'Rodríguez', 'Vargas',  @dt_cc, '52456789', 'Carrera 15 # 8-45 Barrio Granada'),
+  ('Andrés', 'Felipe', 'Morales',  'Restrepo', @dt_cc, '79456123', 'Calle 12 # 22-10 Barrio Las Mercedes');
+
+-- Certificate recipient ID references
+SET @rec_carlos = (SELECT id_receptor_certificado FROM receptor_certificado WHERE identificacion_receptor_certificado = '16345678' LIMIT 1);
+SET @rec_lucia  = (SELECT id_receptor_certificado FROM receptor_certificado WHERE identificacion_receptor_certificado = '52456789' LIMIT 1);
+SET @rec_andres = (SELECT id_receptor_certificado FROM receptor_certificado WHERE identificacion_receptor_certificado = '79456123' LIMIT 1);
+
+
+-- ── 11. User-Phone links (usuario_telefono) ────────────────────────────────
+--
+-- Link each staff account to its own mobile. Composite unique index
+-- uq_usuario_telefono prevents the same (user, phone) pair from being
+-- inserted twice.
+
+SET @usr_master      = (SELECT id_usuario FROM usuario WHERE email_usuario = 'master.dev@test.local'      LIMIT 1);
+SET @usr_auxiliar    = (SELECT id_usuario FROM usuario WHERE email_usuario = 'auxiliar.dev@test.local'    LIMIT 1);
+SET @usr_admin       = (SELECT id_usuario FROM usuario WHERE email_usuario = 'admin.dev@test.local'       LIMIT 1);
+SET @usr_funcionario = (SELECT id_usuario FROM usuario WHERE email_usuario = 'funcionario.dev@test.local' LIMIT 1);
+SET @usr_rector      = (SELECT id_usuario FROM usuario WHERE email_usuario = 'rector.dev@test.local'      LIMIT 1);
+
+INSERT IGNORE INTO usuario_telefono (id_usuario, id_telefono) VALUES
+  (@usr_master,      @tel_master),
+  (@usr_auxiliar,    @tel_auxiliar),
+  (@usr_admin,       @tel_admin),
+  (@usr_funcionario, @tel_funcionario),
+  (@usr_rector,      @tel_rector);
+
+
+-- ── 12. Student-Phone links (estudiante_telefono) ──────────────────────────
+--
+-- Juan has TWO phones (mobile + home landline) to demonstrate that a single
+-- student can own multiple phone records. The other students each have one.
+
+INSERT IGNORE INTO estudiante_telefono (id_estudiante, id_telefono) VALUES
+  (@st_juan,      @tel_juan_mobile),
+  (@st_juan,      @tel_juan_home),
+  (@st_valentina, @tel_valentina),
+  (@st_santiago,  @tel_santiago),
+  (@st_mariana,   @tel_mariana),
+  (@st_mateo,     @tel_mateo);
+
+
+-- ── 13. Institution-Phone links (institucion_telefono) ─────────────────────
+--
+-- The single seeded institution gets a main line and an alternate line.
+
+INSERT IGNORE INTO institucion_telefono (id_institucion, id_telefono) VALUES
+  (@inst_id, @tel_inst_main),
+  (@inst_id, @tel_inst_alt);
+
+
+-- ── 14. CertificateRecipient-Phone links (receptor_certificado_telefono) ───
+--
+-- One mobile per acudiente.
+
+INSERT IGNORE INTO receptor_certificado_telefono (id_receptor_certificado, id_telefono) VALUES
+  (@rec_carlos, @tel_rec_carlos),
+  (@rec_lucia,  @tel_rec_lucia),
+  (@rec_andres, @tel_rec_andres);
+
+
+-- ── 15. Summary Query — Phone Ownership ────────────────────────────────────
+--
+-- Unions all four bridge tables so the full ownership map can be inspected
+-- in a single result set. Useful to verify the single-owner rule visually
+-- (each phone number should appear exactly once across the four branches).
+
+SELECT 'usuario' AS tipo_propietario,
+       u.alias_usuario AS propietario,
+       t.numero_telefono AS telefono
+FROM usuario_telefono ut
+JOIN usuario u  ON ut.id_usuario = u.id_usuario
+JOIN telefono t ON ut.id_telefono = t.id_telefono
+
+UNION ALL
+
+SELECT 'estudiante',
+       CONCAT(e.primer_nombre_estudiante, ' ', e.primer_apellido_estudiante),
+       t.numero_telefono
+FROM estudiante_telefono et
+JOIN estudiante e ON et.id_estudiante = e.id_estudiante
+JOIN telefono t   ON et.id_telefono = t.id_telefono
+
+UNION ALL
+
+SELECT 'institucion',
+       i.nombre_institucion,
+       t.numero_telefono
+FROM institucion_telefono it
+JOIN institucion i ON it.id_institucion = i.id_institucion
+JOIN telefono t    ON it.id_telefono = t.id_telefono
+
+UNION ALL
+
+SELECT 'receptor_certificado',
+       CONCAT(r.nombre_receptor_certificado, ' ', r.apellidos_receptor_certificado),
+       t.numero_telefono
+FROM receptor_certificado_telefono rt
+JOIN receptor_certificado r ON rt.id_receptor_certificado = r.id_receptor_certificado
+JOIN telefono t             ON rt.id_telefono = t.id_telefono
+
+ORDER BY tipo_propietario, propietario;
