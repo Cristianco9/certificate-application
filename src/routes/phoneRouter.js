@@ -57,7 +57,7 @@ phoneRouter.post(
   '/create',
   checkApiKey,
   authAppVerifyToken,
-  checkRole(['Máster', 'Administrador']),
+  checkRole(['Máster', 'Administrador', 'Rector', 'Funcionario', 'Auxiliar']),
   validatorHandler(phoneSchema.newPhoneData, 'body'),
   createOnePhone
 );
