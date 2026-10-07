@@ -26,7 +26,7 @@ import {
     errorHandler,
     boomErrorHandler,
     ORMErrorHandler
-} from "./middlewares/errorHandler.js";
+} from './middlewares/errorHandler.js';
 // Import the setup of the database entities associations
 import { setupAssociations } from './db/models/index.js';
 
