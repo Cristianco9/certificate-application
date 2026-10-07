@@ -22,10 +22,10 @@ import { config } from './config/config.js';
 
 // Custom error handling middlewares
 import {
-    logError,
-    errorHandler,
-    boomErrorHandler,
-    ORMErrorHandler
+  logError,
+  errorHandler,
+  boomErrorHandler,
+  ORMErrorHandler
 } from './middlewares/errorHandler.js';
 // Import the setup of the database entities associations
 import { setupAssociations } from './db/models/index.js';
