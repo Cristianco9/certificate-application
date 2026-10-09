@@ -481,3 +481,60 @@ JOIN receptor_certificado r ON rt.id_receptor_certificado = r.id_receptor_certif
 JOIN telefono t             ON rt.id_telefono = t.id_telefono
 
 ORDER BY tipo_propietario, propietario;
+
+-- ── 16. Certificates per enrollment ─────────────────────────────────────────
+-- Requires @usr_master (issuing user), @inst_id, @rec_* and @enr_* — all
+-- already set by the earlier blocks. One certificate per enrollment
+-- (certificado.id_matricula_certificado has a UNIQUE constraint).
+-- estado_certificado ∈ {'EMITIDO','ANULADO','REIMPRESO'}.
+
+SET @usr_master = (
+  SELECT id_usuario FROM usuario
+  WHERE email_usuario = 'master.dev@test.local' LIMIT 1
+);
+
+INSERT IGNORE INTO certificado
+  (numero_acta_certificado,
+   fecha_emision_certificado,
+   id_usuario_certificado,
+   id_institucion_certificado,
+   id_matricula_certificado,
+   id_receptor_certificado,
+   estado_certificado)
+VALUES
+  -- ── Juan Camilo Pérez (4 matriculas → 4 certificates) ──────────────────
+  ('2020-0001', '2020-11-30', @usr_master, @inst_id, @enr_juan_2020, @rec_carlos, 'EMITIDO'),
+  ('2021-0001', '2021-11-30', @usr_master, @inst_id, @enr_juan_2021, @rec_carlos, 'EMITIDO'),
+  ('2022-0001', '2022-11-30', @usr_master, @inst_id, @enr_juan_2022, @rec_lucia,  'EMITIDO'),
+  ('2023-0001', '2023-12-05', @usr_master, @inst_id, @enr_juan_2023, @rec_carlos, 'EMITIDO'),
+
+  -- ── Valentina Restrepo (8° → 11°) ──────────────────────────────────────
+  ('2021-0002', '2021-11-30', @usr_master, @inst_id, @enr_val_2021,  @rec_lucia,  'EMITIDO'),
+  ('2022-0002', '2022-11-30', @usr_master, @inst_id, @enr_val_2022,  @rec_lucia,  'EMITIDO'),
+  ('2023-0002', '2023-11-30', @usr_master, @inst_id, @enr_val_2023,  @rec_lucia,  'EMITIDO'),
+  ('2024-0001', '2024-11-15', @usr_master, @inst_id, @enr_val_2024,  @rec_lucia,  'EMITIDO'),
+
+  -- ── Santiago Caicedo (transfer + remedial) ─────────────────────────────
+  ('2023-0003', '2023-02-15', @usr_master, @inst_id, @enr_sant_2023, @rec_carlos, 'EMITIDO'),
+  ('2024-0002', '2024-11-30', @usr_master, @inst_id, @enr_sant_2024, @rec_carlos, 'EMITIDO'),
+
+  -- ── Mariana Osorio (repeated 9°) ───────────────────────────────────────
+  -- 2022 was not passed → ANULADO; 2023 approved → EMITIDO; 2024 → EMITIDO
+  ('2022-0003', '2022-11-30', @usr_master, @inst_id, @enr_mar_2022,  @rec_lucia,  'ANULADO'),
+  ('2023-0004', '2023-11-30', @usr_master, @inst_id, @enr_mar_2023,  @rec_lucia,  'EMITIDO'),
+
+  -- ── Mateo Morales (night shift) ────────────────────────────────────────
+  ('2024-0003', '2024-02-20', @usr_master, @inst_id, @enr_mat_2024,  @rec_andres, 'EMITIDO');
+
+-- Verification: one row per student, with their enrollment/grade/group
+SELECT c.id_certificado, c.numero_acta_certificado, c.estado_certificado,
+       CONCAT(e.primer_nombre_estudiante,' ',e.primer_apellido_estudiante) AS estudiante,
+       gr.nombre_grado, g.anio_grupo, g.nombre_grupo,
+       CONCAT(r.nombre_receptor_certificado,' ',r.apellidos_receptor_certificado) AS receptor
+FROM certificado c
+JOIN matricula  m  ON c.id_matricula_certificado = m.id_matricula
+JOIN estudiante e  ON m.id_estudiante_matricula  = e.id_estudiante
+JOIN grupo      g  ON m.id_grupo_matricula       = g.id_grupo
+JOIN grado      gr ON g.id_grado_grupo           = gr.id_grado
+LEFT JOIN receptor_certificado r ON c.id_receptor_certificado = r.id_receptor_certificado
+ORDER BY estudiante, g.anio_grupo;
